@@ -1,7 +1,13 @@
+"use client";
+
+import { useState } from "react";
+
 export default function Home() {
+  const [count, setCount] = useState(0);
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1>Site is under construction</h1>
+    <main className="flex flex-col h-screen w-screen justify-center place-items-center">
+      This is the landing page
     </main>
   );
 }
