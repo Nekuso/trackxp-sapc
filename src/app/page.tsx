@@ -1,7 +1,9 @@
-export default function Home() {
+import Navbar from "@/components/navbar";
+
+export default function landingPage() {
   return (
-    <div className="w-full h-screen flex justify-center place-items-center">
-      LANDING PAGE UNDER CONSTRUCTION v3
+    <div className="w-full h-screen flex flex-col justify-start place-items-center">
+      <Navbar/>
     </div>
   );
 }
