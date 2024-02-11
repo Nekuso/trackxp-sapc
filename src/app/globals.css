@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 :root {
   --foreground-rgb: #131313;
   --text: #ffffff;
@@ -61,7 +60,7 @@ body {
 }
 
 .shadow-homePrimary {
-  box-shadow: 0px 0px 26px 15px rgba(64,105,255,0.36);
+  box-shadow: 0px 0px 26px 15px rgba(64, 105, 255, 0.36);
 }
 
 /* MEDIA QUERIES */

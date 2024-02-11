@@ -1,22 +1,23 @@
-"use client";
 import Navbar from "@/components/navbar";
 import Image from "next/image";
 import SearchIcon from "@/icons/search-icon.svg";
 import AndroidIcon from "@/icons/android-icon.svg";
 
-export default function landingPage() {
+export default function LandingPage() {
   return (
     <div className="w-full min-h-screen flex flex-col justify-start place-items-center gap-20">
-      <Navbar />
+      <div className="w-full h-auto flex justify-center sticky top-0 shadow-[0 4px 30px rgba(0, 0, 0, 0.1)] bg-[rgba(0, 0, 0, 0.61)] backdrop-blur-sm">
+        <Navbar />
+      </div>
       <section className="w-full flex flex-col place-items-center gap-7">
-        <h1 className="text-5xl font-black uppercase text-center leading-[120%]">
+        <h1 className="font-black uppercase text-center leading-[120%] text-5xl">
           We take <mark className="text-homePrimary bg-transparent">care</mark>{" "}
           of your
           <br></br>{" "}
           <mark className="text-homePrimary bg-transparent">Vehicle</mark> like
           it’s our own!
         </h1>
-        <h5 className="text-lg text-center text-gray">
+        <h5 className="text-lg text-center text-lightGray">
           The best genuine parts and high quality services for your car needs.
           <br></br>
           Only here at Sentro Autoparts!
@@ -24,7 +25,7 @@ export default function landingPage() {
 
         <div className="w-full flex justify-center place-items-center gap-4">
           {/* Search Bar */}
-          <div className="w-72 flex justify-center place-items-center border border-[#898989] rounded-full px-1 py-1">
+          <div className="w-72 flex justify-center place-items-center border border-lightGray rounded-full px-1 py-1">
             <input
               type="text"
               placeholder="Tracking ID"
@@ -55,7 +56,7 @@ export default function landingPage() {
               Satisfied <br /> Customers
             </p>
           </div>
-          <div className="w-[2px] h-8 bg-[#898989]"></div>
+          <div className="w-[2px] h-8 bg-lightGray"></div>
           <div className="w-fit flex justify-center place-items-center gap-3">
             <h1 className="text-5xl font-bold leading-[120%]">5K</h1>
             <p className="text-md leading-[120%]">
@@ -64,6 +65,7 @@ export default function landingPage() {
           </div>
         </div>
       </section>
+      <section className="h-screen"></section>
     </div>
   );
 }
