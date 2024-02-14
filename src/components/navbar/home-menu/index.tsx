@@ -38,7 +38,9 @@ export default function HamburgerMenu() {
         animate={isActive ? "open" : "closed"}
         initial="closed"
       >
-        <AnimatePresence>{isActive && <MenuNav />}</AnimatePresence>
+        <AnimatePresence>
+          {isActive && <MenuNav toggleMenu={() => setIsActive(!isActive)} />}
+        </AnimatePresence>
       </motion.div>
       <Button isActive={isActive} toggleMenu={() => setIsActive(!isActive)} />
     </div>

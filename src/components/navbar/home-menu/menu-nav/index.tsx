@@ -1,10 +1,11 @@
 "use client";
+import Link from "next/link";
 import styles from "./style.module.scss";
 import { links, footerLinks } from "../../links";
 import { motion } from "framer-motion";
 import { slideIn, perspective } from "./anim";
 
-export default function menuNav({}) {
+export default function menuNav({ toggleMenu }: { toggleMenu: any }) {
   return (
     <div className={styles.nav}>
       <div className={styles.body}>
@@ -19,7 +20,9 @@ export default function menuNav({}) {
                 animate="enter"
                 exit="exit"
               >
-                <a className="link">{title}</a>
+                <Link onClick={toggleMenu} href={href} className="link">
+                  {title}
+                </Link>
               </motion.div>
             </div>
           );
@@ -36,6 +39,7 @@ export default function menuNav({}) {
               animate="enter"
               exit="exit"
               key={`f_${i}`}
+              onClick={toggleMenu}
             >
               {title}
             </motion.a>
