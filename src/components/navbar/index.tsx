@@ -6,7 +6,7 @@ import { links } from "./links";
 
 export default function Nav() {
   return (
-    <nav className="w-full h-auto py-2 flex justify-between place-items-center">
+    <nav className="w-full h-auto py-2 md:py-4 flex justify-between place-items-center">
       <div className="w-[13%] max-md:w-[40%]">
         <Image src={Logo} alt="SAPSC Logo" className="w-full"></Image>
       </div>

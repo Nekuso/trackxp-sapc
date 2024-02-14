@@ -2,29 +2,41 @@ import Navbar from "@/components/navbar";
 import Image from "next/image";
 import SearchIcon from "@/icons/search-icon.svg";
 import AndroidIcon from "@/icons/android-icon.svg";
+import Object1 from "@/images/home-object-1.png";
+import Object2 from "@/images/home-object-2.png";
+import Object3 from "@/images/home-object-3.png";
+import VideoImage from "@/images/video-image.png";
 
 export default function LandingPage() {
   return (
-    <div className="w-full min-h-screen flex flex-col justify-start place-items-center gap-20">
-      <div className="w-full h-auto flex justify-center sticky top-0 shadow-[0 4px 30px rgba(0, 0, 0, 0.1)] bg-[rgba(0, 0, 0, 0.61)] backdrop-blur-sm">
+    <div className="w-full min-h-screen flex flex-col justify-start place-items-center gap-[15vw] md:gap-28">
+      <div className="w-full h-auto flex justify-center sticky top-0 z-50 shadow-[0 4px 30px rgba(0, 0, 0, 0.1)] bg-[rgba(0, 0, 0, 0.61)] backdrop-blur-sm">
         <Navbar />
       </div>
       <section className="w-full flex flex-col place-items-center gap-7">
-        <h1 className="font-black uppercase text-center leading-[120%] text-5xl">
+        <h1 className="relative text-[8vw] md:text-5xl font-black uppercase text-center leading-[120%]">
           We take <mark className="text-homePrimary bg-transparent">care</mark>{" "}
           of your
-          <br></br>{" "}
+          <br className="hidden md:block"></br>{" "}
           <mark className="text-homePrimary bg-transparent">Vehicle</mark> like
           it’s our own!
+          <div className="absolute bottom-[50%] -right-40 w-auto">
+            <Image src={Object1} alt="Object1" className="w-full h-full" />
+          </div>
+          <div className="absolute top-[-120%] -left-20 w-auto">
+            <Image src={Object2} alt="Object1" className="w-full h-full" />
+          </div>
+          <div className="absolute bottom-[-260%] -left-40 w-auto">
+            <Image src={Object3} alt="Object1" className="w-full h-full" />
+          </div>
         </h1>
-        <h5 className="text-lg text-center text-lightGray">
+        <h5 className="text-md md:text-lg text-center text-lightGray">
           The best genuine parts and high quality services for your car needs.
-          <br></br>
+          <br className="hidden md:block"></br>
           Only here at Sentro Autoparts!
         </h5>
 
-        <div className="w-full flex justify-center place-items-center gap-4">
-          {/* Search Bar */}
+        <div className="w-full flex justify-center place-items-center gap-2">
           <div className="w-72 flex justify-center place-items-center border border-lightGray rounded-full px-1 py-1">
             <input
               type="text"
@@ -39,33 +51,44 @@ export default function LandingPage() {
               ></Image>
             </button>
           </div>
-          {/* Download App */}
-          <button className="w-fit h-autp px-5 py-3 flex bg-white border border-white text-black rounded-full text-xs font-bold justify-center place-items-center gap-2">
+          <button className="flex w-fit h-autp px-7 py-3 bg-white border border-white text-black rounded-full text-xs font-bold justify-center place-items-center gap-2">
             <Image
               src={AndroidIcon}
               alt="android icon"
               className="h-full"
             ></Image>
-            DOWNLOAD APP
+            DOWNLOAD
           </button>
         </div>
         <div className="w-fit flex justify-center place-items-center gap-6">
           <div className="w-fit flex justify-center place-items-center gap-3">
-            <h1 className="text-5xl font-bold leading-[120%]">30K</h1>
-            <p className="text-md leading-[120%]">
+            <h1 className="text-[8vw] md:text-5xl font-bold leading-[120%]">
+              30K
+            </h1>
+            <p className="text-sm md:text-md leading-[120%]">
               Satisfied <br /> Customers
             </p>
           </div>
           <div className="w-[2px] h-8 bg-lightGray"></div>
           <div className="w-fit flex justify-center place-items-center gap-3">
-            <h1 className="text-5xl font-bold leading-[120%]">5K</h1>
-            <p className="text-md leading-[120%]">
+            <h1 className="text-[8vw] md:text-5xl font-bold leading-[120%]">
+              5K
+            </h1>
+            <p className="text-sm md:text-md leading-[120%]">
               Mobile <br /> Downloads
             </p>
           </div>
         </div>
       </section>
-      <section className="h-screen"></section>
+      <section className="h-screen flex justify-center place-items-center">
+        <div className="w-full h-full">
+          <Image
+            src={VideoImage}
+            alt="Object1"
+            className="w-full opacity-40"
+          ></Image>
+        </div>
+      </section>
     </div>
   );
 }
