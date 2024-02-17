@@ -1,10 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "@/images/sapsc-logo-light.png";
 import Hamburger from "./home-menu/index";
 import { links } from "./links";
+import { useState } from "react";
 
 export default function Nav() {
+  const [isLoggedIn, setIsLoggedIn] = useState(!false);
+
   return (
     <nav className="w-full h-auto py-2 md:py-4 flex justify-between place-items-center">
       <div className="w-[13%] max-md:w-[40%]">
@@ -26,12 +31,21 @@ export default function Nav() {
           })}
         </ul>
 
-        <Link
-          href="/"
-          className="w-fit h-fit px-6 py-3 bg-white text-black rounded-full font-bold text-xs hover: hover:bg-slate-200 transition duration-300 shadow-lg"
-        >
-          Login
-        </Link>
+        {(isLoggedIn && (
+          <Link
+            href="/auth/login"
+            className="w-fit h-fit px-6 py-3 bg-white text-black rounded-full font-bold text-xs hover: hover:bg-slate-200 transition duration-300 shadow-lg"
+          >
+            Login
+          </Link>
+        )) || (
+          <Link
+            href="/auth/login"
+            className="w-fit h-fit px-6 py-3 bg-white text-black rounded-full font-bold text-xs hover: hover:bg-slate-200 transition duration-300 shadow-lg"
+          >
+            Dashboard
+          </Link>
+        )}
       </div>
       <Hamburger />
     </nav>

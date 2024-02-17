@@ -9,7 +9,7 @@ import VideoImage from "@/images/video-image.png";
 
 export default function LandingPage() {
   return (
-    <div className="w-full min-h-screen flex flex-col justify-start place-items-center gap-[15vw] md:gap-28">
+    <div className="w-full min-h-screen flex flex-col justify-start place-items-center gap-[15vw] md:gap-28 overflow-hidden">
       <div className="w-full h-auto flex justify-center sticky top-0 z-50 shadow-[0 4px 30px rgba(0, 0, 0, 0.1)] bg-[rgba(0, 0, 0, 0.61)] backdrop-blur-sm">
         <Navbar />
       </div>
@@ -20,14 +20,21 @@ export default function LandingPage() {
           <br className="hidden md:block"></br>{" "}
           <mark className="text-homePrimary bg-transparent">Vehicle</mark> like
           it’s our own!
-          <div className="absolute bottom-[50%] -right-40 w-auto">
-            <Image src={Object1} alt="Object1" className="w-full h-full" />
+          <div className="absolute flex justify-center place-items-center -bottom-[-80%] -right-20 md:bottom-[80%] md:-right-60 w-28 md:w-auto">
+            <div className="absolute blob-gradient"></div>
+            <Image
+              src={Object1}
+              alt="Object1"
+              className="relative w-full h-full"
+            />
           </div>
-          <div className="absolute top-[-120%] -left-20 w-auto">
-            <Image src={Object2} alt="Object1" className="w-full h-full" />
+          <div className="absolute top-[-60%] -left-10 md:top-[-120%] md:-left-44 w-16 md:w-auto">
+            <div className="absolute blob-gradient"></div>
+            <Image src={Object2} alt="Object2" className="w-full h-full" />
           </div>
-          <div className="absolute bottom-[-260%] -left-40 w-auto">
-            <Image src={Object3} alt="Object1" className="w-full h-full" />
+          <div className="absolute bottom-[-25%] -left-10 md:bottom-[-260%] md:-left-20 w-20 md:w-auto">
+            <div className="absolute blob-gradient"></div>
+            <Image src={Object3} alt="Object3" className="w-full h-full" />
           </div>
         </h1>
         <h5 className="text-md md:text-lg text-center text-lightGray">
