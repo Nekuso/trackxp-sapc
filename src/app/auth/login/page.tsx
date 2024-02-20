@@ -4,14 +4,36 @@ import Logo from "@/images/sapsc-logo-light.png";
 
 export default function Home() {
   return (
-    <div className="w-full min-h-screen flex flex-col justify-start place-items-center gap-[15vw] md:gap-28 overflow-hidden">
-      <nav className="w-full h-auto py-2 md:py-4 flex justify-between place-items-center">
-        <Link href={"/"} className="w-[13%] max-md:w-[40%]">
-          <Image src={Logo} alt="SAPSC Logo" className="w-full"></Image>
+    <div className="w-full min-h-screen flex flex-col justify-center place-items-center overflow-hidden">
+      <div className="flex flex-col p-8 place-items-center w-[500px] min-h-[500px] bg-darkGray rounded-2xl shadow-lg border border-lightBorder">
+        <Link href={"/"}>
+          <Image src={Logo} alt="Sentro Auto Parts & Service Center" />
         </Link>
-      </nav>
+        <div className="flex flex-col w-full gap-6">
+          <h5 className="w-full text-center text-xl font-bold">
+            Welcome Back!
+          </h5>
+          <div className="flex flex-col w-full gap-6">
+            <div className="flex flex-col w-full gap-3">
+              <label htmlFor="">Email:</label>
+              <input
+                type="text"
+                className="w-full p-3 rounded-md bg-inputBg "
+              />
+            </div>
+            <div className="flex flex-col w-full gap-3">
+              <label htmlFor="">Password:</label>
+              <input
+                type="password"
+                className="w-full p-3 rounded-md bg-inputBg "
+              />
+            </div>
+          </div>
+          <button className="w-full p-5 bg-homePrimary font-bold rounded-lg">
+            Login
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
-
-//

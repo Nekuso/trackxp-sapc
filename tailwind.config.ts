@@ -11,6 +11,9 @@ const config: Config = {
       colors: {
         homePrimary: "#4069FF",
         lightGray: "#AEAEAE",
+        darkGray: "#191919",
+        lightBorder: "#3A3A3A",
+        inputBg: "rgba(255, 255, 255, 0.20);",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

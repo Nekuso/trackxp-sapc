@@ -2,7 +2,7 @@
 import styles from "./style.module.scss";
 import { motion } from "framer-motion";
 
-export default function hamburgerMenu({
+export default function HamburgerMenu({
   isActive,
   toggleMenu,
 }: {
