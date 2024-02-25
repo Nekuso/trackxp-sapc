@@ -5,34 +5,45 @@ import Logo from "@/images/sapsc-logo-light.png";
 export default function Home() {
   return (
     <div className="w-full min-h-screen flex flex-col justify-center place-items-center overflow-hidden">
-      <div className="flex flex-col p-8 place-items-center w-[500px] min-h-[500px] bg-darkGray rounded-2xl shadow-lg border border-lightBorder">
-        <Link href={"/"}>
+      <div className="flex flex-col gap-10 p-6 place-items-center md:min-w-[450px] h-auto bg-darkGray rounded-2xl shadow-lg border border-lightBorder">
+        <Link href="/">
           <Image src={Logo} alt="Sentro Auto Parts & Service Center" />
         </Link>
         <div className="flex flex-col w-full gap-6">
-          <h5 className="w-full text-center text-xl font-bold">
-            Welcome Back!
-          </h5>
           <div className="flex flex-col w-full gap-6">
             <div className="flex flex-col w-full gap-3">
-              <label htmlFor="">Email:</label>
+              <label htmlFor="email" className="text-sm">
+                Email:
+              </label>
               <input
+                title="email"
                 type="text"
-                className="w-full p-3 rounded-md bg-inputBg "
+                placeholder="Enter your email"
+                className="w-full text-sm px-5 py-2.5 rounded-md bg-foregroundBg text-white border border-lightBorder "
               />
             </div>
             <div className="flex flex-col w-full gap-3">
-              <label htmlFor="">Password:</label>
+              <label htmlFor="password" className="text-sm">
+                Password:
+              </label>
               <input
+                title="password"
                 type="password"
-                className="w-full p-3 rounded-md bg-inputBg "
+                placeholder="••••••••••"
+                className="w-full text-sm px-5 py-2.5 rounded-md bg-foregroundBg text-white border border-lightBorder"
               />
             </div>
           </div>
-          <button className="w-full p-5 bg-homePrimary font-bold rounded-lg">
+          <button className="w-full text-white text-sm px-5 py-2.5 text-center  bg-homePrimary font-bold rounded-lg shadow-xl">
             Login
           </button>
         </div>
+        <h3 className="text-white text-sm flex gap-3">
+          Having trouble logging in?{" "}
+          <p className="text-sm font-bold underline underline-offset-4">
+            Contact Admin
+          </p>
+        </h3>
       </div>
     </div>
   );
