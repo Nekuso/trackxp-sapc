@@ -5,7 +5,7 @@ import { links, footerLinks } from "../../links";
 import { motion } from "framer-motion";
 import { slideIn, perspective } from "./anim";
 
-export default function menuNav({ toggleMenu }: { toggleMenu: any }) {
+export default function MenuNav({ toggleMenu }: { toggleMenu: any }) {
   return (
     <div className={styles.nav}>
       <div className={styles.body}>

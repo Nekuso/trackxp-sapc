@@ -4,14 +4,47 @@ import Logo from "@/images/sapsc-logo-light.png";
 
 export default function Home() {
   return (
-    <div className="w-full min-h-screen flex flex-col justify-start place-items-center gap-[15vw] md:gap-28 overflow-hidden">
-      <nav className="w-full h-auto py-2 md:py-4 flex justify-between place-items-center">
-        <Link href={"/"} className="w-[13%] max-md:w-[40%]">
-          <Image src={Logo} alt="SAPSC Logo" className="w-full"></Image>
+    <div className="w-full min-h-screen flex flex-col justify-center place-items-center overflow-hidden">
+      <div className="flex flex-col gap-10 p-6 place-items-center md:min-w-[450px] h-auto bg-darkGray rounded-2xl shadow-lg border border-lightBorder">
+        <Link href="/">
+          <Image src={Logo} alt="Sentro Auto Parts & Service Center" />
         </Link>
-      </nav>
+        <div className="flex flex-col w-full gap-6">
+          <div className="flex flex-col w-full gap-6">
+            <div className="flex flex-col w-full gap-3">
+              <label htmlFor="email" className="text-sm">
+                Email:
+              </label>
+              <input
+                title="email"
+                type="text"
+                placeholder="Enter your email"
+                className="w-full text-sm px-5 py-2.5 rounded-md bg-foregroundBg text-white border border-lightBorder "
+              />
+            </div>
+            <div className="flex flex-col w-full gap-3">
+              <label htmlFor="password" className="text-sm">
+                Password:
+              </label>
+              <input
+                title="password"
+                type="password"
+                placeholder="••••••••••"
+                className="w-full text-sm px-5 py-2.5 rounded-md bg-foregroundBg text-white border border-lightBorder"
+              />
+            </div>
+          </div>
+          <button className="w-full text-white text-sm px-5 py-2.5 text-center  bg-homePrimary font-bold rounded-lg shadow-xl">
+            Login
+          </button>
+        </div>
+        <h3 className="text-white text-sm flex gap-3">
+          Having trouble logging in?{" "}
+          <p className="text-sm font-bold underline underline-offset-4">
+            Contact Admin
+          </p>
+        </h3>
+      </div>
     </div>
   );
 }
-
-//
