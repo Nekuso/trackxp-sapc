@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import Logo from "@/images/sapsc-logo-light.png";
 
+import Logo from "@/images/sapsc-logo-light.png";
+import { FcGoogle } from "react-icons/fc";
 export default function Home() {
   return (
     <div className="w-full min-h-screen flex flex-col justify-center place-items-center overflow-hidden">
@@ -34,15 +35,22 @@ export default function Home() {
               />
             </div>
           </div>
-          <button className="w-full text-white text-sm px-5 py-2.5 text-center  bg-homePrimary font-bold rounded-lg shadow-xl">
+          <button className="w-full text-white text-sm px-5 py-2.5 text-center  bg-homePrimary font-bold rounded-lg shadow-md hover:shadow-homePrimary transition-all duration-300 ">
             Login
+          </button>
+          <button className="w-full flex  justify-center place-items-center text-black text-sm px-5 py-2.5 text-center  bg-white font-bold rounded-lg shadow-xl gap-4">
+            <FcGoogle className="text-2xl" />
+            Login with Google
           </button>
         </div>
         <h3 className="text-white text-sm flex gap-3">
           Having trouble logging in?{" "}
-          <p className="text-sm font-bold underline underline-offset-4">
+          <Link
+            href={"/"}
+            className="text-sm font-bold underline underline-offset-4"
+          >
             Contact Admin
-          </p>
+          </Link>
         </h3>
       </div>
     </div>
