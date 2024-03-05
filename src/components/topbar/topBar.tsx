@@ -1,5 +1,6 @@
 import Image from "next/image";
 import searchIcon from "@/icons/search-icon.svg";
+import notificationIcon from "@/icons/notification-icon.svg";
 
 export default function TopBar() {
   function getCurrentDate() {
@@ -67,6 +68,16 @@ export default function TopBar() {
             placeholder="Quick Search"
             className="w-full h-full bg-transparent outline-none text-sm"
           />
+        </div>
+
+        <div className="w-auto h-auto bg-darkComponentBg rounded-full p-3 hover:bg-applicationPrimary transition duration-300 cursor-pointer">
+          <Image
+            src={notificationIcon}
+            alt="notification icon"
+            className="w-full h-full"
+          ></Image>
+        </div>
+        <div className="w-auto h-auto bg-darkComponentBg rounded-full p-6 hover:bg-applicationPrimary transition duration-300 cursor-pointer bg-">
         </div>
       </div>
     </div>

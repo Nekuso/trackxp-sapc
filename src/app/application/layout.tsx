@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={montserrat.className}>
-        <div className="relative flex place-items-center justify-center w-sreen h-screen bg-darkBg p-8 gap-12">
+        <div className="relative flex place-items-center justify-center w-sreen h-screen bg-darkBg p-8 gap-12 max-md:hidden">
           <SideBar />
           <div className="flex flex-col gap-6 justify-between w-full h-full">
             <TopBar />
