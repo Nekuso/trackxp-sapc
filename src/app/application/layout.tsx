@@ -4,7 +4,10 @@ import "../globals.css";
 import SideBar from "@/components/sidebar/sideBar";
 import TopBar from "@/components/topbar/topBar";
 
-const montserrat = Montserrat({ subsets: ["cyrillic"] });
+const montserrat = Montserrat({
+  subsets: ["cyrillic"],
+  variable: "--font-montserrat",
+});
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -19,9 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={montserrat.className}>
-        <div className="relative flex place-items-center justify-center w-sreen h-screen bg-darkBg p-8 gap-12 max-md:hidden">
+        <div className="relative flex place-items-center justify-center w-sreen h-screen bg-darkBg px-8 py-5 gap-10 max-lg:hidden">
           <SideBar />
-          <div className="flex flex-col gap-6 justify-between w-full h-full">
+          <div className="flex flex-col gap-5 justify-between w-full h-full">
             <TopBar />
             {children}
           </div>

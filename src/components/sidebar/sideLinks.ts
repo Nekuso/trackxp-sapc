@@ -1,5 +1,6 @@
 import dashboardIcon from "@/icons/dashboard-icon.svg";
 import transactionsIcon from "@/icons/transactions-icon.svg";
+import inventoryIcon from "@/icons/inventory-icon.svg";
 import announcementIcon from "@/icons/announcements-icon.svg";
 import managementIcon from "@/icons/management-icon.svg";
 import analyticsIcon from "@/icons/analytics-icon.svg";
@@ -18,6 +19,11 @@ export const sideLinks = [
     title: "Transactions",
     href: "/application/transactions",
     icon: transactionsIcon,
+  },
+  {
+    title: "Inventory",
+    href: "/application/inventory",
+    icon: inventoryIcon,
   },
   {
     title: "Announcements",
