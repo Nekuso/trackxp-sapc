@@ -1,38 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "@/images/sapsc-logo-light.png";
 import { FcGoogle } from "react-icons/fc";
 
-import { supabase } from "@/lib/supabase";
-import { useState } from "react";
-
-export default function Home() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const router = useRouter();
-
-  const handleLogin = async () => {
-    try {
-      let { data: dataUser, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password,
-      });
-
-      if (dataUser) {
-        console.log(dataUser);
-        router.refresh();
-      }
-      setEmail("");
-      setPassword("");
-    } catch (error) {
-      alert(error);
-    }
-  };
-
+export default function Login() {
   return (
     <div className="w-full min-h-screen flex flex-col justify-center place-items-center overflow-hidden">
       <div className="flex flex-col gap-10 p-6 place-items-center md:min-w-[450px] h-auto bg-darkGray rounded-2xl shadow-lg border border-lightBorder">
@@ -68,10 +41,7 @@ export default function Home() {
               />
             </div>
           </div>
-          <button
-            className="w-full text-white text-sm px-5 py-2.5 text-center  bg-homePrimary font-bold rounded-lg shadow-md hover:shadow-homePrimary transition-all duration-300 "
-            onClick={() => handleLogin()}
-          >
+          <button className="w-full text-white text-sm px-5 py-2.5 text-center  bg-homePrimary font-bold rounded-lg shadow-md hover:shadow-homePrimary transition-all duration-300 ">
             Login
           </button>
           <div className="w-full flex  justify-center place-items-center text-black text-sm px-5 py-2.5 text-center  bg-white font-bold rounded-lg shadow-xl gap-4 hover:cursor-pointer">
