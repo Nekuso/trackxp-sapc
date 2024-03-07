@@ -17,7 +17,7 @@ export default function ProfileButton() {
       <DropdownMenuTrigger asChild>
         <Avatar className="w-10 h-10 cursor-pointer">
           <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarFallback className="text-black">NJ</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 bg-darkComponentBg border border-lightBorder shadow-2xl text-white px-2 mr-6">

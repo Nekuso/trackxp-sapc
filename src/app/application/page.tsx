@@ -10,8 +10,11 @@ import SmallVehicle from "@/images/vehicle-small.png";
 import MediumVechile from "@/images/vehicle-medium.png";
 import LargeVechile from "@/images/vehicle-large.png";
 import MostVehicle from "@/components/mostVehicle/mostVehicle";
-import Widget from "@/components/widget/widget";
-import BarChart from "@/components/barChart/barChart";
+import Widget from "@/components/dataWidget/widget";
+import LineChart from "@/components/lineChart/lineChart";
+import ActivityLogs from "@/components/activityLogsWidget/activityLogsWidget";
+import EmployeesWidget from "@/components/employeesWidget/employeesWidget";
+import ActivityLogsDialog from "@/components/activityLogsDialog/ActivityLogsDialog";
 
 const mostVehciles = [
   {
@@ -72,7 +75,9 @@ export default function Dashboard() {
         </div>
         <div className="w-full h-[55%] bg-darkComponentBg rounded-xl border border-lightBorder shadow-xl">
           <div className="w-full h-full p-5 flex flex-col justify-between place-items-between">
-            <h3 className="text-sm font-semibold">Most Vehicle Job</h3>
+            <h3 className="text-sm font-semibold text-slate-200">
+              Most Vehicle Job
+            </h3>
             <div className="w-full h-fit flex justify-between place-items-end gap-16">
               {mostVehciles.map((vehicle, i) => (
                 <MostVehicle
@@ -87,24 +92,50 @@ export default function Dashboard() {
           </div>
         </div>
         <div className="w-full h-full bg-darkComponentBg rounded-xl border border-lightBorder shadow-xl">
-          <div className="w-full h-full p-5 flex flex-col justify-between place-items-between gap-2">
-            <h3 className="text-sm font-semibold">Compare Activity</h3>
+          <div className="w-full h-full p-5 flex flex-col justify-between place-items-between gap-4">
+            <div className="w-full flex justify-between">
+              <h3 className="text-sm font-semibold text-slate-200">
+                This Week Activity
+              </h3>
+              <div className="flex gap-4 place-items-center">
+                <div className="flex gap-2">
+                  <div className="py-1 px-5 rounded-full bg-applicationPrimary"></div>
+                  <h3 className="text-xs font-semibold text-slate-200">
+                    This Week
+                  </h3>
+                </div>
+                <div className="flex gap-2">
+                  <div className="py-1 px-5 rounded-full bg-[#7F7D87]"></div>
+                  <h3 className="text-xs font-semibold text-slate-200">
+                    Last Week
+                  </h3>
+                </div>
+              </div>
+            </div>
             <div className="w-full h-full">
-              <BarChart />
+              <LineChart />
             </div>
           </div>
         </div>
       </div>
       <div className="w-[25%] h-full flex flex-col gap-6">
         <div className="w-full h-full bg-darkComponentBg rounded-xl border border-lightBorder shadow-xl">
-          <div className="w-full h-full p-5 flex flex-col justify-between place-items-between">
-            <h3 className="w-full flex justify-between text-sm font-semibold">Activity Logs <span>See all</span></h3>
-
+          <div className="w-full h-full flex flex-col justify-between place-items-between p-1">
+            <div className="w-full flex justify-between place-items-center py-3 px-4">
+              <h3 className="w-full flex justify-between place-items-center text-sm font-semibold text-slate-200 ">
+                Activity Logs
+              </h3>
+              <ActivityLogsDialog />
+            </div>
+            <ActivityLogs />
           </div>
         </div>
         <div className="w-full h-full bg-darkComponentBg rounded-xl border border-lightBorder shadow-xl">
-          <div className="w-full h-full p-5 flex flex-col justify-between place-items-between">
-            <h3 className="text-sm font-semibold">Employees</h3>
+          <div className="w-full h-full flex flex-col justify-between place-items-between">
+            <h3 className="w-full flex justify-between place-items-center text-sm font-semibold text-slate-200 py-3 px-4">
+              Employees <span className="text-xs font-normal">See all</span>
+            </h3>
+            <EmployeesWidget />
           </div>
         </div>
       </div>
