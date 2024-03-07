@@ -22,8 +22,6 @@ export default function Login() {
                 title="email"
                 type="text"
                 placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 className="w-full text-sm px-5 py-2.5 rounded-md bg-foregroundBg text-white border border-lightBorder "
               />
             </div>
@@ -35,15 +33,16 @@ export default function Login() {
                 title="password"
                 type="password"
                 placeholder="••••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
                 className="w-full text-sm px-5 py-2.5 rounded-md bg-foregroundBg text-white border border-lightBorder"
               />
             </div>
           </div>
-          <button className="w-full text-white text-sm px-5 py-2.5 text-center  bg-homePrimary font-bold rounded-lg shadow-md hover:shadow-homePrimary transition-all duration-300 ">
+          <Link
+            href={"/application"}
+            className="w-full text-white text-sm px-5 py-2.5 text-center  bg-homePrimary font-bold rounded-lg shadow-md hover:shadow-homePrimary transition-all duration-300 "
+          >
             Login
-          </button>
+          </Link>
           <div className="w-full flex  justify-center place-items-center text-black text-sm px-5 py-2.5 text-center  bg-white font-bold rounded-lg shadow-xl gap-4 hover:cursor-pointer">
             <FcGoogle className="text-2xl" />
             Login with Google
