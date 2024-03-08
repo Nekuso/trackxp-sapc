@@ -11,7 +11,7 @@ export default function SideBar() {
       </Link>
 
       <div className="w-auto h-full flex flex-col justify-between">
-        <div className="w-auto flex flex-col gap-4">
+        <div className="w-auto flex flex-col gap-2">
           {sideLinks.map((link, i) => {
             const { title, href, icon } = link;
             return (
@@ -34,7 +34,7 @@ export default function SideBar() {
           })}
         </div>
 
-        <div className="w-full flex flex-col gap-4">
+        <div className="w-full flex flex-col gap-2">
           {systemLinks.map((link, i) => {
             const { title, href, icon } = link;
             return (

@@ -52,7 +52,7 @@ export default function EmployeesLogsWidget() {
             <AvatarImage
               src={`https://randomuser.me/api/portraits/men/${item.id}.jpg`}
             />
-            <AvatarFallback>
+            <AvatarFallback className="bg-darkBg">
               {item.first_name[0] + item.last_name[0]}
             </AvatarFallback>
           </Avatar>
@@ -60,17 +60,22 @@ export default function EmployeesLogsWidget() {
             <span className="text-xs text-slate-300 font-semibold flex place-items-center gap-1">
               {item.first_name} {item.last_name}
             </span>
-            <p
-              className={`w-fit text-xs font-normal flex place-items-center gap-2 truncate text-${
-                item.availability == "Available"
-                  ? `green`
-                  : item.availability == `In Progress`
-                  ? `yellow`
-                  : `red`
-              }-300`}
-            >
-              {item.availability}
-            </p>
+            {item.availability === "Available" && (
+              <p className={"w-fit text-xs font-normal flex place-items-center gap-2 truncate text-green-300"}>
+                {item.availability}
+              </p>
+            )}
+            {item.availability === "In Progress" && (
+              <p className={"w-fit text-xs font-normal flex place-items-center gap-2 truncate text-yellow-300"}>
+                {item.availability}
+              </p>
+            )}
+            {item.availability === "Unavailable" && (
+              <p className={"w-fit text-xs font-normal flex place-items-center gap-2 truncate text-red-300"}>
+                {item.availability}
+              </p>
+            )}
+
           </div>
         </div>
       ))}

@@ -3,7 +3,10 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
-const montserrat = Montserrat({ subsets: ["cyrillic"] });
+const montserrat = Montserrat({
+  subsets: ["cyrillic"],
+  variable: "--font-montserrat",
+});
 
 export const metadata: Metadata = {
   title: "Sentro Auto Parts & Service Center",
@@ -17,7 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(montserrat.className)}>{children}</body>
+      <body className={cn("font-montserrat", montserrat.variable)}>
+        {children}
+      </body>
     </html>
   );
 }

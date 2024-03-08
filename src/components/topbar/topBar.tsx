@@ -1,8 +1,8 @@
 import Image from "next/image";
 import searchIcon from "@/icons/search-icon.svg";
 import ProfileButton from "@/components/profileButton/profileButton";
-import notificationIcon from "@/icons/notification-icon.svg";
 import NotificationButton from "../notificationButton/notificationButton";
+import { useSearchParams } from "next/navigation";
 
 export default function TopBar() {
   function getCurrentDate() {
@@ -53,6 +53,7 @@ export default function TopBar() {
     return hours + ":" + minutes + " " + ampm;
   }
 
+
   return (
     <div className="flex justify-between place-items-center w-full">
       <h1 className="text-2xl font-extrabold text-white">Dashboard</h1>
@@ -72,7 +73,7 @@ export default function TopBar() {
           />
         </div>
 
-        <NotificationButton/>
+        <NotificationButton />
         <ProfileButton />
       </div>
     </div>

@@ -83,7 +83,7 @@ export default function NotificationButton() {
         <DropdownMenuGroup className="py-2 gap-4 flex flex-col">
           {notificationsData.map((notification) => (
             <DropdownMenuItem
-              className="rounded-lg cursor-pointer hover:bg-applicationPrimary gap-2"
+              className="rounded-lg cursor-pointer hover:bg-applicationPrimary hover:shadow-2xl hover:scale-105 transition-all duration-100 gap-2"
               key={notification.id}
             >
               <Avatar className="w-10 h-10 cursor-pointer">

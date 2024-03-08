@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export default function ActivityLogsDialog() {
+export default function EmployeesDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -22,11 +22,10 @@ export default function ActivityLogsDialog() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[925px] h-[700px] bg-darkComponentBg border-none shadow-2xl">
         <DialogHeader>
-          <DialogTitle>Activity Logs</DialogTitle>
-          <DialogDescription>Lists of all activity logs.</DialogDescription>
+          <DialogTitle>Employees</DialogTitle>
+          <DialogDescription>Lists of all employees.</DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-        </div>
+        <div className="grid gap-4 py-4"></div>
         {/* <DialogFooter>
           <Button type="submit">Save changes</Button>
         </DialogFooter> */}

@@ -3,9 +3,10 @@ import { Montserrat } from "next/font/google";
 import "../globals.css";
 import SideBar from "@/components/sidebar/sideBar";
 import TopBar from "@/components/topbar/topBar";
+import { cn } from "@/lib/utils";
 
 const montserrat = Montserrat({
-  subsets: ["cyrillic"],
+  subsets: ["cyrillic-ext"],
   variable: "--font-montserrat",
 });
 
@@ -21,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={montserrat.className}>
+      <body className={cn("font-montserrat", montserrat.variable)}>
         <div className="w-full h-screen hidden bg-red-400 max-lg:flex justify-center place-items-center">
           <h1 className="text-2xl">
             Please open the app on a bigger screen or Computer
@@ -29,7 +30,7 @@ export default function RootLayout({
         </div>
         <div className="relative flex place-items-center justify-center w-sreen h-screen bg-darkBg px-8 py-5 gap-10 max-lg:hidden">
           <SideBar />
-          <div className="flex flex-col gap-5 justify-between w-full h-full">
+          <div className="flex flex-col gap-5 justify-between w-full h-full ">
             <TopBar />
             {children}
           </div>
