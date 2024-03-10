@@ -1,9 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import searchIcon from "@/icons/search-icon.svg";
-import ProfileButton from "@/components/profileButton/profileButton";
-import NotificationButton from "../notificationButton/notificationButton";
-import { useSearchParams } from "next/navigation";
+import ProfileButton from "@/components/profile-button/profile-button";
+import NotificationButton from "@/components/notification-button/notification-button";
+import { pathNameFilter } from "@/hooks/pathNameFilter";
 
+import { usePathname } from "next/navigation";
 export default function TopBar() {
   function getCurrentDate() {
     const months = [
@@ -53,10 +56,14 @@ export default function TopBar() {
     return hours + ":" + minutes + " " + ampm;
   }
 
+  // get current url
+  const pathname = usePathname();
 
   return (
     <div className="flex justify-between place-items-center w-full">
-      <h1 className="text-2xl font-extrabold text-white">Dashboard</h1>
+      <h1 className="text-2xl font-extrabold text-white">
+        {pathNameFilter(pathname)}
+      </h1>
 
       <div className="w-auto h-full flex just place-items-center gap-5">
         <div className="w-auto flex flex-col place-items-end">

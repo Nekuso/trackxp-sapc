@@ -61,21 +61,32 @@ export default function EmployeesLogsWidget() {
               {item.first_name} {item.last_name}
             </span>
             {item.availability === "Available" && (
-              <p className={"w-fit text-xs font-normal flex place-items-center gap-2 truncate text-green-300"}>
+              <p
+                className={
+                  "w-fit text-xs font-normal flex place-items-center gap-2 truncate text-green-300"
+                }
+              >
                 {item.availability}
               </p>
             )}
             {item.availability === "In Progress" && (
-              <p className={"w-fit text-xs font-normal flex place-items-center gap-2 truncate text-yellow-300"}>
+              <p
+                className={
+                  "w-fit text-xs font-normal flex place-items-center gap-2 truncate text-yellow-300"
+                }
+              >
                 {item.availability}
               </p>
             )}
             {item.availability === "Unavailable" && (
-              <p className={"w-fit text-xs font-normal flex place-items-center gap-2 truncate text-red-300"}>
+              <p
+                className={
+                  "w-fit text-xs font-normal flex place-items-center gap-2 truncate text-red-300"
+                }
+              >
                 {item.availability}
               </p>
             )}
-
           </div>
         </div>
       ))}

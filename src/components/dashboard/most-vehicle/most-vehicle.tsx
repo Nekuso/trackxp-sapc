@@ -17,7 +17,7 @@ export default function MostVehicle({
       <div className="w-full flex place-items-center justify-between">
         <h3 className="text-2xl font-bold flex place-items-center gap-2">
           {count}{" "}
-          <span className="text-xs font-normal text-green-200">
+          <span className="text-xs font-normal text-green-300">
             +{percent}% from last month
           </span>
         </h3>

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { CiBadgeDollar } from "react-icons/ci";
 import { FaBoxes } from "react-icons/fa";
 import { BiPulse } from "react-icons/bi";
@@ -9,13 +8,13 @@ import { MdOutlineVerified } from "react-icons/md";
 import SmallVehicle from "@/images/vehicle-small.png";
 import MediumVechile from "@/images/vehicle-medium.png";
 import LargeVechile from "@/images/vehicle-large.png";
-import MostVehicle from "@/components/mostVehicle/mostVehicle";
-import Widget from "@/components/dashboard/dataWidget/widget";
-import LineChart from "@/components/lineChart/lineChart";
-import ActivityLogs from "@/components/dashboard/activityLogsWidget/activityLogsWidget";
-import EmployeesWidget from "@/components/dashboard/employeesWidget/employeesWidget";
-import ActivityLogsDialog from "@/components/dashboard/activityLogsDialog/activityLogsDialog";
-import EmployeesDialog from "@/components/dashboard/employeesDialog/employeesDialog";
+import MostVehicle from "@/components/dashboard/most-vehicle/most-vehicle";
+import Widget from "@/components/dashboard/data-widget/data-widget";
+import LineChart from "@/components/charts/line-chart/line-chart";
+import ActivityLogs from "@/components/dashboard/activity-logs-widget/activity-logs-widget";
+import EmployeesWidget from "@/components/dashboard/employees-widget/employees-widget";
+import ActivityLogsDialog from "@/components/dashboard/activity-logs-dialog/activity-logs-dialog";
+import EmployeesDialog from "@/components/dashboard/employees-dialog/employees-dialog";
 
 const mostVehciles = [
   {
