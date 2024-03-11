@@ -1,5 +1,5 @@
 import { DataTable } from "./data-table";
-import { columns } from "./column";
+import { columns } from "./columns";
 import data from "./data/data.json";
 
 export default function Management() {
@@ -10,7 +10,7 @@ export default function Management() {
 
         <div className="w-full h-full flex gap-6 ">
           <DataTable columns={columns} data={data} />
-          <div className="w-[40%] h-full bg-darkComponentBg rounded-xl"></div>
+          {/* <div className="w-[40%] h-full bg-darkComponentBg rounded-xl"></div> */}
         </div>
       </div>
     </div>
