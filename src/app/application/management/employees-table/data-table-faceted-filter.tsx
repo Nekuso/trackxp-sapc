@@ -62,7 +62,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                 {selectedValues.size > 2 ? (
                   <Badge
                     variant="secondary"
-                    className="rounded-sm px-1 font-normal"
+                    className="rounded-sm px-1 font-normal bg-applicationPrimary text-white"
                   >
                     {selectedValues.size} selected
                   </Badge>
@@ -73,7 +73,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                       <Badge
                         variant="secondary"
                         key={option.value}
-                        className="rounded-sm px-1 font-normal"
+                        className="rounded-sm px-1 font-normal bg-applicationPrimary text-white hover:bg-white hover:text-black"
                       >
                         {option.label}
                       </Badge>
@@ -85,11 +85,11 @@ export function DataTableFacetedFilter<TData, TValue>({
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-[200px] p-0 border-none rounded-xl "
+        className="w-[200px] p-0 border-none rounded-xl"
         align="start"
       >
-        <Command>
-          <CommandInput placeholder={title} />
+        <Command className="bg-darkComponentBg shadow-2xl">
+          <CommandInput placeholder={title} className="text-white" />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
@@ -109,23 +109,24 @@ export function DataTableFacetedFilter<TData, TValue>({
                         filterValues.length ? filterValues : undefined
                       );
                     }}
+                    className="cursor-pointer"
                   >
                     <div
                       className={cn(
-                        "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary cursor-pointer",
+                        "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-white cursor-pointer",
                         isSelected
-                          ? "bg-applicationPrimary text-primary-foreground"
+                          ? "bg-applicationPrimary text-primary-foreground border-none"
                           : "opacity-50 [&_svg]:invisible"
                       )}
                     >
-                      <CheckIcon className={cn("h-4 w-4")} />
+                      <CheckIcon className={cn("h-4 w-4 ")} />
                     </div>
                     {option.icon && (
-                      <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+                      <option.icon className="mr-2 h-4 w-4 text-white" />
                     )}
-                    <span>{option.label}</span>
+                    <span className="text-sm text-white">{option.label}</span>
                     {facets?.get(option.value) && (
-                      <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs ">
+                      <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs text-white">
                         {facets.get(option.value)}
                       </span>
                     )}
@@ -135,11 +136,10 @@ export function DataTableFacetedFilter<TData, TValue>({
             </CommandGroup>
             {selectedValues.size > 0 && (
               <>
-                <CommandSeparator />
                 <CommandGroup>
                   <CommandItem
                     onSelect={() => column?.setFilterValue(undefined)}
-                    className="justify-center text-center"
+                    className="justify-center text-center text-white cursor-pointer"
                   >
                     Clear filters
                   </CommandItem>

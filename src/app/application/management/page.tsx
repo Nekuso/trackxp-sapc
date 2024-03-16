@@ -1,18 +1,38 @@
-import { DataTable } from "./data-table";
-import { columns } from "./columns";
-import data from "./data/data.json";
+import { DataTable } from "./employees-table/data-table";
+import { columns } from "./employees-table/columns";
+import data from "./employees-table/data/data.json";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Management() {
   return (
     <div className="w-full h-full flex justify-center place-items-center">
-      <div className="w-full h-full max-w-[1840px] max-h-[900px] flex flex-col justify-between gap-6 ">
-        {/* <div className="w-full py-14 bg-darkComponentBg rounded-xl"></div> */}
-
-        <div className="w-full h-full flex gap-6 ">
-          <DataTable columns={columns} data={data} />
-          {/* <div className="w-[40%] h-full bg-darkComponentBg rounded-xl"></div> */}
+      <Tabs
+        defaultValue="system"
+        className="w-full h-full flex max-w-[1840px] max-h-[900px] flex-col justify-center place-items-center gap-4"
+      >
+        <div className="w-full">
+          <TabsList className="p-0 h-fit bg-transparent rounded-none gap-4">
+            <TabsTrigger
+              value="system"
+              className="data-[state=active]:bg-transparent border-b-2 border-transparent data-[state=active]:border-white data-[state=active]:text-white rounded-none p-0 pb-2"
+            >
+              System Users
+            </TabsTrigger>
+            <TabsTrigger
+              value="mobile"
+              className="data-[state=active]:bg-transparent border-b-2 border-transparent data-[state=active]:border-white data-[state=active]:text-white rounded-none p-0 pb-2"
+            >
+              Mobile Users
+            </TabsTrigger>
+          </TabsList>
         </div>
-      </div>
+        <TabsContent value="system" className="w-full h-full ">
+          <DataTable columns={columns} data={data} />
+        </TabsContent>
+        <TabsContent value="mobile" className="w-full h-full bg-red-300">
+          {/* <DataTable columns={columns} data={data} /> */}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

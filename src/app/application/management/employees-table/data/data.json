@@ -6,6 +6,7 @@
     "img_url": "https://randomuser.me/api/portraits/men/1.jpg",
     "contact_number": "09553341787",
     "branch": 2,
+    "branch_name": "North Road",
     "role": "Manager",
     "status": "Available",
     "dob": "1985-07-15"
@@ -17,7 +18,8 @@
     "img_url": "https://randomuser.me/api/portraits/men/2.jpg",
     "contact_number": "09553341787",
     "branch": 3,
-    "role": "Employee",
+    "branch_name": "North Road",
+    "role": "Mechanic",
     "status": "Unavailable",
     "dob": "1992-03-20"
   },
@@ -28,6 +30,7 @@
     "img_url": "https://randomuser.me/api/portraits/men/3.jpg",
     "contact_number": "09553341787",
     "branch": 1,
+    "branch_name": "North Road",
     "role": "Administrator",
     "status": "Available",
     "dob": "1980-11-10"
@@ -39,7 +42,8 @@
     "img_url": "https://randomuser.me/api/portraits/men/4.jpg",
     "contact_number": "09553341787",
     "branch": 2,
-    "role": "Manager",
+    "branch_name": "North Road",
+    "role": "Mechanic",
     "status": "Available",
     "dob": "1976-05-25"
   },
@@ -50,7 +54,8 @@
     "img_url": "https://randomuser.me/api/portraits/men/5.jpg",
     "contact_number": "09553341787",
     "branch": 3,
-    "role": "Employee",
+    "branch_name": "North Road",
+    "role": "Staff",
     "status": "Available",
     "dob": "1988-09-12"
   },
@@ -61,6 +66,7 @@
     "img_url": "https://randomuser.me/api/portraits/men/6.jpg",
     "contact_number": "09553341787",
     "branch": 1,
+    "branch_name": "North Road",
     "role": "Manager",
     "status": "In Progress",
     "dob": "1974-12-30"
@@ -72,7 +78,8 @@
     "img_url": "https://randomuser.me/api/portraits/men/7.jpg",
     "contact_number": "09553341787",
     "branch": 2,
-    "role": "Employee",
+    "branch_name": "North Road",
+    "role": "Cashier",
     "status": "Unavailable",
     "dob": "1995-02-18"
   },
@@ -83,6 +90,7 @@
     "img_url": "https://randomuser.me/api/portraits/men/8.jpg",
     "contact_number": "09553341787",
     "branch": 3,
+    "branch_name": "North Road",
     "role": "Administrator",
     "status": "Available",
     "dob": "1983-08-08"
@@ -94,7 +102,8 @@
     "img_url": "https://randomuser.me/api/portraits/men/9.jpg",
     "contact_number": "09553341787",
     "branch": 1,
-    "role": "Employee",
+    "branch_name": "North Road",
+    "role": "Supervisor",
     "status": "Available",
     "dob": "1990-04-05"
   },
@@ -105,6 +114,7 @@
     "img_url": "https://randomuser.me/api/portraits/men/10.jpg",
     "contact_number": "09553341787",
     "branch": 2,
+    "branch_name": "North Road",
     "role": "Administrator",
     "status": "Available",
     "dob": "1986-10-22"
@@ -116,6 +126,7 @@
     "img_url": "https://randomuser.me/api/portraits/men/11.jpg",
     "contact_number": "09553341787",
     "branch": 3,
+    "branch_name": "Sta. Rosa St",
     "role": "Manager",
     "status": "Available",
     "dob": "1979-11-28"
@@ -127,7 +138,8 @@
     "img_url": "https://randomuser.me/api/portraits/men/12.jpg",
     "contact_number": "09553341787",
     "branch": 1,
-    "role": "Employee",
+    "branch_name": "Sta. Rosa St",
+    "role": "Mechanic",
     "status": "Available",
     "dob": "1993-06-17"
   },
@@ -138,7 +150,8 @@
     "img_url": "https://randomuser.me/api/portraits/men/13.jpg",
     "contact_number": "09553341787",
     "branch": 2,
-    "role": "Employee",
+    "branch_name": "Sta. Rosa St",
+    "role": "Mechanic",
     "status": "Unavailable",
     "dob": "1982-04-02"
   },
@@ -149,6 +162,7 @@
     "img_url": "https://randomuser.me/api/portraits/men/14.jpg",
     "contact_number": "09553341787",
     "branch": 3,
+    "branch_name": "Sta. Rosa St",
     "role": "Administrator",
     "status": "Available",
     "dob": "1977-09-14"
@@ -160,6 +174,7 @@
     "img_url": "https://randomuser.me/api/portraits/men/15.jpg",
     "contact_number": "09553341787",
     "branch": 1,
+    "branch_name": "Sta. Rosa St",
     "role": "Manager",
     "status": "Available",
     "dob": "1981-03-08"
@@ -171,6 +186,7 @@
     "img_url": "https://randomuser.me/api/portraits/men/16.jpg",
     "contact_number": "09553341787",
     "branch": 2,
+    "branch_name": "Sta. Rosa St",
     "role": "Administrator",
     "status": "Available",
     "dob": "1987-12-19"
@@ -182,7 +198,8 @@
     "img_url": "https://randomuser.me/api/portraits/men/17.jpg",
     "contact_number": "09553341787",
     "branch": 3,
-    "role": "Employee",
+    "branch_name": "Sta. Rosa St",
+    "role": "Mechanic",
     "status": "Available",
     "dob": "1994-08-26"
   },
@@ -193,6 +210,7 @@
     "img_url": "https://randomuser.me/api/portraits/men/18.jpg",
     "contact_number": "09553341787",
     "branch": 1,
+    "branch_name": "Sta. Rosa St",
     "role": "Administrator",
     "status": "Available",
     "dob": "1978-02-12"
@@ -204,7 +222,8 @@
     "img_url": "https://randomuser.me/api/portraits/men/19.jpg",
     "contact_number": "09553341787",
     "branch": 2,
-    "role": "Employee",
+    "branch_name": "Sta. Rosa St",
+    "role": "Mechanic",
     "status": "Unavailable",
     "dob": "1984-10-31"
   },
@@ -215,6 +234,7 @@
     "img_url": "https://randomuser.me/api/portraits/men/20.jpg",
     "contact_number": "09553341787",
     "branch": 3,
+    "branch_name": "Sta. Rosa St",
     "role": "Manager",
     "status": "Available",
     "dob": "1975-06-23"

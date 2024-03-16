@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -100,6 +99,9 @@ body {
   background: var(--foreground-rgb);
 }
 
+.rdp-vhidden {
+  @apply hidden;
+}
 
 @layer utilities {
   .text-balance {

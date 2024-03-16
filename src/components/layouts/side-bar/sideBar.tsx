@@ -13,7 +13,7 @@ export default function SideBar() {
   const pathname = usePathname();
 
   return (
-    <div className="sticky top-0 flex flex-col place-items-center justify-start w-auto h-full py-8 px-3 bg-darkComponentBg border border-lightBorder gap-20 rounded-xl">
+    <div className="sticky top-0 flex flex-col place-items-center justify-start w-auto h-full py-8 px-3 bg-darkComponentBg border border-lightBorder gap-20 rounded-xl z-10">
       <Link href="/" className="w-full flex justify-center">
         <Image src={trackxpIcon} alt="trackxp icon" className="w-[60%]" />
       </Link>
@@ -40,9 +40,8 @@ export default function SideBar() {
                   src={icon}
                   alt="trackxp icon"
                   className="w-6"
-                  title={title}
                 />
-                <span className="invisible group-hover:visible opacity-0 duration-500 group-hover:opacity-100 absolute left-full group-hover:left-[150%] transition-all text-sm bg-applicationPrimary rounded-lg px-4 py-2">
+                <span className="invisible group-hover:visible opacity-0 duration-500 group-hover:opacity-100 absolute left-full group-hover:left-[150%] transition-all text-sm bg-applicationPrimary rounded-lg px-4 py-2 shadow-2xl">
                   {title}
                 </span>
               </Link>
