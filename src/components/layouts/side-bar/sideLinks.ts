@@ -7,7 +7,6 @@ import analyticsIcon from "@/icons/analytics-icon.svg";
 import reportsIcon from "@/icons/reports-icon.svg";
 
 import settingsIcon from "@/icons/settings-icon.svg";
-import logoutIcon from "@/icons/logout-icon.svg";
 
 export const sideLinks = [
   {
@@ -52,10 +51,5 @@ export const systemLinks = [
     title: "Settings",
     href: "/application/settings",
     icon: settingsIcon,
-  },
-  {
-    title: "Logout",
-    href: "/application/logout",
-    icon: logoutIcon,
   },
 ];

@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -25,11 +24,15 @@ import {
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
 import ImageInput from "./image-input";
+import { signUpWithEmailAndPassword } from "../../actions";
 
-const employeeSchema = z.object({
+export const employeeSchema = z.object({
   first_name: z.string().min(1, { message: "First name is required" }),
   last_name: z.string().min(1, { message: "Last name is required" }),
   email: z.string().email({ message: "Must be a valid email" }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" }),
   image_url: z.string().default("something"),
   address: z.string().min(1, { message: "Address is required" }),
   contact_number: z.coerce
@@ -42,7 +45,6 @@ const employeeSchema = z.object({
   role: z.string().min(1, { message: "Role is required" }),
   branch: z.string().min(1, { message: "Branch is required" }),
   status: z.string().default("Available"),
-  remarks: z.string().optional(),
 });
 
 export default function EmployeeForm({ setDialogOpen }: any) {
@@ -51,12 +53,24 @@ export default function EmployeeForm({ setDialogOpen }: any) {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(data: z.infer<typeof employeeSchema>) {
+  async function onSubmit(data: z.infer<typeof employeeSchema>) {
+    const result = await signUpWithEmailAndPassword(data);
+
+    const { error } = JSON.parse(result);
+    if (error?.message) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message,
+      });
+      return;
+    }
+
     toast({
       title: "You submitted the following values:",
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+          <code className="text-white">Successfully Registered!</code>
         </pre>
       ),
     });
@@ -151,10 +165,10 @@ export default function EmployeeForm({ setDialogOpen }: any) {
               <div className="w-full h-full flex flex-col">
                 <FormField
                   control={form.control}
-                  name="address"
+                  name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xs">Address</FormLabel>
+                      <FormLabel className="text-xs">Password</FormLabel>
                       <FormControl className="h-full">
                         <Input
                           className="rounded-lg bg-lightComponentBg border-slate-600/50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-9"
@@ -259,10 +273,10 @@ export default function EmployeeForm({ setDialogOpen }: any) {
               <div className="w-full flex flex-col gap-2">
                 <FormField
                   control={form.control}
-                  name="remarks"
+                  name="address"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xs">Remarks</FormLabel>
+                      <FormLabel className="text-xs">Address</FormLabel>
                       <Textarea
                         className="bg-lightComponentBg border-slate-600/50 w-full h-full resize-none"
                         placeholder="About the user"
