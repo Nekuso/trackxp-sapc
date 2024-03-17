@@ -4,6 +4,8 @@ import "../globals.css";
 import SideBar from "@/components/layouts/side-bar/sideBar";
 import TopBar from "@/components/layouts/top-bar/top-bar";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
 
 const montserrat = Montserrat({
   subsets: ["cyrillic-ext"],
@@ -35,6 +37,8 @@ export default function RootLayout({
             {children}
           </div>
         </div>
+        <Sonner />
+        <Toaster />
       </body>
     </html>
   );

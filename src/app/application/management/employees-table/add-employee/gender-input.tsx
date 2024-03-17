@@ -9,13 +9,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function SelectDemo() {
+export default function SelectDemo({ data }: { data: any }) {
   return (
     <Select>
       <SelectTrigger
         id="gender"
         name="gender"
         className="w-full bg-lightComponentBg border-slate-600/50 rounded-lg "
+        {...data}
       >
         <SelectValue className="text-white" placeholder="Select a Gender" />
       </SelectTrigger>

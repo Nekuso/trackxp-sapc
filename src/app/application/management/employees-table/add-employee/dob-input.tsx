@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "./dob-calendar";
 import {
@@ -12,9 +12,7 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 
-export default function SampleDatePicker() {
-  const [date, setDate] = React.useState<Date>();
-
+export default function SampleDatePicker({ data }: { data: any }) {
   return (
     <Popover>
       <PopoverTrigger asChild id="dob" name="dob">
@@ -22,12 +20,12 @@ export default function SampleDatePicker() {
           variant={"outline"}
           className={cn(
             "w-full justify-start text-left font-normal bg-lightComponentBg border-slate-600/50 rounded-lg text-white hover:bg-lightComponentBg hover:text-white",
-            !date && "text-muted-foreground"
+            !data.value && "text-muted-foreground"
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4 text-white" />
-          {date ? (
-            format(date, "PPP")
+          {data.value ? (
+            format(data.value, "PPP")
           ) : (
             <span className="text-white/35">Pick a date</span>
           )}
@@ -40,8 +38,8 @@ export default function SampleDatePicker() {
         <Calendar
           mode="single"
           captionLayout="dropdown-buttons"
-          selected={date}
-          onSelect={setDate}
+          selected={data.value}
+          onSelect={data.onChange}
           fromYear={1960}
           toYear={2900}
           className="text-white bg-lightComponentBg border-slate-600/50"

@@ -8,17 +8,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { FormControl } from "@/components/ui/form";
 
-export default function SelectDemo() {
+export default function SelectDemo({ data }: { data: any }) {
   return (
-    <Select>
-      <SelectTrigger
-        id="role"
-        name="role"
-        className="w-full bg-lightComponentBg border-slate-600/50 rounded-lg "
-      >
-        <SelectValue className="text-white" placeholder="Select a role" />
-      </SelectTrigger>
+    <Select onValueChange={data.onChange}>
+      <FormControl>
+        <SelectTrigger className="w-full bg-lightComponentBg border-slate-600/50 rounded-lg ">
+          <SelectValue className="text-white" placeholder="Select a role" />
+        </SelectTrigger>
+      </FormControl>
       <SelectContent className="rounded-lg bg-lightComponentBg border-slate-600/50 text-white">
         <SelectGroup>
           <SelectItem value="administrator">Administrator</SelectItem>

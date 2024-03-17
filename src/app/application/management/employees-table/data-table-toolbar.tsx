@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { branches, roles, statuses } from "./columns";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import AddEmployeeButton from "./add-employee/add-employee-dialog";
+import { toast } from "sonner";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -63,7 +64,18 @@ export function DataTableToolbar<TData>({
         )}
       </div>
       <div className="flex gap-4">
-        <Button className="bg-white text-black hover:bg-white rounded-lg flex gap-2">
+        <Button
+          className="bg-white text-black hover:bg-white rounded-lg flex gap-2"
+          onClick={() =>
+            toast("Event has been created", {
+              description: "Employee data exporting",
+              action: {
+                label: "Undo",
+                onClick: () => console.log("Undo"),
+              },
+            })
+          }
+        >
           <CiExport />
           Export
         </Button>
