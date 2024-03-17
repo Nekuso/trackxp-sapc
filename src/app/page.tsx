@@ -1,5 +1,5 @@
 "use client";
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/layouts/navbar/index";
 import Image from "next/image";
 import SearchIcon from "@/icons/search-icon.svg";
 import AndroidIcon from "@/icons/android-icon.svg";
