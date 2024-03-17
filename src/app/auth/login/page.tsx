@@ -61,7 +61,7 @@ export default function Login() {
 
   return (
     <div className="w-full min-h-screen flex flex-col justify-center place-items-center overflow-hidden">
-      <div className="flex flex-col gap-10 p-6 place-items-center md:min-w-[450px] h-auto bg-darkGray rounded-2xl shadow-lg border border-lightBorder">
+      <div className="flex flex-col gap-10 p-6 place-items-center md:min-w-[400px] h-auto bg-darkGray rounded-2xl shadow-lg border border-lightBorder">
         <Link href="/">
           <Image src={Logo} alt="Sentro Auto Parts & Service Center" />
         </Link>
