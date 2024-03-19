@@ -1,4 +1,3 @@
-"use client";
 import { useState } from "react";
 import { IoPersonAddOutline } from "react-icons/io5";
 import { Button } from "@/components/ui/button";

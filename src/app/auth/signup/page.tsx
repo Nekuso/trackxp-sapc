@@ -39,7 +39,6 @@ export default function Login() {
 
       const { error } = JSON.parse(result);
       if (error?.message) {
-        console.log(error);
         toast({
           variant: "destructive",
           title: "Error",
@@ -77,7 +76,7 @@ export default function Login() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xs">Email</FormLabel>
+                      <FormLabel className="text-xs">First Name</FormLabel>
                       <FormControl>
                         <input
                           title="email"
@@ -117,22 +116,13 @@ export default function Login() {
               type="submit"
               className="w-full flex gap-4 text-white text-sm px-5 py-2.5 text-center  bg-applicationPrimary hover:bg-applicationPrimary/70 font-bold rounded-lg transition-all duration-300 "
             >
-              <span className={cn({ hidden: isPending })}>Login</span>
+              <span className={cn({ hidden: isPending })}>Signup</span>
               <AiOutlineLoading3Quarters
                 className={cn(" animate-spin", { hidden: !isPending })}
               />
             </Button>
           </form>
         </Form>
-        <h3 className="text-white text-sm flex gap-3">
-          Having trouble logging in?{" "}
-          <Link
-            href={"/"}
-            className="text-sm font-bold underline underline-offset-4"
-          >
-            Contact Admin
-          </Link>
-        </h3>
       </div>
     </div>
   );
