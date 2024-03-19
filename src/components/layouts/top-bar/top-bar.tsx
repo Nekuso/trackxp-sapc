@@ -7,7 +7,7 @@ import NotificationButton from "@/components/notification-button/notification-bu
 import { pathNameFilter } from "@/hooks/pathNameFilter";
 
 import { usePathname } from "next/navigation";
-export default function TopBar() {
+export default function TopBar({ data }: { data: any }) {
   function getCurrentDate() {
     const months = [
       "January",
@@ -55,16 +55,15 @@ export default function TopBar() {
 
     return hours + ":" + minutes + " " + ampm;
   }
-
-  // get current url
+  console.log(data);
   const pathname = usePathname();
 
   return (
     <div className="flex justify-between place-items-center w-full">
       <h1 className="text-2xl font-extrabold text-white">
-        {pathNameFilter(pathname)}
+        {/* {pathNameFilter(pathname)} */}
+        {`Welcome back ${data.user.user_metadata.first_name}`}
       </h1>
-
       <div className="w-auto h-full flex just place-items-center gap-5">
         <div className="w-auto flex flex-col place-items-end">
           <h5 className="text-xs text-white">{getCurrentDate()}</h5>

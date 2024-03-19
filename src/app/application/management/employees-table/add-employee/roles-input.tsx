@@ -11,6 +11,15 @@ import {
 import { FormControl } from "@/components/ui/form";
 
 export default function SelectDemo({ data }: { data: any }) {
+  const rolesData = [
+    { id: 1, role: "Administrator" },
+    { id: 2, role: "Manager" },
+    { id: 3, role: "Staff" },
+    { id: 4, role: "Cashier" },
+    { id: 5, role: "Supervisor" },
+    { id: 6, role: "Mechanic" },
+  ];
+
   return (
     <Select onValueChange={data.onChange}>
       <FormControl>
@@ -20,12 +29,11 @@ export default function SelectDemo({ data }: { data: any }) {
       </FormControl>
       <SelectContent className="rounded-lg bg-lightComponentBg border-slate-600/50 text-white">
         <SelectGroup>
-          <SelectItem value="administrator">Administrator</SelectItem>
-          <SelectItem value="manager">Manager</SelectItem>
-          <SelectItem value="staff">Staff</SelectItem>
-          <SelectItem value="cashier">Cashier</SelectItem>
-          <SelectItem value="supervisor">Supervisor</SelectItem>
-          <SelectItem value="mechanic">Mechanic</SelectItem>
+          {rolesData.map((role) => (
+            <SelectItem key={role.id} value={role.role}>
+              {role.role}
+            </SelectItem>
+          ))}
         </SelectGroup>
       </SelectContent>
     </Select>

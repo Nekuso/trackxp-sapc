@@ -1,4 +1,3 @@
-"use client";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -25,6 +24,9 @@ import {
 import { toast } from "@/components/ui/use-toast";
 import ImageInput from "./image-input";
 import { signUpWithEmailAndPassword } from "../../actions";
+import { useTransition } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { cn } from "@/lib/utils";
 
 export const employeeSchema = z.object({
   first_name: z.string().min(1, { message: "First name is required" }),
@@ -48,33 +50,34 @@ export const employeeSchema = z.object({
 });
 
 export default function EmployeeForm({ setDialogOpen }: any) {
+  const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof employeeSchema>>({
     resolver: zodResolver(employeeSchema),
   });
 
-  // 2. Define a submit handler.
   async function onSubmit(data: z.infer<typeof employeeSchema>) {
-    const result = await signUpWithEmailAndPassword(data);
+    startTransition(async () => {
+      const result = await signUpWithEmailAndPassword(data);
 
-    const { error } = JSON.parse(result);
-    if (error?.message) {
+      const { error } = JSON.parse(result);
+      if (error?.message) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: error.message,
+        });
+        return;
+      }
+
       toast({
-        variant: "destructive",
-        title: "Error",
-        description: error.message,
+        description: (
+          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+            <code className="text-white">Successfully Registered!</code>
+          </pre>
+        ),
       });
-      return;
-    }
-
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">Successfully Registered!</code>
-        </pre>
-      ),
+      setDialogOpen(false);
     });
-    setDialogOpen(false);
   }
 
   return (
@@ -291,8 +294,14 @@ export default function EmployeeForm({ setDialogOpen }: any) {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit" className="rounded-lg">
-            Create User
+          <Button
+            type="submit"
+            className="rounded-lg flex justify-center place-items-start w-[120px]"
+          >
+            <span className={cn({ hidden: isPending })}>Create User</span>
+            <AiOutlineLoading3Quarters
+              className={cn(" animate-spin", { hidden: !isPending })}
+            />
           </Button>
         </DialogFooter>
       </form>

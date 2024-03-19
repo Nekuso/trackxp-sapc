@@ -6,8 +6,8 @@ import TopBar from "@/components/layouts/top-bar/top-bar";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
-import { readUserSession } from "@/lib/actions";
 import { redirect } from "next/navigation";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 const montserrat = Montserrat({
   subsets: ["cyrillic-ext"],
@@ -24,9 +24,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { data } = await readUserSession();
-  if (!data.session) {
-    return redirect("/auth/login");
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.auth.getUser();
+  if (error || !data?.user) {
+    redirect("/auth/login");
   }
   return (
     <html lang="en">
@@ -39,7 +40,7 @@ export default async function RootLayout({
         <div className="relative flex place-items-center justify-center w-sreen h-screen bg-darkBg px-8 py-5 gap-10 max-lg:hidden">
           <SideBar />
           <div className="flex flex-col gap-5 justify-between w-full h-full ">
-            <TopBar />
+            <TopBar data={data}/>
             {children}
           </div>
         </div>
