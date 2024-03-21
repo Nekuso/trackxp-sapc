@@ -23,10 +23,10 @@ import {
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
 import ImageInput from "./image-input";
-import { signUpWithEmailAndPassword } from "../../actions";
 import { useTransition } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/useAuth";
 
 export const employeeSchema = z.object({
   first_name: z.string().min(1, { message: "First name is required" }),
@@ -44,13 +44,21 @@ export const employeeSchema = z.object({
   dob: z
     .date()
     .min(new Date(1900, 1, 1), { message: "Date of birth is required" }),
-  role: z.string().min(1, { message: "Role is required" }),
-  branch: z.string().min(1, { message: "Branch is required" }),
+  role: z
+    .string()
+    .min(1, { message: "Role is required" })
+    .transform((arg) => new Number(arg)),
+  branch: z
+    .string()
+    .min(1, { message: "Branch is required" })
+    .transform((arg) => new Number(arg)),
   status: z.string().default("Available"),
 });
 
 export default function EmployeeForm({ setDialogOpen }: any) {
   const [isPending, startTransition] = useTransition();
+  const { signUpWithEmailAndPassword } = useAuth();
+
   const form = useForm<z.infer<typeof employeeSchema>>({
     resolver: zodResolver(employeeSchema),
   });
@@ -66,13 +74,15 @@ export default function EmployeeForm({ setDialogOpen }: any) {
           title: "Error",
           description: error.message,
         });
+        console.log(error);
         return;
       }
 
       toast({
         description: (
           <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">Successfully Registered!</code>
+            {/* <code className="text-white">Successfully Registered!</code> */}
+            <code className="text-white">{JSON.stringify(data, null, 2)}</code>
           </pre>
         ),
       });

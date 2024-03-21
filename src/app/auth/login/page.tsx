@@ -49,11 +49,7 @@ export default function Login() {
       }
 
       toast({
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">Login Successful</code>
-          </pre>
-        ),
+        description: "Login successful",
       });
       return redirect("/application");
     });

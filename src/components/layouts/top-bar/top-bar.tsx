@@ -55,7 +55,7 @@ export default function TopBar({ data }: { data: any }) {
 
     return hours + ":" + minutes + " " + ampm;
   }
-  console.log(data);
+  // console.log(data);
   const pathname = usePathname();
 
   return (

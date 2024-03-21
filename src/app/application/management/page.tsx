@@ -2,8 +2,15 @@ import { DataTable } from "./employees-table/data-table";
 import { columns } from "./employees-table/columns";
 import data from "./employees-table/data/data.json";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useEmployees } from "@/hooks/useEmployees";
+import { useEffect } from "react";
 
-export default function Management() {
+export default async function Management() {
+  const { getEmployees } = await useEmployees();
+  const dataEmployees = await getEmployees();
+
+  console.log(dataEmployees);
+
   return (
     <div className="w-full h-full flex justify-center place-items-center">
       <Tabs
