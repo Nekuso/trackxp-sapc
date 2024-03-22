@@ -20,7 +20,9 @@ import {
   PersonIcon,
   HomeIcon,
 } from "@radix-ui/react-icons";
+import { FaEye } from "react-icons/fa";
 import { EmployeeDisplay } from "@/types";
+import Link from "next/link";
 
 export const statuses = [
   {
@@ -324,6 +326,22 @@ export const columns: ColumnDef<EmployeeDisplay>[] = [
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
+    },
+  },
+  {
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => {
+      const id = row.original.id;
+      return (
+        <Link
+          className="w-fit py-2 flex place-items-center justify-center border border-slate-600 text-slate-400 rounded-full px-4 hover:bg-applicationPrimary hover:text-white hover:border-applicationPrimary"
+          href={`/application/management/user/${id}`}
+        >
+          <FaEye className="mr-2 " />
+          View
+        </Link>
+      );
     },
   },
 ];

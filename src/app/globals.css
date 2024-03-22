@@ -154,6 +154,10 @@ body {
   filter: blur(100px);
 }
 
+.banner {
+  background-image: url("../images/banner.jpg");
+}
+
 /* MEDIA QUERIES */
 
 /* Small screens (sm) - 640px and above */

@@ -61,8 +61,8 @@ export default function TopBar({ data }: { data: any }) {
   return (
     <div className="flex justify-between place-items-center w-full">
       <h1 className="text-2xl font-extrabold text-white">
-        {/* {pathNameFilter(pathname)} */}
-        {`Welcome back ${data.user.user_metadata.first_name}`}
+        {pathNameFilter(pathname)}
+        {/* {`Welcome back ${data.user.user_metadata.first_name}`} */}
       </h1>
       <div className="w-auto h-full flex just place-items-center gap-5">
         <div className="w-auto flex flex-col place-items-end">

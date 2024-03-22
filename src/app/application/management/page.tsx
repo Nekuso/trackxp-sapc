@@ -8,8 +8,6 @@ export default async function Management() {
   const { getEmployees } = await useEmployees();
   const dataEmployees = await getEmployees();
 
-  console.log(dataEmployees);
-
   return (
     <div className="w-full h-full flex justify-center place-items-center">
       <Tabs
