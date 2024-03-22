@@ -38,16 +38,16 @@ export function DataTableToolbar<TData>({
             options={statuses}
           />
         )}
-        {table.getColumn("role") && (
+        {table.getColumn("roles") && (
           <DataTableFacetedFilter
-            column={table.getColumn("role")}
+            column={table.getColumn("roles")}
             title="Role"
             options={roles}
           />
         )}
-        {table.getColumn("branch_name") && (
+        {table.getColumn("branch") && (
           <DataTableFacetedFilter
-            column={table.getColumn("branch_name")}
+            column={table.getColumn("branch")}
             title="Branch"
             options={branches}
           />

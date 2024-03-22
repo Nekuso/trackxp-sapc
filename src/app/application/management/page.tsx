@@ -3,7 +3,6 @@ import { columns } from "./employees-table/columns";
 import data from "./employees-table/data/data.json";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEmployees } from "@/hooks/useEmployees";
-import { useEffect } from "react";
 
 export default async function Management() {
   const { getEmployees } = await useEmployees();
@@ -34,7 +33,7 @@ export default async function Management() {
           </TabsList>
         </div>
         <TabsContent value="system" className="w-full h-full ">
-          <DataTable columns={columns} data={data} />
+          <DataTable columns={columns} data={dataEmployees} />
         </TabsContent>
         <TabsContent value="mobile" className="w-full h-full bg-red-300">
           {/* <DataTable columns={columns} data={data} /> */}
