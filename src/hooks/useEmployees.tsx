@@ -29,6 +29,7 @@ export const useEmployees = async () => {
     const { data, error } = result;
     if (error) throw error;
 
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     return data as EmployeesWithJoin;
   };
 
@@ -53,12 +54,14 @@ export const useEmployees = async () => {
       gender,
       roles (id, role),
       status,
-      dob
+      dob,
+      created_at
     `
       )
       .eq("id", id);
     if (error) return error;
 
+    await new Promise((resolve) => setTimeout(resolve, 10000));
     return data;
   };
 

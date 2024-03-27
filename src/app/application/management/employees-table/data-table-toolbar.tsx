@@ -65,7 +65,7 @@ export function DataTableToolbar<TData>({
       </div>
       <div className="flex gap-4">
         <Button
-          className="bg-white text-black hover:bg-white rounded-lg flex gap-2"
+          className="text-xs text-black font-bold rounded-full flex gap-2 bg-white/90 hover:bg-white transition-all duration-300"
           onClick={() =>
             toast("Event has been created", {
               description: "Employee data exporting",

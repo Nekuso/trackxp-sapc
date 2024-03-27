@@ -80,9 +80,9 @@ export default function EmployeeForm({ setDialogOpen }: any) {
 
       toast({
         description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            {/* <code className="text-white">Successfully Registered!</code> */}
-            <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+          <pre className="mt-2 w-[340px] rounded-md border border-lightBorder bg-slate-950 p-4">
+            <code className="text-white">Successfully Registered!</code>
+            {/* <code className="text-white">{JSON.stringify(data, null, 2)}</code> */}
           </pre>
         ),
       });
@@ -292,7 +292,7 @@ export default function EmployeeForm({ setDialogOpen }: any) {
                       <FormLabel className="text-xs">Address</FormLabel>
                       <Textarea
                         className="bg-lightComponentBg border-slate-600/50 w-full h-full resize-none"
-                        placeholder="About the user"
+                        placeholder="Address"
                         {...field}
                       />
                       <FormMessage />
@@ -305,8 +305,8 @@ export default function EmployeeForm({ setDialogOpen }: any) {
         </div>
         <DialogFooter>
           <Button
+            className="text-xs font-bold rounded-full flex gap-2 bg-applicationPrimary/90 hover:bg-applicationPrimary primary-glow transition-all duration-300"
             type="submit"
-            className="rounded-lg flex justify-center place-items-start w-[120px]"
           >
             <span className={cn({ hidden: isPending })}>Create User</span>
             <AiOutlineLoading3Quarters
