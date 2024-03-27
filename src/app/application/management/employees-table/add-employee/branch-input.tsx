@@ -25,7 +25,7 @@ export default function SelectDemo({ data }: { data: any }) {
   ];
 
   return (
-    <Select onValueChange={data.onChange}>
+    <Select onValueChange={data.onChange} value={data.value}>
       <FormControl>
         <SelectTrigger
           id="branch"
@@ -39,7 +39,7 @@ export default function SelectDemo({ data }: { data: any }) {
       <SelectContent className="rounded-lg bg-lightComponentBg border-slate-600/50 text-white">
         <SelectGroup>
           {branchesData.map((branch) => (
-            <SelectItem key={branch.id} value={branch.branch_name}>
+            <SelectItem key={branch.id} value={branch.id.toString()}>
               {branch.branch_name}
             </SelectItem>
           ))}

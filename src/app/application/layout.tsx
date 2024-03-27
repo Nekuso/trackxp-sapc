@@ -37,10 +37,10 @@ export default async function RootLayout({
             Please open the app on a bigger screen or Computer
           </h1>
         </div>
-        <div className="relative flex place-items-center justify-center w-sreen h-screen bg-darkBg px-8 py-5 gap-10 max-lg:hidden">
+        <div className="relative flex place-items-center justify-center w-full h-screen bg-darkBg px-8 py-5 gap-10 max-lg:hidden overflow-y-scroll">
           <SideBar />
-          <div className="flex flex-col gap-5 justify-between w-full h-full ">
-            <TopBar data={data}/>
+          <div className="flex flex-col gap-5 justify-between w-full h-full">
+            <TopBar data={data} />
             {children}
           </div>
         </div>

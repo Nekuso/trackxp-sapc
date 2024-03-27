@@ -6,8 +6,8 @@ import { unstable_noStore as noStore } from "next/cache";
 
 export async function readUserSession() {
   noStore();
-  const supabsae = await createSupabaseServerClient();
-  return await supabsae.auth.getSession();
+  const supabase = await createSupabaseServerClient();
+  return await supabase.auth.getSession();
 }
 
 export const signOut = async () => {

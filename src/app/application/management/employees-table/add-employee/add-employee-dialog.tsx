@@ -18,11 +18,11 @@ export default function EmployeesDialog() {
   return (
     <Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
       <DialogTrigger asChild>
-        <Button className="rounded-lg flex gap-2">
+        <Button className="text-xs font-bold rounded-full flex gap-2 bg-applicationPrimary/90 hover:bg-applicationPrimary transition-all duration-300">
           <IoPersonAddOutline /> New User
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[800px] bg-darkComponentBg border-none shadow-2xl">
+      <DialogContent className="sm:max-w-[800px] bg-darkComponentBg border border-lightBorder shadow-2xl">
         <DialogHeader>
           <DialogTitle>New User</DialogTitle>
           <DialogDescription>

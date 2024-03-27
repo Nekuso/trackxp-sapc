@@ -20,18 +20,9 @@ import {
   PersonIcon,
   HomeIcon,
 } from "@radix-ui/react-icons";
-export type Employee = {
-  id: number;
-  email: string;
-  name: string;
-  img_url: string;
-  contact_number: string;
-  branch: number;
-  branch_name: string;
-  role: string;
-  status: string;
-  dob: string;
-};
+import { FaEye } from "react-icons/fa";
+import { EmployeeDisplay } from "@/types";
+import Link from "next/link";
 
 export const statuses = [
   {
@@ -95,16 +86,16 @@ export const branches = [
     icon: HomeIcon,
   },
   {
-    value: "Sta. Rosa St",
-    label: "Sta. Rosa St",
+    value: "Sta. Rosa St.",
+    label: "Sta. Rosa St.",
     icon: HomeIcon,
   },
 ];
 
-export const columns: ColumnDef<Employee>[] = [
+export const columns: ColumnDef<EmployeeDisplay>[] = [
   {
     id: "name",
-    accessorKey: "name",
+    accessorKey: "first_name",
     header: ({ column }) => {
       return (
         <DropdownMenu>
@@ -151,13 +142,15 @@ export const columns: ColumnDef<Employee>[] = [
       return (
         <div className="flex place-items-center gap-4 z-0">
           <Avatar className="w-10 h-10 cursor-pointer z-0">
-            <AvatarImage src={item.img_url} alt={item.name} />
+            <AvatarImage src={item.img_url} alt={item.id} />
             <AvatarFallback className="bg-darkBg">
-              {item.name[0]}
+              {`${item.first_name[0]}${item.last_name[0]}`}
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col">
-            <span className="text-sm font-semibold">{item.name}</span>
+            <span className="text-sm font-semibold">
+              {item.first_name} {item.last_name}
+            </span>
           </div>
         </div>
       );
@@ -212,12 +205,13 @@ export const columns: ColumnDef<Employee>[] = [
     header: "Contact Number",
   },
   {
-    id: "branch_name",
-    accessorKey: "branch_name",
+    id: "branch",
+    accessorKey: "branches",
+    accessorFn: (row) => row.branches.branch_name,
     header: "Branch",
     cell: ({ row }) => {
       const item = branches.find(
-        (item) => item.value === row.getValue("branch_name")
+        (item) => item.value === row.original.branches.branch_name
       );
 
       if (!item) {
@@ -230,10 +224,11 @@ export const columns: ColumnDef<Employee>[] = [
     },
   },
   {
-    accessorKey: "role",
+    accessorKey: "roles",
+    accessorFn: (row) => row.roles.role,
     header: "Role",
     cell: ({ row }) => {
-      const role = roles.find((role) => role.value === row.getValue("role"));
+      const role = roles.find((role) => role.value === row.original.roles.role);
 
       if (!role) {
         return null;
@@ -331,6 +326,22 @@ export const columns: ColumnDef<Employee>[] = [
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
+    },
+  },
+  {
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => {
+      const id = row.original.id;
+      return (
+        <Link
+          className="w-fit py-2 flex place-items-center justify-center text-slate-400 rounded-full px-4 hover:bg-applicationPrimary hover:text-white hover:border-applicationPrimary transition-all duration-300 primary-glow"
+          href={`/application/management/user/${id}`}
+        >
+          <FaEye className="mr-2 " />
+          View
+        </Link>
+      );
     },
   },
 ];
