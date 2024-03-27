@@ -16,7 +16,6 @@ import { IoPersonAddOutline } from "react-icons/io5";
 import Banner from "@/images/banner.jpg";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default async function User({ params }: { params: any }) {
   const { getEmployee } = await useEmployees();
