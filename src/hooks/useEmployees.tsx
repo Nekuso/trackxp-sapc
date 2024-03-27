@@ -61,7 +61,7 @@ export const useEmployees = async () => {
       .eq("id", id);
     if (error) return error;
 
-    await new Promise((resolve) => setTimeout(resolve, 10000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     return data;
   };
 
