@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEmployees } from "@/hooks/useEmployees";
 
 export default async function ManagementContent() {
-  const { getEmployees } = await useEmployees();
+  const { getEmployees } = useEmployees();
   const dataEmployees = await getEmployees();
 
   return (

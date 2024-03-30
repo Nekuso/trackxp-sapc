@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import "@smastrom/react-rating/style.css";
+
 
 const montserrat = Montserrat({
   subsets: ["cyrillic"],

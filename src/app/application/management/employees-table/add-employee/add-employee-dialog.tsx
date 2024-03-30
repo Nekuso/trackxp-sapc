@@ -18,7 +18,7 @@ export default function EmployeesDialog() {
   return (
     <Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
       <DialogTrigger asChild>
-        <Button className="text-xs font-bold rounded-full flex gap-2 bg-applicationPrimary/90 hover:bg-applicationPrimary transition-all duration-300">
+        <Button className="text-xs font-bold rounded-full flex gap-2 bg-applicationPrimary hover:bg-applicationPrimary transition-all duration-300">
           <IoPersonAddOutline /> New User
         </Button>
       </DialogTrigger>
