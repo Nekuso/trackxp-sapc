@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import Providers from "@/redux/Provider";
 
 const montserrat = Montserrat({
   subsets: ["cyrillic-ext"],
@@ -32,20 +33,22 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={cn("font-montserrat", montserrat.variable)}>
-        <div className="w-full h-screen hidden bg-red-400 max-lg:flex justify-center place-items-center">
-          <h1 className="text-2xl">
-            Please open the app on a bigger screen or Computer
-          </h1>
-        </div>
-        <div className="relative flex place-items-center justify-center w-full h-screen bg-darkBg px-8 py-5 gap-10 max-lg:hidden overflow-y-scroll">
-          <SideBar />
-          <div className="flex flex-col gap-5 justify-between w-full h-full">
-            <TopBar data={data} />
-            {children}
+        <Providers>
+          <div className="w-full h-screen hidden bg-red-400 max-lg:flex justify-center place-items-center">
+            <h1 className="text-2xl">
+              Please open the app on a bigger screen or Computer
+            </h1>
           </div>
-        </div>
-        <Sonner />
-        <Toaster />
+          <div className="relative flex place-items-center justify-center w-full h-screen bg-darkBg px-8 py-5 gap-10 max-lg:hidden overflow-y-scroll">
+            <SideBar />
+            <div className="flex flex-col gap-5 justify-between w-full h-full">
+              <TopBar data={data} />
+              {children}
+            </div>
+          </div>
+          <Sonner />
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );
