@@ -1,8 +1,60 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { QueryData, createClient } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
+import { z } from "zod";
 
 export const useEmployees = () => {
+  const realTimeEmployees = () => {
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!
+    );
+
+    supabase
+      .channel("employees-db-changes")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "employees" },
+        (payload) => {
+          console.log("Change received!", payload);
+        }
+      )
+      .subscribe();
+  };
+
+  const createEmployee = async (props: any) => {
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!,
+      {
+        auth: {
+          storageKey: "s1",
+        },
+      }
+    );
+
+    const result = await supabase.auth.signUp({
+      email: props.email,
+      password: props.password,
+      options: {
+        data: {
+          first_name: props.first_name,
+          last_name: props.last_name,
+          image_url: props.image_url,
+          address: props.address,
+          contact_number: props.contact_number,
+          gender: props.gender,
+          dob: props.dob,
+          role: props.role,
+          branch: props.branch,
+          status: props.status,
+          password: props.password,
+        },
+      },
+    });
+
+    return JSON.stringify(result);
+  };
   const getEmployees = async () => {
     const supabase = await createSupabaseServerClient();
     const result = await supabase.from("employees").select(`
@@ -31,7 +83,6 @@ export const useEmployees = () => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
     return data as EmployeesWithJoin;
   };
-
   const getEmployee = async (id: string, duration?: number) => {
     const supabase = await createSupabaseServerClient();
     const { data, error } = await supabase
@@ -54,7 +105,8 @@ export const useEmployees = () => {
       roles (id, role),
       status,
       dob,
-      created_at
+      created_at,
+      password
     `
       )
       .eq("id", id);
@@ -88,6 +140,7 @@ export const useEmployees = () => {
         dob: props.dob,
         role: props.role,
         branch: props.branch,
+        password: props.password,
       },
     });
 
@@ -115,7 +168,6 @@ export const useEmployees = () => {
 
     return JSON.stringify(result);
   };
-
   const deleteEmployee = async (props: any, duration?: number) => {
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -129,10 +181,12 @@ export const useEmployees = () => {
   };
 
   return {
+    createEmployee,
     getEmployee,
     getEmployees,
     updateEmployee,
     deleteEmployee,
     updateEmployeeStatus,
+    realTimeEmployees,
   };
 };
