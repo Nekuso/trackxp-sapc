@@ -41,7 +41,7 @@ export default async function RootLayout({
           </div>
           <div className="relative flex place-items-center justify-center w-full h-screen bg-darkBg px-8 py-5 gap-10 max-lg:hidden overflow-y-scroll">
             <SideBar />
-            <div className="flex flex-col gap-5 justify-between w-full h-full">
+            <div className="flex flex-col gap-5 justify-between w-full h-full relative">
               <TopBar data={data} />
               {children}
             </div>

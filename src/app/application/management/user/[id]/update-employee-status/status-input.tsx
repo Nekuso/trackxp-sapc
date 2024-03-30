@@ -25,6 +25,7 @@ export default function SelectDemo({ data }: { data: any }) {
         <SelectGroup>
           <SelectItem value="Available">Available</SelectItem>
           <SelectItem value="In Progress">In Progress</SelectItem>
+          <SelectItem value="Unavailable">Unavailable</SelectItem>
           <SelectItem value="Inactive">Inactive</SelectItem>
         </SelectGroup>
       </SelectContent>

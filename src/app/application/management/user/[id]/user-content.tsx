@@ -1,7 +1,6 @@
 import { useEmployees } from "@/hooks/useEmployees";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MdAlternateEmail, MdOutlineVerified } from "react-icons/md";
-import { RiDeleteBinLine } from "react-icons/ri";
 import { Button } from "@/components/ui/button";
 import { BsGenderMale } from "react-icons/bs";
 import { BsGenderFemale } from "react-icons/bs";
@@ -15,17 +14,17 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { FaEye } from "react-icons/fa";
 import { MdShowChart } from "react-icons/md";
 import { Rating as ReactRating, Star } from "@smastrom/react-rating";
+import { format } from "date-fns";
 
 import Banner from "@/images/banner.jpg";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
 import { LuRefreshCcw } from "react-icons/lu";
 import UpdateEmployeeButton from "./update-employee/update-employee-dialog";
 import DeleteEmployeeButton from "./delete-employee/delete-employee-dialog";
 import UpdateEmployeeStatusButton from "./update-employee-status/update-employee-status-dialog";
 
 export default async function UserContent({ params }: { params: any }) {
-  const { getEmployee } = useEmployees();
+  const { getEmployee, realTimeEmployees } = useEmployees();
   let employee: any = await getEmployee(params.id, 7000);
   const logsData = [
     {
@@ -93,6 +92,8 @@ export default async function UserContent({ params }: { params: any }) {
     },
   ];
 
+  realTimeEmployees();
+
   return (
     <div className="w-full h-full flex max-w-[1840px] max-h-[900px] justify-center place-items-center gap-7">
       <div className="w-full h-full flex flex-col gap-7 rounded-xl">
@@ -155,7 +156,7 @@ export default async function UserContent({ params }: { params: any }) {
               </span>
               <div className="w-full min-w-0 bg-lightBorder rounded-lg">
                 <p className="text-sm 2xl:text-md text-white gap-2 p-2 max-w-[260px] truncate">
-                  {employee[0].dob}
+                  {format(employee[0].dob, "PPP")}
                 </p>
               </div>
             </div>
@@ -190,7 +191,7 @@ export default async function UserContent({ params }: { params: any }) {
               </span>
               <div className="w-full min-w-0 bg-lightBorder rounded-lg">
                 <p className="text-sm 2xl:text-md text-white gap-2 p-2 max-w-[260px] truncate">
-                  {employee[0].created_at}
+                  {format(employee[0].created_at, "PPP")}
                 </p>
               </div>
             </div>

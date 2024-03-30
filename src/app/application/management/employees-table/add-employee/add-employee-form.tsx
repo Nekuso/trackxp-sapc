@@ -26,7 +26,7 @@ import ImageInput from "./image-input";
 import { useTransition } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/hooks/useAuth";
+import { useEmployees } from "@/hooks/useEmployees";
 
 export const employeeSchema = z.object({
   first_name: z.string().min(1, { message: "First name is required" }),
@@ -57,15 +57,14 @@ export const employeeSchema = z.object({
 
 export default function EmployeeForm({ setDialogOpen }: any) {
   const [isPending, startTransition] = useTransition();
-  const { signUpWithEmailAndPassword } = useAuth();
-
+  const { createEmployee } = useEmployees();
   const form = useForm<z.infer<typeof employeeSchema>>({
     resolver: zodResolver(employeeSchema),
   });
 
-  async function onSubmit(data: z.infer<typeof employeeSchema>) {
+  async function onSubmit(data: any) {
     startTransition(async () => {
-      const result = await signUpWithEmailAndPassword(data);
+      const result = await createEmployee(data);
 
       const { error } = JSON.parse(result);
       if (error?.message) {
@@ -305,7 +304,7 @@ export default function EmployeeForm({ setDialogOpen }: any) {
         </div>
         <DialogFooter>
           <Button
-            className="text-xs font-bold rounded-full min-w-[74px] flex justify-center place-items-center gap-2 bg-applicationPrimary/90 hover:bg-applicationPrimary primary-glow transition-all duration-300"
+            className="text-xs font-bold rounded-full min-w-[105px] flex justify-center place-items-center gap-2 bg-applicationPrimary/90 hover:bg-applicationPrimary primary-glow transition-all duration-300"
             type="submit"
           >
             <span className={cn({ hidden: isPending })}>Create User</span>
