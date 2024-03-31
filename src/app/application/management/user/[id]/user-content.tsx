@@ -23,9 +23,7 @@ import UpdateEmployeeButton from "./update-employee/update-employee-dialog";
 import DeleteEmployeeButton from "./delete-employee/delete-employee-dialog";
 import UpdateEmployeeStatusButton from "./update-employee-status/update-employee-status-dialog";
 
-export default async function UserContent({ params }: { params: any }) {
-  const { getEmployee, realTimeEmployees } = useEmployees();
-  let employee: any = await getEmployee(params.id, 7000);
+export default function UserContent({ employee }: any) {
   const logsData = [
     {
       id: 1,
@@ -91,8 +89,6 @@ export default async function UserContent({ params }: { params: any }) {
       order_number: "1220925",
     },
   ];
-
-  realTimeEmployees();
 
   return (
     <div className="w-full h-full flex max-w-[1840px] max-h-[900px] justify-center place-items-center gap-7">

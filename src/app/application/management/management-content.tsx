@@ -2,12 +2,13 @@ import { DataTable } from "./employees-table/data-table";
 import { columns } from "./employees-table/columns";
 import data from "./employees-table/data/data.json";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useEmployees } from "@/hooks/useEmployees";
+import { EmployeeDisplay } from "@/types";
 
-export default async function ManagementContent() {
-  const { getEmployees } = useEmployees();
-  const dataEmployees = await getEmployees();
-
+export default function ManagementContent({
+  dataEmployees,
+}: {
+  dataEmployees: EmployeeDisplay[];
+}) {
   return (
     <Tabs
       defaultValue="system"

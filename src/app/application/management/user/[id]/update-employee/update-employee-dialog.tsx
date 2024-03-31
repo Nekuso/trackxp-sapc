@@ -13,14 +13,9 @@ import {
 
 import UpdateEmployeeForm from "./update-employee-form";
 import { MdOutlineModeEdit } from "react-icons/md";
-import { useDispatch } from "react-redux";
-import { setEmployeeData } from "@/redux/slices/employeeSlice";
 
 export default function UpdateEmployeeDialog({ employeeData }: any) {
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
-  const employee = employeeData;
-  const dispatch = useDispatch();
-  dispatch(setEmployeeData(employee));
 
   return (
     <Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
@@ -40,6 +35,7 @@ export default function UpdateEmployeeDialog({ employeeData }: any) {
         <UpdateEmployeeForm
           setDialogOpen={setDialogIsOpen}
           dialogIsOpen={dialogIsOpen}
+          employee={employeeData}
         />
       </DialogContent>
     </Dialog>

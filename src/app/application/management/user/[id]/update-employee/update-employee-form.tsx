@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -23,19 +25,14 @@ import {
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
 import ImageInput from "./image-input";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
-import { useSelector } from "react-redux";
 import { useEmployees } from "@/hooks/useEmployees";
 
-export default function EmployeeForm({ setDialogOpen }: any) {
+export default function EmployeeForm({ setDialogOpen, employee }: any) {
   const [isPending, startTransition] = useTransition();
-  const { updateEmployee } = useEmployees();
-
-  const employee = useSelector(
-    (state: any) => state.currentEmployee.employeeData
-  );
+  const { updateEmployee, currentEmployeeData } = useEmployees();
 
   const employeeSchema = z.object({
     id: z.string(),
