@@ -31,9 +31,14 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
 import { useEmployees } from "@/hooks/useEmployees";
 
-export default function EmployeeForm({ setDialogOpen, employee }: any) {
+export default function EmployeeForm({
+  setDialogOpen,
+  employee,
+  branches,
+  roles,
+}: any) {
   const [isPending, startTransition] = useTransition();
-  const { updateEmployee, currentEmployeeData } = useEmployees();
+  const { updateEmployee } = useEmployees();
 
   const employeeSchema = z.object({
     id: z.string(),
@@ -277,7 +282,7 @@ export default function EmployeeForm({ setDialogOpen, employee }: any) {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-xs">Role</FormLabel>
-                      <RoleInput data={field} />
+                      <RoleInput data={field} rolesData={roles} />
                       <FormMessage />
                     </FormItem>
                   )}
@@ -292,7 +297,7 @@ export default function EmployeeForm({ setDialogOpen, employee }: any) {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-xs">Branch</FormLabel>
-                      <BranchInput data={field} />
+                      <BranchInput data={field} branchesData={branches} />
                       <FormMessage />
                     </FormItem>
                   )}

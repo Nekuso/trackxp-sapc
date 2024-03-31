@@ -1,7 +1,5 @@
-import { useEmployees } from "@/hooks/useEmployees";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MdAlternateEmail, MdOutlineVerified } from "react-icons/md";
-import { Button } from "@/components/ui/button";
 import { BsGenderMale } from "react-icons/bs";
 import { BsGenderFemale } from "react-icons/bs";
 import { CiCalendarDate } from "react-icons/ci";
@@ -23,7 +21,7 @@ import UpdateEmployeeButton from "./update-employee/update-employee-dialog";
 import DeleteEmployeeButton from "./delete-employee/delete-employee-dialog";
 import UpdateEmployeeStatusButton from "./update-employee-status/update-employee-status-dialog";
 
-export default function UserContent({ employee }: any) {
+export default function UserContent({ employee, branches, roles }: any) {
   const logsData = [
     {
       id: 1,
@@ -109,7 +107,11 @@ export default function UserContent({ employee }: any) {
             </Avatar>
           </div>
           <div className="w-full flex justify-end gap-4">
-            <UpdateEmployeeButton employeeData={employee[0]} />
+            <UpdateEmployeeButton
+              employeeData={employee[0]}
+              branchesData={branches}
+              rolesData={roles}
+            />
             <DeleteEmployeeButton employeeData={employee[0]} />
           </div>
           <div className="w-full flex justify-start gap-4">

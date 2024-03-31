@@ -4,14 +4,20 @@
 import { useEffect } from "react";
 import Loading from "./skeleton";
 import UserContent from "./user-content";
-import { useEmployees } from "@/hooks/useEmployees";
 import createSupabaseBrowserClient from "@/lib/supabase/client";
+import { useEmployees } from "@/hooks/useEmployees";
+import { useBranches } from "@/hooks/useBranches";
+import { useRoles } from "@/hooks/useRoles";
 
 export default function User({ params }: { params: any }) {
   const { getEmployee, currentEmployeeData } = useEmployees();
+  const { getBranches, allBranchesData } = useBranches();
+  const { getRoles, allRolesData } = useRoles();
 
   useEffect(() => {
     getEmployee(params.id, 2000);
+    getBranches();
+    getRoles();
   }, []);
 
   useEffect(() => {
@@ -37,7 +43,7 @@ export default function User({ params }: { params: any }) {
       {currentEmployeeData.length === 0 ? (
         <Loading />
       ) : (
-        <UserContent params={params} employee={currentEmployeeData} />
+        <UserContent params={params} employee={currentEmployeeData} branches={allBranchesData} roles={allRolesData} />
       )}
     </div>
   );

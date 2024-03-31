@@ -7,9 +7,13 @@ import { useEmployees } from "@/hooks/useEmployees";
 import createSupabaseBrowserClient from "@/lib/supabase/client";
 import { toast as sonner } from "sonner";
 import { toast } from "@/components/ui/use-toast";
+import { useBranches } from "@/hooks/useBranches";
+import { useRoles } from "@/hooks/useRoles";
 
 export default function Management() {
   const { getEmployees, allEmployeesData } = useEmployees();
+  const { getBranches, allBranchesData } = useBranches();
+  const { getRoles, allRolesData } = useRoles();
 
   useEffect(() => {
     const { error } = getEmployees();
@@ -20,6 +24,9 @@ export default function Management() {
         description: error.message,
       });
     }
+
+    getBranches();
+    getRoles();
   }, []);
 
   useEffect(() => {
@@ -48,7 +55,7 @@ export default function Management() {
       {allEmployeesData.length === 0 ? (
         <Loading />
       ) : (
-        <ManagementContent dataEmployees={allEmployeesData} />
+        <ManagementContent dataEmployees={allEmployeesData} branches={allBranchesData} roles={allRolesData} />
       )}
     </div>
   );

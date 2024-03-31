@@ -6,8 +6,12 @@ import { EmployeeDisplay } from "@/types";
 
 export default function ManagementContent({
   dataEmployees,
+  branches,
+  roles,
 }: {
-  dataEmployees: EmployeeDisplay[];
+  dataEmployees: EmployeeDisplay[],
+  branches: any,
+  roles: any
 }) {
   return (
     <Tabs
@@ -31,7 +35,7 @@ export default function ManagementContent({
         </TabsList>
       </div>
       <TabsContent value="system" className="w-full h-full ">
-        <DataTable columns={columns} data={dataEmployees} />
+        <DataTable columns={columns} data={dataEmployees} branchesData={branches} rolesData={roles} />
       </TabsContent>
       <TabsContent value="mobile" className="w-full h-full bg-red-300">
         {/* <DataTable columns={columns} data={data} /> */}

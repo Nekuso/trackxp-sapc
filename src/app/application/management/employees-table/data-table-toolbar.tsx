@@ -6,19 +6,36 @@ import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { branches, roles, statuses } from "./columns";
+import { statuses } from "./columns";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import AddEmployeeButton from "./add-employee/add-employee-dialog";
 import { toast } from "sonner";
+import { PersonIcon, HomeIcon } from "@radix-ui/react-icons";
+import { useEffect, useState } from "react";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
+  branches: any;
+  roles: any;
 }
 
 export function DataTableToolbar<TData>({
   table,
+  branches,
+  roles,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
+
+  const branchesData = branches.map((branch: any) => ({
+    value: branch?.branch_name,
+    label: branch?.branch_name,
+    icon: HomeIcon,
+  }));
+  const rolesData = roles.map((role: any) => ({
+    value: role?.role,
+    label: role?.role,
+    icon: PersonIcon,
+  }));
 
   return (
     <div className="flex w-full items-center justify-between">
@@ -42,14 +59,14 @@ export function DataTableToolbar<TData>({
           <DataTableFacetedFilter
             column={table.getColumn("roles")}
             title="Role"
-            options={roles}
+            options={rolesData}
           />
         )}
         {table.getColumn("branch") && (
           <DataTableFacetedFilter
             column={table.getColumn("branch")}
             title="Branch"
-            options={branches}
+            options={branchesData}
           />
         )}
         {isFiltered && (

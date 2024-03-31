@@ -142,7 +142,7 @@ export const columns: ColumnDef<EmployeeDisplay>[] = [
       return (
         <div className="flex place-items-center gap-4 z-0">
           <Avatar className="w-10 h-10 cursor-pointer z-0">
-            <AvatarImage src={item.img_url} alt={item.id} />
+            <AvatarImage src={item.image_url} alt={item.id} />
             <AvatarFallback className="bg-darkBg">
               {`${item.first_name[0]}${item.last_name[0]}`}
             </AvatarFallback>
