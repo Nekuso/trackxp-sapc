@@ -24,8 +24,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
+import { toast as sonner } from "sonner";
 import ImageInput from "./image-input";
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
 import { useEmployees } from "@/hooks/useEmployees";
@@ -83,24 +84,25 @@ export default function EmployeeForm({ setDialogOpen, employee }: any) {
 
       const { error } = JSON.parse(result);
       if (error?.message) {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: error.message,
+        sonner("Errpr", {
+          description: `${error.message}`,
         });
-        console.log(error);
         return;
       }
 
-      toast({
-        description: (
-          <pre className="mt-2 min-w-[340px] max-width-[840px] rounded-md border border-lightBorder bg-slate-950 p-4">
-            <code className="text-white">Successfully Updated!</code>
-            {/* <code className="text-white">
-              {JSON.stringify(result, null, 2)}
-            </code> */}
-          </pre>
-        ),
+      // toast({
+      //   description: (
+      //     <pre className="mt-2 min-w-[340px] max-width-[840px] rounded-md border border-lightBorder bg-slate-950 p-4">
+      //       <code className="text-white">Successfully Updated!</code>
+      //       {/* <code className="text-white">
+      //         {JSON.stringify(result, null, 2)}
+      //       </code> */}
+      //     </pre>
+      //   ),
+      // });
+
+      sonner("Success", {
+        description: `${data.first_name} ${data.last_name} was updated!`,
       });
       setDialogOpen(false);
     });

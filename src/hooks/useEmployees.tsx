@@ -10,7 +10,6 @@ export const useEmployees: any = () => {
   );
   const [currentEmployeeData, setCurrentEmployeeData] = useState<any>([]);
 
-
   const createEmployee = async (props: any) => {
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
