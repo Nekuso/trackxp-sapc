@@ -53,7 +53,7 @@ export default function ProfileButton() {
         </DropdownMenuGroup>
         <DropdownMenuSeparator className="bg-lightBorder" />
         <DropdownMenuGroup className="py-2">
-          <DropdownMenuItem className="rounded-lg cursor-pointer hover:bg-applicationPrimary hover:text-red-500">
+          <DropdownMenuItem className="rounded-lg cursor-pointer hover:bg-red-500 hover:text-white">
             <LogOut className="mr-2 h-7 w-4" />
             <span>Log out</span>
           </DropdownMenuItem>

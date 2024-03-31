@@ -2,12 +2,17 @@ import { DataTable } from "./employees-table/data-table";
 import { columns } from "./employees-table/columns";
 import data from "./employees-table/data/data.json";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useEmployees } from "@/hooks/useEmployees";
+import { EmployeeDisplay } from "@/types";
 
-export default async function ManagementContent() {
-  const { getEmployees } = useEmployees();
-  const dataEmployees = await getEmployees();
-
+export default function ManagementContent({
+  dataEmployees,
+  branches,
+  roles,
+}: {
+  dataEmployees: EmployeeDisplay[],
+  branches: any,
+  roles: any
+}) {
   return (
     <Tabs
       defaultValue="system"
@@ -30,7 +35,7 @@ export default async function ManagementContent() {
         </TabsList>
       </div>
       <TabsContent value="system" className="w-full h-full ">
-        <DataTable columns={columns} data={dataEmployees} />
+        <DataTable columns={columns} data={dataEmployees} branchesData={branches} rolesData={roles} />
       </TabsContent>
       <TabsContent value="mobile" className="w-full h-full bg-red-300">
         {/* <DataTable columns={columns} data={data} /> */}

@@ -9,7 +9,7 @@ import {
 import { FormControl } from "@/components/ui/form";
 
 export default function SelectDemo({ data }: { data: any }) {
-  // let { data: branches, error } = await supabase.from("branches").select("*");
+
   const branchesData = [
     {
       id: 1,

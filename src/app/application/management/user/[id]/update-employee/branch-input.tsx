@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Select,
   SelectContent,
@@ -7,32 +8,32 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { FormControl } from "@/components/ui/form";
+import { useBranches } from "@/hooks/useBranches";
 
-export default function SelectDemo({ data }: { data: any }) {
-  // let { data: branches, error } = await supabase.from("branches").select("*");
-  const branchesData = [
-    {
-      id: 1,
-      branch_name: "North Road",
-      branch_location: "Sta. Rosa St, Dumaguete, 6200 Negros Oriental",
-    },
-    {
-      id: 2,
-      branch_name: "Sta. Rosa St.",
-      branch_location:
-        "North Road, National Highway, Buñao Rd, Dumaguete, Negros Oriental",
-    },
-  ];
+export default function SelectDemo({ data, branchesData }: any) {
+  // const branchesData = [
+  //   {
+  //     id: 1,
+  //     branch_name: "North Road",
+  //     branch_location: "Sta. Rosa St, Dumaguete, 6200 Negros Oriental",
+  //   },
+  //   {
+  //     id: 2,
+  //     branch_name: "Sta. Rosa St.",
+  //     branch_location:
+  //       "North Road, National Highway, Buñao Rd, Dumaguete, Negros Oriental",
+  //   },
+  // ];
 
   function findBranchById(idString: any) {
     const id = parseInt(idString);
 
-    const foundItem = branchesData.find((item) => item.id === id);
+    const foundItem = branchesData.find((item: any) => item.id === id);
 
     if (foundItem) {
       return foundItem.branch_name;
     } else {
-      return "Role not found";
+      return "No branches found";
     }
   }
 
@@ -53,7 +54,7 @@ export default function SelectDemo({ data }: { data: any }) {
       </FormControl>
       <SelectContent className="rounded-lg bg-lightComponentBg border-slate-600/50 text-white">
         <SelectGroup>
-          {branchesData.map((branch) => (
+          {branchesData.map((branch: any) => (
             <SelectItem key={branch.id} value={branch.id.toString()}>
               {branch.branch_name}
             </SelectItem>

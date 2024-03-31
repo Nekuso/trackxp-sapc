@@ -29,11 +29,15 @@ import { DataTableToolbar } from "./data-table-toolbar";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  branchesData: any;
+  rolesData: any;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  branchesData,
+  rolesData,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -68,7 +72,7 @@ export function DataTable<TData, TValue>({
   return (
     <div className="w-full h-full flex flex-col justify-between gap-3 bg-darkComponentBg border border-lightBorder p-4 rounded-2xl">
       <div className="w-full flex justify-between ">
-        <DataTableToolbar table={table} />
+        <DataTableToolbar table={table} branches={branchesData} roles={rolesData}  />
       </div>
       <div className="w-full h-full overflow-scroll-y">
         <div className="w-full min-h-[100%] rounded-2xl overflow-hidden">

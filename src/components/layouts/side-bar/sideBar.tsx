@@ -1,6 +1,6 @@
 "use client";
 
-import logoutIcon from "@/icons/logout-icon.svg";
+import { LogOut } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import trackxpIcon from "@/icons/trackxp-icon.svg";
@@ -86,18 +86,14 @@ export default function SideBar() {
             onClick={() => {
               onSignOut();
             }}
-            className="cursor-pointer group relative w-auto flex place-items-center justify-center bg-transparent hover:bg-applicationPrimary text-sm font-medium p-4 rounded-full hover:shadow-sm hover:shadow-applicationPrimary transition-all gap-4"
+            className="cursor-pointer group relative w-auto flex place-items-center justify-center bg-transparent hover:bg-red-500 text-sm font-medium p-4 rounded-full hover:shadow-sm primary-glow transition-all gap-4"
           >
-            <Image
-              src={logoutIcon}
-              alt="trackxp icon"
-              className={cn("w-6 ", { hidden: isPending })}
-            />
+            <LogOut className={cn("w-6 ", { hidden: isPending })} />
             <AiOutlineLoading3Quarters
               className={cn(" animate-spin w-4 h-5", { hidden: !isPending })}
             />
-            <span className="invisible group-hover:visible opacity-0 duration-500 group-hover:opacity-100 absolute left-full group-hover:left-[150%] transition-all text-sm bg-applicationPrimary rounded-lg px-4 py-2 z-50">
-              Signout
+            <span className="w-[100px] text-center invisible group-hover:visible opacity-0 duration-500 group-hover:opacity-100 absolute left-full group-hover:left-[150%] transition-all text-sm bg-red-500 rounded-lg px-4 py-2 z-50">
+              Log out
             </span>
           </div>
         </div>
