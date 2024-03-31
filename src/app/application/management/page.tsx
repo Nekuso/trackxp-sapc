@@ -20,7 +20,7 @@ export default function Management() {
     if (error?.message) {
       toast({
         variant: "destructive",
-        title: "Error",
+        title: "⚠️ Error",
         description: error.message,
       });
     }
@@ -38,7 +38,7 @@ export default function Management() {
         { event: "*", schema: "public", table: "employees" },
         (payload: any) => {
           getEmployees();
-          sonner("Notification", {
+          sonner("🔔 Notification", {
             description: `${payload.new.first_name} ${payload.new.last_name} has been updated`,
           });
         }
@@ -51,11 +51,15 @@ export default function Management() {
   }, []);
 
   return (
-    <div className="w-full h-full flex justify-center place-items-center no-scrollbar">
+    <div className="w-full flex justify-center py-3.5 no-scrollbar ">
       {allEmployeesData.length === 0 ? (
         <Loading />
       ) : (
-        <ManagementContent dataEmployees={allEmployeesData} branches={allBranchesData} roles={allRolesData} />
+        <ManagementContent
+          dataEmployees={allEmployeesData}
+          branches={allBranchesData}
+          roles={allRolesData}
+        />
       )}
     </div>
   );

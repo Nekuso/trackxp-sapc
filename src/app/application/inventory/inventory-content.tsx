@@ -1,17 +1,13 @@
-import { DataTable } from "./employees-table/data-table";
-import { columns } from "./employees-table/columns";
-import data from "./employees-table/data/data.json";
+// import { DataTable } from "./employees-table/data-table";
+// import { columns } from "./employees-table/columns";
+// import data from "./employees-table/data/data.json";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EmployeeDisplay } from "@/types";
 
-export default function ManagementContent({
-  dataEmployees,
-  branches,
-  roles,
+export default function InventoryContent({
+  dataInvetory,
 }: {
-  dataEmployees: EmployeeDisplay[];
-  branches: any;
-  roles: any;
+  dataInvetory: EmployeeDisplay[];
 }) {
   return (
     <Tabs
@@ -24,23 +20,23 @@ export default function ManagementContent({
             value="system"
             className="data-[state=active]:bg-applicationPrimary  data-[state=active]:text-white rounded-md px-4 py-2 transition-all duration-300"
           >
-            System Users
+            Products
           </TabsTrigger>
           <TabsTrigger
             value="mobile"
             className="data-[state=active]:bg-applicationPrimary data-[state=active]:text-white rounded-md px-4 py-2 transition-all duration-300"
           >
-            Mobile Users
+            Parts
           </TabsTrigger>
         </TabsList>
       </div>
       <TabsContent value="system" className="w-full h-full ">
-        <DataTable
+        {/* <DataTable
           columns={columns}
           data={dataEmployees}
           branchesData={branches}
           rolesData={roles}
-        />
+        /> */}
       </TabsContent>
       <TabsContent
         value="mobile"

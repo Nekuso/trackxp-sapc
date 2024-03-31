@@ -22,12 +22,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
+import { toast as sonner } from "sonner";
 import ImageInput from "./image-input";
 import { useTransition } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
 import { useEmployees } from "@/hooks/useEmployees";
-
 
 export const employeeSchema = z.object({
   first_name: z.string().min(1, { message: "First name is required" }),
@@ -71,20 +71,22 @@ export default function EmployeeForm({ setDialogOpen }: any) {
       if (error?.message) {
         toast({
           variant: "destructive",
-          title: "Error",
+          title: "⚠️Error",
           description: error.message,
         });
-        console.log(error);
         return;
       }
 
-      toast({
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md border border-lightBorder bg-slate-950 p-4">
-            <code className="text-white">Successfully Registered!</code>
-            {/* <code className="text-white">{JSON.stringify(data, null, 2)}</code> */}
-          </pre>
-        ),
+      // toast({
+      //   description: (
+      //     <pre className="mt-2 w-[340px] rounded-md border border-lightBorder bg-slate-950 p-4">
+      //       <code className="text-white">Successfully Registered!</code>
+      //       {/* <code className="text-white">{JSON.stringify(data, null, 2)}</code> */}
+      //     </pre>
+      //   ),
+      // });
+      sonner("✨Success", {
+        description: `User Registered!`,
       });
       setDialogOpen(false);
     });

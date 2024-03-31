@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/table";
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -48,7 +49,7 @@ export function DataTable<TData, TValue>({
     columns,
     initialState: {
       pagination: {
-        pageSize: 9,
+        pageSize: 13,
       },
     },
     state: {
@@ -70,14 +71,18 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="w-full h-full flex flex-col justify-between gap-3 bg-darkComponentBg border border-lightBorder p-4 rounded-2xl">
+    <div className="w-full h-[725px] 2xl:h-[800px] flex flex-col justify-between gap-3 bg-darkComponentBg border border-lightBorder p-4 rounded-2xl">
       <div className="w-full flex justify-between ">
-        <DataTableToolbar table={table} branches={branchesData} roles={rolesData}  />
+        <DataTableToolbar
+          table={table}
+          branches={branchesData}
+          roles={rolesData}
+        />
       </div>
       <div className="w-full h-full overflow-scroll-y">
-        <div className="w-full min-h-[100%] rounded-2xl overflow-hidden">
+        <ScrollArea className="w-full h-[580px] 2xl:h-[650px] rounded-2xl relative">
           <Table>
-            <TableHeader className="bg-darkComponentBg border-none">
+            <TableHeader className="bg-darkComponentBg border-none sticky top-0 z-[5]">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow
                   key={headerGroup.id}
@@ -128,7 +133,7 @@ export function DataTable<TData, TValue>({
               )}
             </TableBody>
           </Table>
-        </div>
+        </ScrollArea>
       </div>
       <DataTablePagination table={table} />
     </div>

@@ -39,7 +39,7 @@ export default function User({ params }: { params: any }) {
   }, []);
 
   return (
-    <div className="w-full h-full flex justify-center place-items-center">
+    <div className="w-full flex justify-center place-items-center">
       {currentEmployeeData.length === 0 ? (
         <Loading />
       ) : (
