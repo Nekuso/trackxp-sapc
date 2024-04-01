@@ -42,3 +42,24 @@ export type roles = {
   id: number;
   role: string;
 };
+
+// export type requests = {
+//   id: number;
+//   department_id: number;
+//   request_type: string;
+//   requested_stock: [];
+//   status_entries: [];
+//   {id:number, status:string, created_at: string}
+//   {id:number, status:string, created_at: string}
+//   {id:number, status:string, created_at: string},
+//   {id:number, status:string, created_at: string},
+//   delivery_date: string;
+// };
+
+
+// pending
+// approved
+// packing
+// Out for delivery / Ready for pick-up
+// completed
+
