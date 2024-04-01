@@ -1,42 +1,68 @@
-// import { DataTable } from "./employees-table/data-table";
-// import { columns } from "./employees-table/columns";
-// import data from "./employees-table/data/data.json";
+import { DataTable } from "./inventory-table/data-table";
+import { columns } from "./inventory-table/columns";
+import data from "./inventory-table/data/data.json";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { EmployeeDisplay } from "@/types";
+import { allProductsDisplay } from "@/types";
+import { HomeIcon } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { setBranchesData } from "@/redux/slices/branchesSlice";
 
 export default function InventoryContent({
-  dataInvetory,
+  dataProducts,
+  branches,
+  uoms,
 }: {
-  dataInvetory: EmployeeDisplay[];
+  dataProducts: allProductsDisplay[];
+  branches: any;
+  uoms: any;
 }) {
+  const branchesData = branches.map((branch: any) => ({
+    value: branch?.branch_name,
+    label: branch?.branch_name,
+    icon: HomeIcon,
+  }));
+  const uomsData = uoms.map((uom: any) => ({
+    value: uom?.unit_name,
+    label: uom?.unit_name,
+    icon: HomeIcon,
+  }));
+
+  const dispatch = useDispatch();
+  dispatch(setBranchesData(branchesData));
+  console.log(useSelector((state: any) => state.branches));
+
   return (
     <Tabs
-      defaultValue="system"
+      defaultValue="products"
       className="w-full flex max-w-[1840px] flex-col justify-center place-items-center gap-2"
     >
       <div className="w-full">
         <TabsList className="h-fit bg-lightBorder rounded-lg gap-4">
           <TabsTrigger
-            value="system"
+            value="products"
             className="data-[state=active]:bg-applicationPrimary  data-[state=active]:text-white rounded-md px-4 py-2 transition-all duration-300"
           >
             Products
           </TabsTrigger>
           <TabsTrigger
-            value="mobile"
+            value="parts"
             className="data-[state=active]:bg-applicationPrimary data-[state=active]:text-white rounded-md px-4 py-2 transition-all duration-300"
           >
             Parts
           </TabsTrigger>
+          <TabsTrigger
+            value="services"
+            className="data-[state=active]:bg-applicationPrimary data-[state=active]:text-white rounded-md px-4 py-2 transition-all duration-300"
+          >
+            Services
+          </TabsTrigger>
         </TabsList>
       </div>
-      <TabsContent value="system" className="w-full h-full ">
-        {/* <DataTable
-          columns={columns}
-          data={dataEmployees}
-          branchesData={branches}
-          rolesData={roles}
-        /> */}
+      <TabsContent value="products" className="w-full h-full ">
+        <DataTable columns={columns} data={dataProducts}
+          branchesData={branchesData}
+          uomsData={uomsData}
+        />
       </TabsContent>
       <TabsContent
         value="mobile"

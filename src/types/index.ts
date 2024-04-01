@@ -43,23 +43,46 @@ export type roles = {
   role: string;
 };
 
-// export type requests = {
-//   id: number;
-//   department_id: number;
-//   request_type: string;
-//   requested_stock: [];
-//   status_entries: [];
-//   {id:number, status:string, created_at: string}
-//   {id:number, status:string, created_at: string}
-//   {id:number, status:string, created_at: string},
-//   {id:number, status:string, created_at: string},
-//   delivery_date: string;
-// };
-
-
-// pending
-// approved
-// packing
-// Out for delivery / Ready for pick-up
-// completed
-
+export type allInventoryDisplay = {
+  id: number;
+  branches: {
+    id: number;
+    branch_name: string;
+    branch_location: string;
+  };
+  products: {
+    id: number;
+    name: string;
+    description: string;
+    image_url: string;
+    quantity: number;
+    uom: string;
+    price: number;
+    barcode: string;
+    status: string;
+    created_at: string;
+  }[];
+};
+export type allProductsDisplay = {
+  id: number;
+  name: string;
+  description: string;
+  image_url: string;
+  stock_quantity: number;
+  uoms: {
+    id: number;
+    unit_name: string;
+  };
+  price: number;
+  barcode: string;
+  status: string;
+  inventory: {
+    id: number;
+    branches: {
+      id: number;
+      branch_name: string;
+      branch_location: string;
+    };
+  };
+  created_at: string;
+};

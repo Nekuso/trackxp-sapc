@@ -29,6 +29,7 @@ export const useInventory: any = () => {
         uom,
         price,
         barcode,
+        status,
         created_at
       )
     `);
@@ -45,16 +46,34 @@ export const useInventory: any = () => {
       .from("inventory")
       .select(
         `
-      id,
-      role
-    `
+        id,
+        branches(
+          id,
+          branch_name,
+          branch_location
+        ),
+        products(
+          id,
+          name,
+          description,
+          image_url,
+          quantity,
+          uom,
+          price,
+          barcode,
+          status,
+          created_at
+        )
+      `
       )
       .eq("id", id);
     if (error) return error;
+    console.log(data);
 
     await new Promise((resolve) => setTimeout(resolve, duration));
     return setCurrentInventoryData(data);
   };
+  
 
   return {
     // states

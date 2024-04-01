@@ -6,13 +6,17 @@ import InventoryContent from "./inventory-content";
 import createSupabaseBrowserClient from "@/lib/supabase/client";
 import { toast as sonner } from "sonner";
 import { toast } from "@/components/ui/use-toast";
-import { useInventory } from "@/hooks/useInventory";
+import { useProducts } from "@/hooks/useProducts";
+import { useBranches } from "@/hooks/useBranches";
+import { useUOMS } from "@/hooks/useUOMS";
 
 export default function Inventory() {
-  const { getAllInventory, allInventoryData } = useInventory();
+  const { getProducts, productsData } = useProducts();
+  const { getBranches, allBranchesData } = useBranches();
+  const { getUOMS, allUOMSData } = useUOMS();
 
   useEffect(() => {
-    const { error } = getAllInventory();
+    const { error } = getProducts();
     if (error?.message) {
       toast({
         variant: "destructive",
@@ -22,6 +26,8 @@ export default function Inventory() {
     }
 
     console.log("this works");
+    getBranches();
+    getUOMS();
   }, []);
 
   useEffect(() => {
@@ -46,11 +52,15 @@ export default function Inventory() {
 
   return (
     <div className="w-full flex justify-center py-3.5 no-scrollbar ">
-      {/* {allInventoryData.length === 0 ? (
+      {productsData.length === 0 ? (
         <Loading />
       ) : (
-        <InventoryContent dataInvetory={allInventoryData} />
-      )} */}
+        <InventoryContent
+          dataProducts={productsData}
+          branches={allBranchesData}
+          uoms={allUOMSData}
+        />
+      )}
     </div>
   );
 }

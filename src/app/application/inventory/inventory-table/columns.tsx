@@ -1,5 +1,4 @@
 "use client";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,7 +12,6 @@ import {
   CheckCircledIcon,
   CircleIcon,
   QuestionMarkCircledIcon,
-  StopwatchIcon,
   ArrowDownIcon,
   ArrowUpIcon,
   CaretSortIcon,
@@ -21,7 +19,7 @@ import {
   HomeIcon,
 } from "@radix-ui/react-icons";
 import { FaEye } from "react-icons/fa";
-import { EmployeeDisplay } from "@/types";
+import { allProductsDisplay } from "@/types";
 import Link from "next/link";
 
 export const statuses = [
@@ -31,51 +29,47 @@ export const statuses = [
     icon: QuestionMarkCircledIcon,
   },
   {
-    value: "In Progress",
-    label: "In Progress",
+    value: "Low Stock",
+    label: "Low Stock",
     icon: CircleIcon,
   },
   {
-    value: "Unavailable",
-    label: "Unavailable",
-    icon: StopwatchIcon,
-  },
-  {
-    value: "Inactive",
-    label: "Inactive",
+    value: "Out Of Stock",
+    label: "Out Of Stock",
     icon: CheckCircledIcon,
   },
 ];
-export const roles = [
+
+export const uoms = [
   {
-    value: "Administrator",
-    label: "Administrator",
+    value: "PC",
+    label: "PC",
     icon: PersonIcon,
   },
   {
-    value: "Manager",
-    label: "Manager",
-    icon: PersonIcon,
+    value: "BOTTLE",
+    label: "BOTTLE",
+    icon: HomeIcon,
   },
   {
-    value: "Staff",
-    label: "Staff",
-    icon: PersonIcon,
+    value: "BOX",
+    label: "BOX",
+    icon: HomeIcon,
   },
   {
-    value: "Cashier",
-    label: "Cashier",
-    icon: PersonIcon,
+    value: "SET",
+    label: "SET",
+    icon: HomeIcon,
   },
   {
-    value: "Supervisor",
-    label: "Supervisor",
-    icon: PersonIcon,
+    value: "LTR",
+    label: "LTR",
+    icon: HomeIcon,
   },
   {
-    value: "Mechanic",
-    label: "Mechanic",
-    icon: PersonIcon,
+    value: "CAN",
+    label: "CAN",
+    icon: HomeIcon,
   },
 ];
 
@@ -92,10 +86,10 @@ export const branches = [
   },
 ];
 
-export const columns: ColumnDef<EmployeeDisplay>[] = [
+export const columns: ColumnDef<allProductsDisplay>[] = [
   {
-    id: "name",
-    accessorKey: "first_name",
+    id: "barcode",
+    accessorKey: "barcode",
     header: ({ column }) => {
       return (
         <DropdownMenu>
@@ -105,69 +99,7 @@ export const columns: ColumnDef<EmployeeDisplay>[] = [
               size="sm"
               className="-ml-3 h-8 data-[state=open]:bg-applicationPrimary data-[state=open]:text-white hover:bg-slate-50/40 hover:text-white"
             >
-              <span>Name</span>
-              {column.getIsSorted() === "desc" ? (
-                <ArrowDownIcon className="ml-2 h-4 w-4" />
-              ) : column.getIsSorted() === "asc" ? (
-                <ArrowUpIcon className="ml-2 h-4 w-4" />
-              ) : (
-                <CaretSortIcon className="ml-2 h-4 w-4" />
-              )}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="start"
-            className="bg-darkComponentBg shadow-2xl border-darkGray border-none"
-          >
-            <DropdownMenuItem
-              onClick={() => column.toggleSorting(false)}
-              className="hover:bg-applicationPrimary  text-white group"
-            >
-              <ArrowUpIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70 group-hover:text-white" />
-              Asc
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => column.toggleSorting(true)}
-              className="hover:bg-applicationPrimary text-white group"
-            >
-              <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70 group-hover:text-white" />
-              Desc
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-    cell: ({ row }) => {
-      const item = row.original;
-      return (
-        <div className="flex place-items-center gap-4 z-0">
-          <Avatar className="w-10 h-10 cursor-pointer z-0">
-            <AvatarImage src={item.image_url} alt={item.id} />
-            <AvatarFallback className="bg-darkBg">
-              {`${item.first_name[0]}${item.last_name[0]}`}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col">
-            <span className="text-sm font-semibold">
-              {item.first_name} {item.last_name}
-            </span>
-          </div>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="-ml-3 h-8 data-[state=open]:bg-applicationPrimary data-[state=open]:text-white hover:bg-slate-50/40 hover:text-white"
-            >
-              <span>Email</span>
+              <span>Barcode</span>
               {column.getIsSorted() === "desc" ? (
                 <ArrowDownIcon className="ml-2 h-4 w-4" />
               ) : column.getIsSorted() === "asc" ? (
@@ -201,17 +133,58 @@ export const columns: ColumnDef<EmployeeDisplay>[] = [
     },
   },
   {
-    accessorKey: "contact_number",
-    header: "Contact Number",
+    id: "stock_quantity",
+    accessorKey: "stock_quantity",
+    header: ({ column }) => {
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="-ml-3 h-8 data-[state=open]:bg-applicationPrimary data-[state=open]:text-white hover:bg-slate-50/40 hover:text-white"
+            >
+              <span>Stock</span>
+              {column.getIsSorted() === "desc" ? (
+                <ArrowDownIcon className="ml-2 h-4 w-4" />
+              ) : column.getIsSorted() === "asc" ? (
+                <ArrowUpIcon className="ml-2 h-4 w-4" />
+              ) : (
+                <CaretSortIcon className="ml-2 h-4 w-4" />
+              )}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="start"
+            className="bg-darkComponentBg shadow-2xl border-darkGray border-none"
+          >
+            <DropdownMenuItem
+              onClick={() => column.toggleSorting(false)}
+              className="hover:bg-applicationPrimary  text-white group"
+            >
+              <ArrowUpIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70 group-hover:text-white" />
+              Asc
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => column.toggleSorting(true)}
+              className="hover:bg-applicationPrimary text-white group"
+            >
+              <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70 group-hover:text-white" />
+              Desc
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
   },
   {
-    id: "branch",
-    accessorKey: "branches",
-    accessorFn: (row) => row.branches.branch_name,
-    header: "Branch",
+    id: "uom",
+    accessorKey: "uom",
+    accessorFn: (row) => row.uoms.unit_name,
+    header: "Unit",
     cell: ({ row }) => {
-      const item = branches.find(
-        (item) => item.value === row.original.branches.branch_name
+      const item = uoms.find(
+        (item) => item.value === row.original.uoms.unit_name
       );
 
       if (!item) {
@@ -223,18 +196,35 @@ export const columns: ColumnDef<EmployeeDisplay>[] = [
       return value.includes(row.getValue(id));
     },
   },
-  {
-    accessorKey: "roles",
-    accessorFn: (row) => row.roles.role,
-    header: "Role",
-    cell: ({ row }) => {
-      const role = roles.find((role) => role.value === row.original.roles.role);
 
-      if (!role) {
+  {
+    id: "name",
+    accessorKey: "name",
+    header: "Product",
+  },
+  {
+    accessorKey: "description",
+    header: "Description",
+    cell: ({ row }) => {
+      return (
+        <p className="max-w-[300px] truncate">{row.getValue("description")}</p>
+      );
+    },
+  },
+  {
+    id: "branch",
+    accessorKey: "branches",
+    accessorFn: (row) => row.inventory.branches.branch_name,
+    header: "Branch",
+    cell: ({ row }) => {
+      const item = branches.find(
+        (item) => item.value === row.original.inventory.branches.branch_name
+      );
+
+      if (!item) {
         return null;
       }
-
-      return role.label;
+      return item.label;
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -302,7 +292,7 @@ export const columns: ColumnDef<EmployeeDisplay>[] = [
             {item.value}
           </p>
         );
-      } else if (item.value === "In Progress") {
+      } else if (item.value === "Low Stock") {
         return (
           <p
             className={
