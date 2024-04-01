@@ -65,8 +65,8 @@ const widgets = [
 
 export default function Dashboard() {
   return (
-    <div className="w-full h-full flex justify-center place-items-center overflow-y-scroll no-scrollbar">
-      <div className="w-full h-full max-w-[1840px] max-h-[900px] flex justify-between gap-6">
+    <div className="w-full h-[805px] 2xl:h-[882px] flex justify-center place-items-center py-4">
+      <div className="w-full h-full max-w-[1840px] flex justify-between gap-6">
         <div className="w-full h-full flex flex-col justify-between gap-6">
           <div className="w-full h-[30%] max-h-[35%] flex justify-between gap-6">
             {widgets.map((widget, i) => (

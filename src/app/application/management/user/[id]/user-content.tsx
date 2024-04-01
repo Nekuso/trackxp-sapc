@@ -89,7 +89,7 @@ export default function UserContent({ employee, branches, roles }: any) {
   ];
 
   return (
-    <div className="w-full h-full flex max-w-[1840px] max-h-[900px] justify-center place-items-center gap-7">
+    <div className="w-full h-[805px] 2xl:h-[882px] flex max-w-[1840px] justify-center place-items-center gap-7 py-4">
       <div className="w-full h-full flex flex-col gap-7 rounded-xl">
         <div className="w-full p-6 bg-darkComponentBg flex flex-col gap-2 2xl:gap-4 rounded-xl shadow-lg border border-lightBorder">
           <div className="w-full h-[170px] 2xl:h-[210px] bg-black rounded-xl relative">

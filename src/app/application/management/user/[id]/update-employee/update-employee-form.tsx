@@ -89,24 +89,15 @@ export default function EmployeeForm({
 
       const { error } = JSON.parse(result);
       if (error?.message) {
-        sonner("Errpr", {
-          description: `${error.message}`,
+        toast({
+          variant: "destructive",
+          title: "⚠️ Error",
+          description: error.message,
         });
         return;
       }
 
-      // toast({
-      //   description: (
-      //     <pre className="mt-2 min-w-[340px] max-width-[840px] rounded-md border border-lightBorder bg-slate-950 p-4">
-      //       <code className="text-white">Successfully Updated!</code>
-      //       {/* <code className="text-white">
-      //         {JSON.stringify(result, null, 2)}
-      //       </code> */}
-      //     </pre>
-      //   ),
-      // });
-
-      sonner("Success", {
+      sonner("✨ Success", {
         description: `${data.first_name} ${data.last_name} was updated!`,
       });
       setDialogOpen(false);

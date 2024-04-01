@@ -77,10 +77,10 @@ export default function NotificationButton() {
           ></Image>
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-[350px] bg-darkComponentBg border border-lightBorder shadow-2xl text-white px-2 mr-14">
+      <DropdownMenuContent className="w-[350px] bg-darkComponentBg border border-lightBorder shadow-2xl text-white px-2 mr-[6rem]">
         <DropdownMenuLabel className="py-2">Notifications</DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-lightBorder" />
-        <DropdownMenuGroup className="py-2 gap-4 flex flex-col">
+        <DropdownMenuGroup className="py-2 gap-1 flex flex-col">
           {notificationsData.map((notification) => (
             <DropdownMenuItem
               className="rounded-lg cursor-pointer hover:bg-applicationPrimary hover:shadow-2xl hover:scale-105 transition-all duration-100 gap-2"

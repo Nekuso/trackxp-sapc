@@ -50,13 +50,10 @@ export default function EmployeeForm({ setDialogIsOpen }: any) {
       const result = await updateEmployeeStatus(data, 4000);
       const { error } = JSON.parse(result);
       if (error?.message) {
-        // toast({
-        //   variant: "destructive",
-        //   title: "Error",
-        //   description: error.message,
-        // });
-        sonner("Errpr", {
-          description: `${error.message}`,
+        toast({
+          variant: "destructive",
+          title: "⚠️ Error",
+          description: error.message,
         });
         return;
       }
@@ -71,7 +68,7 @@ export default function EmployeeForm({ setDialogIsOpen }: any) {
       //     </pre>
       //   ),
       // });
-      sonner("Success", {
+      sonner("✨ Success", {
         description: `Status updated!`,
       });
       setDialogIsOpen(false);

@@ -34,14 +34,14 @@ export default async function RootLayout({
     <html lang="en">
       <body className={cn("font-montserrat", montserrat.variable)}>
         <Providers>
-          <div className="w-full h-screen hidden bg-red-400 max-lg:flex justify-center place-items-center">
+          <div className="w-full min-h-screen hidden bg-red-400 max-lg:flex justify-center place-items-center">
             <h1 className="text-2xl">
               Please open the app on a bigger screen or Computer
             </h1>
           </div>
-          <div className="relative flex place-items-center justify-center w-full h-screen bg-darkBg px-8 py-5 gap-10 max-lg:hidden overflow-y-scroll">
+          <div className="relative flex place-items-start justify-center w-full min-h-screen h-screen bg-darkBg px-8 gap-10 max-lg:hidden overflow-y-scroll overflow-x-hidden no-scrollbar">
             <SideBar />
-            <div className="flex flex-col gap-5 justify-between w-full h-full relative">
+            <div className="flex flex-col justify-start place-items-start w-full min-h-full h-full relative">
               <TopBar data={data} />
               {children}
             </div>
