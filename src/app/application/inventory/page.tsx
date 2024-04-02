@@ -9,11 +9,31 @@ import { toast } from "@/components/ui/use-toast";
 import { useProducts } from "@/hooks/useProducts";
 import { useBranches } from "@/hooks/useBranches";
 import { useUOMS } from "@/hooks/useUOMS";
+import { HomeIcon } from "lucide-react";
+import { PiRulerBold } from "react-icons/pi";
+import { setBranchesData } from "@/redux/slices/branchesSlice";
+import { setUOMSData } from "@/redux/slices/uomsSlice";
+import { useDispatch } from "react-redux";
 
 export default function Inventory() {
+  const dispatch = useDispatch();
+
   const { getProducts, productsData } = useProducts();
   const { getBranches, allBranchesData } = useBranches();
   const { getUOMS, allUOMSData } = useUOMS();
+
+  const branchesData = allBranchesData.map((branch: any) => ({
+    value: branch?.branch_name,
+    label: branch?.branch_name,
+    icon: HomeIcon,
+  }));
+  const uomsData = allUOMSData.map((uom: any) => ({
+    value: uom?.unit_name,
+    label: uom?.unit_name,
+    icon: PiRulerBold,
+  }));
+  dispatch(setBranchesData(branchesData));
+  dispatch(setUOMSData(uomsData));
 
   useEffect(() => {
     const { error } = getProducts();
@@ -25,7 +45,6 @@ export default function Inventory() {
       });
     }
 
-    console.log("this works");
     getBranches();
     getUOMS();
   }, []);
@@ -55,11 +74,7 @@ export default function Inventory() {
       {productsData.length === 0 ? (
         <Loading />
       ) : (
-        <InventoryContent
-          dataProducts={productsData}
-          branches={allBranchesData}
-          uoms={allUOMSData}
-        />
+        <InventoryContent dataProducts={productsData} />
       )}
     </div>
   );

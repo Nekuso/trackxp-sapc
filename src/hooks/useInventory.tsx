@@ -38,7 +38,6 @@ export const useInventory: any = () => {
     if (error) {
       return error;
     }
-    console.log(data);
     return setAllInventoryData(data);
   };
   const getInventory = async (id: string, duration?: number) => {
@@ -68,7 +67,6 @@ export const useInventory: any = () => {
       )
       .eq("id", id);
     if (error) return error;
-    console.log(data);
 
     await new Promise((resolve) => setTimeout(resolve, duration));
     return setCurrentInventoryData(data);

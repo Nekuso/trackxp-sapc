@@ -10,26 +10,26 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import EmployeeForm from "./add-product-form";
+import ProductForm from "./add-product-form";
 
-export default function EmployeesDialog() {
+export default function ProductDialog() {
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
   return (
     <Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
       <DialogTrigger asChild>
         <Button className="text-xs font-bold rounded-full flex gap-2 bg-applicationPrimary hover:bg-applicationPrimary transition-all duration-300">
-          <IoPersonAddOutline /> New User
+          <IoPersonAddOutline /> Product
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[800px] bg-darkComponentBg border border-lightBorder shadow-2xl">
         <DialogHeader>
-          <DialogTitle>New User</DialogTitle>
+          <DialogTitle>Product</DialogTitle>
           <DialogDescription>
-            Add a new user with level role access
+            Add a new product to your inventory
           </DialogDescription>
         </DialogHeader>
-        <EmployeeForm setDialogOpen={setDialogIsOpen} />
+        <ProductForm setDialogOpen={setDialogIsOpen} />
       </DialogContent>
     </Dialog>
   );

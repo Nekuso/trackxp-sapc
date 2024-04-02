@@ -1,35 +1,20 @@
 import { DataTable } from "./inventory-table/data-table";
-import { columns } from "./inventory-table/columns";
+import { initialState } from "./inventory-table/columns";
 import data from "./inventory-table/data/data.json";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { allProductsDisplay } from "@/types";
-import { HomeIcon } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
-import { setBranchesData } from "@/redux/slices/branchesSlice";
+import { PiGearSixBold } from "react-icons/pi";
+import { BsBoxSeam } from "react-icons/bs";
+import { FaHandsHelping } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 export default function InventoryContent({
   dataProducts,
-  branches,
-  uoms,
 }: {
   dataProducts: allProductsDisplay[];
-  branches: any;
-  uoms: any;
 }) {
-  const branchesData = branches.map((branch: any) => ({
-    value: branch?.branch_name,
-    label: branch?.branch_name,
-    icon: HomeIcon,
-  }));
-  const uomsData = uoms.map((uom: any) => ({
-    value: uom?.unit_name,
-    label: uom?.unit_name,
-    icon: HomeIcon,
-  }));
-
-  const dispatch = useDispatch();
-  dispatch(setBranchesData(branchesData));
-  console.log(useSelector((state: any) => state.branches));
+  const branchesSlice = useSelector((state: any) => state.branches);
+  const uomsSlice = useSelector((state: any) => state.uoms);
 
   return (
     <Tabs
@@ -37,35 +22,50 @@ export default function InventoryContent({
       className="w-full flex max-w-[1840px] flex-col justify-center place-items-center gap-2"
     >
       <div className="w-full">
-        <TabsList className="h-fit bg-lightBorder rounded-lg gap-4">
+        <TabsList className="h-fit bg-lightBorder rounded-lg gap-2">
           <TabsTrigger
             value="products"
-            className="data-[state=active]:bg-applicationPrimary  data-[state=active]:text-white rounded-md px-4 py-2 transition-all duration-300"
+            className="data-[state=active]:bg-applicationPrimary data-[state=inactive]:hover:bg-applicationPrimary/80
+            data-[state=inactive]:hover:text-white/60
+            data-[state=active]:text-white rounded-md px-4 py-2 transition-all duration-300 flex gap-2"
           >
+            <BsBoxSeam />
             Products
           </TabsTrigger>
           <TabsTrigger
             value="parts"
-            className="data-[state=active]:bg-applicationPrimary data-[state=active]:text-white rounded-md px-4 py-2 transition-all duration-300"
+            className="data-[state=active]:bg-applicationPrimary data-[state=inactive]:hover:bg-applicationPrimary/80
+            data-[state=inactive]:hover:text-white/80
+            data-[state=active]:text-white rounded-md px-4 py-2 transition-all duration-300 flex gap-2"
           >
+            <PiGearSixBold />
             Parts
           </TabsTrigger>
           <TabsTrigger
             value="services"
-            className="data-[state=active]:bg-applicationPrimary data-[state=active]:text-white rounded-md px-4 py-2 transition-all duration-300"
+            className="data-[state=active]:bg-applicationPrimary data-[state=inactive]:hover:bg-applicationPrimary/80
+            data-[state=inactive]:hover:text-white/80
+            data-[state=active]:text-white rounded-md px-4 py-2 transition-all duration-300 flex gap-2"
           >
+            <FaHandsHelping />
             Services
           </TabsTrigger>
         </TabsList>
       </div>
       <TabsContent value="products" className="w-full h-full ">
-        <DataTable columns={columns} data={dataProducts}
-          branchesData={branchesData}
-          uomsData={uomsData}
+        <DataTable
+          columns={initialState(branchesSlice, uomsSlice)}
+          data={dataProducts}
         />
       </TabsContent>
       <TabsContent
-        value="mobile"
+        value="parts"
+        className="w-full h-[725px] 2xl:h-[800px] bg-red-300"
+      >
+        {/* <DataTable columns={columns} data={data} /> */}
+      </TabsContent>
+      <TabsContent
+        value="services"
         className="w-full h-[725px] 2xl:h-[800px] bg-red-300"
       >
         {/* <DataTable columns={columns} data={data} /> */}

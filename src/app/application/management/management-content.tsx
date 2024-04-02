@@ -1,31 +1,17 @@
 import { DataTable } from "./employees-table/data-table";
-import { columns } from "./employees-table/columns";
+import { initateColumns } from "./employees-table/columns";
 import data from "./employees-table/data/data.json";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EmployeeDisplay } from "@/types";
-import { HomeIcon } from "lucide-react";
-import { PersonIcon } from "@radix-ui/react-icons";
+import { useSelector } from "react-redux";
 
 export default function ManagementContent({
   dataEmployees,
-  branches,
-  roles,
 }: {
   dataEmployees: EmployeeDisplay[];
-  branches: any;
-  roles: any;
 }) {
-  const branchesData = branches.map((branch: any) => ({
-    value: branch?.branch_name,
-    label: branch?.branch_name,
-    icon: HomeIcon,
-  }));
-  const rolesData = roles.map((role: any) => ({
-    value: role?.role,
-    label: role?.role,
-    icon: PersonIcon,
-  }));
-
+  const branchesSlice = useSelector((state: any) => state.branches);
+  const rolesSlice = useSelector((state: any) => state.roles);
   return (
     <Tabs
       defaultValue="system"
@@ -49,10 +35,8 @@ export default function ManagementContent({
       </div>
       <TabsContent value="system" className="w-full h-full ">
         <DataTable
-          columns={columns}
+          columns={initateColumns(branchesSlice, rolesSlice)}
           data={dataEmployees}
-          branchesData={branchesData}
-          rolesData={rolesData}
         />
       </TabsContent>
       <TabsContent

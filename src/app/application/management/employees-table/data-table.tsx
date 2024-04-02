@@ -30,15 +30,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  branchesData: any;
-  rolesData: any;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  branchesData,
-  rolesData,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -75,8 +71,6 @@ export function DataTable<TData, TValue>({
       <div className="w-full flex justify-between ">
         <DataTableToolbar
           table={table}
-          branches={branchesData}
-          roles={rolesData}
         />
       </div>
       <div className="w-full h-full overflow-scroll-y">

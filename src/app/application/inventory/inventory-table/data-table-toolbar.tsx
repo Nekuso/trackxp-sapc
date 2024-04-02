@@ -11,19 +11,19 @@ import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import AddProductButton from "./add-product/add-product-dialog";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
-  branchesData: any;
-  uomsData: any;
 }
 
 export function DataTableToolbar<TData>({
   table,
-  branchesData,
-  uomsData,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
+
+  const branchesSlice = useSelector((state: any) => state.branches);
+  const uomsSlice = useSelector((state: any) => state.uoms);
 
   return (
     <div className="flex w-full items-center justify-between">
@@ -49,14 +49,14 @@ export function DataTableToolbar<TData>({
           <DataTableFacetedFilter
             column={table.getColumn("uom")}
             title="Unit Of Measure"
-            options={uomsData}
+            options={uomsSlice}
           />
         )}
         {table.getColumn("branch") && (
           <DataTableFacetedFilter
             column={table.getColumn("branch")}
             title="Branch"
-            options={branchesData}
+            options={branchesSlice}
           />
         )}
         {table.getColumn("status") && (

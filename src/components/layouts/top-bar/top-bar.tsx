@@ -79,7 +79,7 @@ export default function TopBar({ data }: { data: any }) {
         </div>
 
         <NotificationButton />
-        <ProfileButton  data={data} />
+        <ProfileButton data={data} />
       </div>
     </div>
   );

@@ -10,21 +10,19 @@ import { statuses } from "./columns";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import AddEmployeeButton from "./add-employee/add-employee-dialog";
 import { toast } from "sonner";
-import { PersonIcon, HomeIcon } from "@radix-ui/react-icons";
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
-  branches: any;
-  roles: any;
 }
 
 export function DataTableToolbar<TData>({
   table,
-  branches,
-  roles,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
+
+  const branchesSlice = useSelector((state: any) => state.branches);
+  const rolesSlice = useSelector((state: any) => state.roles);
 
   return (
     <div className="flex w-full items-center justify-between">
@@ -48,14 +46,14 @@ export function DataTableToolbar<TData>({
           <DataTableFacetedFilter
             column={table.getColumn("roles")}
             title="Role"
-            options={roles}
+            options={rolesSlice}
           />
         )}
         {table.getColumn("branch") && (
           <DataTableFacetedFilter
             column={table.getColumn("branch")}
             title="Branch"
-            options={branches}
+            options={branchesSlice}
           />
         )}
         {isFiltered && (

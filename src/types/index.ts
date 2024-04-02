@@ -42,6 +42,10 @@ export type roles = {
   id: number;
   role: string;
 };
+export type uoms = {
+  id: number;
+  role: string;
+};
 
 export type allInventoryDisplay = {
   id: number;
@@ -63,6 +67,7 @@ export type allInventoryDisplay = {
     created_at: string;
   }[];
 };
+
 export type allProductsDisplay = {
   id: number;
   name: string;
