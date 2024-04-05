@@ -18,7 +18,7 @@ export default function ManagementContent({
       className="w-full flex max-w-[1840px] flex-col justify-center place-items-center gap-2"
     >
       <div className="w-full">
-        <TabsList className="h-fit bg-lightBorder rounded-lg gap-4">
+        <TabsList className="h-fit bg-darkComponentBg border border-lightBorder rounded-lg gap-4">
           <TabsTrigger
             value="system"
             className="data-[state=active]:bg-applicationPrimary  data-[state=active]:text-white rounded-md px-4 py-2 transition-all duration-300"

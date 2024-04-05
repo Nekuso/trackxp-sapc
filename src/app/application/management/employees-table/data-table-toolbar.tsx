@@ -69,7 +69,7 @@ export function DataTableToolbar<TData>({
       </div>
       <div className="flex gap-4">
         <Button
-          className="text-xs text-black font-bold rounded-full flex gap-2 bg-white/90 hover:bg-white transition-all duration-300"
+          className="text-xs text-black font-bold rounded-md flex gap-2 bg-white/90 hover:bg-white transition-all duration-300"
           onClick={() =>
             toast("🔔 Notification", {
               description: "Employee data exporting",

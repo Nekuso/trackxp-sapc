@@ -16,20 +16,16 @@ export const useProducts: any = () => {
       description: props.description,
       image_url: props.image_url,
       stock_quantity: props.stock_quantity,
-      uom: props.uom,
+      uom_id: props.uom_id,
       price: props.price,
+      inventory_id: props.inventory_id,
       barcode: props.barcode,
       status: props.status,
     });
 
-    const { data, error } = result;
-    if (error) {
-      return error;
-    }
-
     await new Promise((resolve) => setTimeout(resolve, duration));
 
-    return data;
+    return result;
   };
   const getProducts = async () => {
     const result = await supabase.from("products").select(`
@@ -60,7 +56,6 @@ export const useProducts: any = () => {
     if (error) {
       return error;
     }
-    console.log(data);
     return setProductsData(data);
   };
   const getProduct = async (id: string, duration?: number) => {
@@ -92,30 +87,28 @@ export const useProducts: any = () => {
       `
       )
       .eq("id", id);
-    if (error) return error;
-    console.log(data);
 
     await new Promise((resolve) => setTimeout(resolve, duration));
+    if (data?.length === 0) return true;
     return setCurrentProductData(data);
   };
-  const updateProducts = async (props: any, duration?: number) => {
+  const updateProduct = async (props: any, duration?: number) => {
     const result = await supabase
       .from("products")
       .update({
         name: props.name,
         description: props.description,
         image_url: props.image_url,
-        stock_quantity: props.stock_quantity,
-        uom: props.uom,
-        price: props.price,
         barcode: props.barcode,
+        uom_id: props.uom_id,
+        stock_quantity: props.stock_quantity,
+        price: props.price,
         status: props.status,
       })
       .eq("id", props.id);
 
     await new Promise((resolve) => setTimeout(resolve, duration));
-
-    return JSON.stringify(result);
+    return result;
   };
   const updateProductStatus = async (props: any, duration?: number) => {
     const result = await supabase
@@ -129,12 +122,11 @@ export const useProducts: any = () => {
 
     return JSON.stringify(result);
   };
-  const deleteProduct = async (props: any, duration?: number) => {
+  const deleteProduct = async (props: any, duration: number = 2000) => {
     const result = await supabase.from("products").delete().eq("id", props.id);
 
     await new Promise((resolve) => setTimeout(resolve, duration));
-
-    return JSON.stringify(result);
+    return result;
   };
 
   return {
@@ -146,7 +138,7 @@ export const useProducts: any = () => {
     createProduct,
     getProduct,
     getProducts,
-    updateProducts,
+    updateProduct,
     updateProductStatus,
     deleteProduct,
   };

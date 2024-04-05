@@ -11,20 +11,6 @@ import { FormControl } from "@/components/ui/form";
 import { useBranches } from "@/hooks/useBranches";
 
 export default function SelectDemo({ data, branchesData }: any) {
-  // const branchesData = [
-  //   {
-  //     id: 1,
-  //     branch_name: "North Road",
-  //     branch_location: "Sta. Rosa St, Dumaguete, 6200 Negros Oriental",
-  //   },
-  //   {
-  //     id: 2,
-  //     branch_name: "Sta. Rosa St.",
-  //     branch_location:
-  //       "North Road, National Highway, Buñao Rd, Dumaguete, Negros Oriental",
-  //   },
-  // ];
-
   function findBranchById(idString: any) {
     const id = parseInt(idString);
 

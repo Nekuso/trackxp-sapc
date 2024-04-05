@@ -18,11 +18,6 @@ import UpdateEmployeeStatusForm from "./update-employee-status-form";
 export default function UpdateEmployeeStatusDialog({ employeeData }: any) {
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
   const employee = employeeData;
-  // const dispatch = useDispatch();
-  // dispatch(setEmployeeData(employee));
-  // const employee = useSelector(
-  //   (state: any) => state.currentEmployee.employeeData
-  // )
 
   return (
     <Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>

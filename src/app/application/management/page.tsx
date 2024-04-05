@@ -22,11 +22,13 @@ export default function Management() {
   const { getRoles, allRolesData } = useRoles();
 
   const branchesData = allBranchesData.map((branch: any) => ({
+    id: branch?.id,
     value: branch?.branch_name,
     label: branch?.branch_name,
     icon: HomeIcon,
   }));
   const rolesData = allRolesData.map((role: any) => ({
+    id: role?.id,
     value: role?.role,
     label: role?.role,
     icon: FaRegUser,
@@ -57,9 +59,6 @@ export default function Management() {
         { event: "*", schema: "public", table: "employees" },
         (payload: any) => {
           getEmployees();
-          sonner("🔔 Notification", {
-            description: `${payload.new.first_name} ${payload.new.last_name} has been updated`,
-          });
         }
       )
       .subscribe();

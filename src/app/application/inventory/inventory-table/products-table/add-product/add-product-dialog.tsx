@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { IoPersonAddOutline } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,6 +10,7 @@ import {
 } from "@/components/ui/dialog";
 
 import ProductForm from "./add-product-form";
+import { BsBoxSeam } from "react-icons/bs";
 
 export default function ProductDialog() {
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
@@ -18,11 +18,11 @@ export default function ProductDialog() {
   return (
     <Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
       <DialogTrigger asChild>
-        <Button className="text-xs font-bold rounded-full flex gap-2 bg-applicationPrimary hover:bg-applicationPrimary transition-all duration-300">
-          <IoPersonAddOutline /> Product
+        <Button className="text-xs font-bold rounded-md flex gap-2 bg-applicationPrimary hover:bg-applicationPrimary transition-all duration-300">
+          <BsBoxSeam /> New Product
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[800px] bg-darkComponentBg border border-lightBorder shadow-2xl">
+      <DialogContent className="sm:max-w-[570px] bg-darkComponentBg border border-lightBorder shadow-2xl">
         <DialogHeader>
           <DialogTitle>Product</DialogTitle>
           <DialogDescription>

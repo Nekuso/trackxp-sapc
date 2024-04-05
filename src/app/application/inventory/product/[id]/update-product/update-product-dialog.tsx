@@ -11,14 +11,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import UpdateEmployeeForm from "./update-employee-form";
+import UpdateProductForm from "./update-product-form";
 import { MdOutlineModeEdit } from "react-icons/md";
 
-export default function UpdateEmployeeDialog({
-  employeeData,
-  branchesData,
-  rolesData,
-}: any) {
+export default function UpdateProductDialog({ productData, uomsData }: any) {
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
   return (
@@ -29,19 +25,18 @@ export default function UpdateEmployeeDialog({
           Update
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[800px] bg-darkComponentBg border border-lightBorder shadow-2xl">
+      <DialogContent className="sm:max-w-[570] bg-darkComponentBg border border-lightBorder shadow-2xl">
         <DialogHeader>
-          <DialogTitle>Update User</DialogTitle>
+          <DialogTitle>Update Product</DialogTitle>
           <DialogDescription>
-            Make sure to input the new correct fields of the user
+            Make sure to input the new correct fields of the product
           </DialogDescription>
         </DialogHeader>
-        <UpdateEmployeeForm
+        <UpdateProductForm
           setDialogOpen={setDialogIsOpen}
           dialogIsOpen={dialogIsOpen}
-          employee={employeeData}
-          branches={branchesData}
-          roles={rolesData}
+          product={productData}
+          uoms={uomsData}
         />
       </DialogContent>
     </Dialog>

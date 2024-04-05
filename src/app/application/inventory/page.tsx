@@ -23,15 +23,18 @@ export default function Inventory() {
   const { getUOMS, allUOMSData } = useUOMS();
 
   const branchesData = allBranchesData.map((branch: any) => ({
+    id: branch?.id,
     value: branch?.branch_name,
     label: branch?.branch_name,
     icon: HomeIcon,
   }));
   const uomsData = allUOMSData.map((uom: any) => ({
+    id: uom?.id,
     value: uom?.unit_name,
     label: uom?.unit_name,
     icon: PiRulerBold,
   }));
+
   dispatch(setBranchesData(branchesData));
   dispatch(setUOMSData(uomsData));
 
@@ -44,29 +47,25 @@ export default function Inventory() {
         description: error.message,
       });
     }
-
     getBranches();
     getUOMS();
   }, []);
 
   useEffect(() => {
-    // const supabase = createSupabaseBrowserClient();
-    // const subscribedChannel = supabase
-    //   .channel("employees-follow-up")
-    //   .on(
-    //     "postgres_changes",
-    //     { event: "*", schema: "public", table: "employees" },
-    //     (payload: any) => {
-    //       getEmployees();
-    //       sonner("🔔 Notification", {
-    //         description: `${payload.new.first_name} ${payload.new.last_name} has been updated`,
-    //       });
-    //     }
-    //   )
-    //   .subscribe();
-    // return () => {
-    //   supabase.removeChannel(subscribedChannel);
-    // };
+    const supabase = createSupabaseBrowserClient();
+    const subscribedChannel = supabase
+      .channel("products-follow-up")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "products" },
+        (payload: any) => {
+          getProducts();
+        }
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(subscribedChannel);
+    };
   }, []);
 
   return (

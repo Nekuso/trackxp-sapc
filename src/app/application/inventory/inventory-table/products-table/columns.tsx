@@ -1,5 +1,4 @@
 "use client";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,14 +12,14 @@ import {
   CheckCircledIcon,
   CircleIcon,
   QuestionMarkCircledIcon,
-  StopwatchIcon,
   ArrowDownIcon,
   ArrowUpIcon,
   CaretSortIcon,
 } from "@radix-ui/react-icons";
 import { FaEye } from "react-icons/fa";
-import { EmployeeDisplay } from "@/types";
+import { allProductsDisplay } from "@/types";
 import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const statuses = [
   {
@@ -29,27 +28,22 @@ export const statuses = [
     icon: QuestionMarkCircledIcon,
   },
   {
-    value: "In Progress",
-    label: "In Progress",
+    value: "Low Stock",
+    label: "Low Stock",
     icon: CircleIcon,
   },
   {
-    value: "Unavailable",
-    label: "Unavailable",
-    icon: StopwatchIcon,
-  },
-  {
-    value: "Inactive",
-    label: "Inactive",
+    value: "Out Of Stock",
+    label: "Out Of Stock",
     icon: CheckCircledIcon,
   },
 ];
 
-export const initateColumns = (branches: any, roles: any) => {
-  const columns: ColumnDef<EmployeeDisplay>[] = [
+export const initialState = (branches: any, uoms: any) => {
+  const columns: ColumnDef<allProductsDisplay>[] = [
     {
       id: "name",
-      accessorKey: "first_name",
+      accessorKey: "name",
       header: ({ column }) => {
         return (
           <DropdownMenu>
@@ -59,7 +53,7 @@ export const initateColumns = (branches: any, roles: any) => {
                 size="sm"
                 className="-ml-3 h-8 data-[state=open]:bg-applicationPrimary data-[state=open]:text-white hover:bg-slate-50/40 hover:text-white"
               >
-                <span>Name</span>
+                <span>Product</span>
                 {column.getIsSorted() === "desc" ? (
                   <ArrowDownIcon className="ml-2 h-4 w-4" />
                 ) : column.getIsSorted() === "asc" ? (
@@ -92,80 +86,50 @@ export const initateColumns = (branches: any, roles: any) => {
         );
       },
       cell: ({ row }) => {
-        const item = row.original;
         return (
-          <div className="flex place-items-center gap-4 z-0">
-            <Avatar className="w-10 h-10 cursor-pointer z-0">
-              <AvatarImage src={item.image_url} alt={item.id} />
-              <AvatarFallback className="bg-darkBg">
-                {`${item.first_name[0]}${item.last_name[0]}`}
+          <div className="flex place-items-center gap-2">
+            <Avatar className="w-10 h-10 cursor-pointer z-0 rounded-md">
+              <AvatarImage
+                src={row.original.image_url}
+                alt={row.original.barcode}
+              />
+              <AvatarFallback className="bg-darkBg rounded-md">
+                {row.original.name[0]}
               </AvatarFallback>
             </Avatar>
+
             <div className="flex flex-col">
-              <span className="text-sm font-semibold">
-                {item.first_name} {item.last_name}
-              </span>
+              <p className="max-w-[190px] 2xl:max-w-[220px] truncate font-semibold">
+                {row.original.name}
+              </p>
+              <p className="max-w-[181px] truncate text-white/50">
+                Barcode: {row.original.barcode}
+              </p>
             </div>
           </div>
         );
       },
     },
     {
-      accessorKey: "email",
-      header: ({ column }) => {
+      id: "price",
+      accessorKey: "price",
+      header: "Price",
+      cell: ({ row }) => {
         return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="-ml-3 h-8 data-[state=open]:bg-applicationPrimary data-[state=open]:text-white hover:bg-slate-50/40 hover:text-white"
-              >
-                <span>Email</span>
-                {column.getIsSorted() === "desc" ? (
-                  <ArrowDownIcon className="ml-2 h-4 w-4" />
-                ) : column.getIsSorted() === "asc" ? (
-                  <ArrowUpIcon className="ml-2 h-4 w-4" />
-                ) : (
-                  <CaretSortIcon className="ml-2 h-4 w-4" />
-                )}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="start"
-              className="bg-darkComponentBg shadow-2xl border-darkGray border-none"
-            >
-              <DropdownMenuItem
-                onClick={() => column.toggleSorting(false)}
-                className="hover:bg-applicationPrimary  text-white group"
-              >
-                <ArrowUpIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70 group-hover:text-white" />
-                Asc
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => column.toggleSorting(true)}
-                className="hover:bg-applicationPrimary text-white group"
-              >
-                <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70 group-hover:text-white" />
-                Desc
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <p className="max-w-[190px] 2xl:max-w-[220px] truncate">
+            ₱ {row.getValue("price")}
+          </p>
         );
       },
     },
     {
-      accessorKey: "contact_number",
-      header: "Contact Number",
-    },
-    {
-      id: "branch",
-      accessorKey: "branches",
-      accessorFn: (row) => row.branches.branch_name,
-      header: "Branch",
+      id: "uom",
+      accessorKey: "uom",
+      accessorFn: (row) => row.uoms.unit_name,
+      header: "Unit",
       cell: ({ row }) => {
-        const item = branches.find(
-          (item: any) => item.value === row.original.branches.branch_name
+        const item = uoms?.find(
+          (item: any) => item.value === row.original.uoms.unit_name
         );
 
         if (!item) {
@@ -178,19 +142,76 @@ export const initateColumns = (branches: any, roles: any) => {
       },
     },
     {
-      accessorKey: "roles",
-      accessorFn: (row) => row.roles.role,
-      header: "Role",
+      id: "stock_quantity",
+      accessorKey: "stock_quantity",
+      header: ({ column }) => {
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="-ml-3 h-8 data-[state=open]:bg-applicationPrimary data-[state=open]:text-white hover:bg-slate-50/40 hover:text-white"
+              >
+                <span>Stock</span>
+                {column.getIsSorted() === "desc" ? (
+                  <ArrowDownIcon className="ml-2 h-4 w-4" />
+                ) : column.getIsSorted() === "asc" ? (
+                  <ArrowUpIcon className="ml-2 h-4 w-4" />
+                ) : (
+                  <CaretSortIcon className="ml-2 h-4 w-4" />
+                )}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="start"
+              className="bg-darkComponentBg shadow-2xl border-darkGray border-none"
+            >
+              <DropdownMenuItem
+                onClick={() => column.toggleSorting(false)}
+                className="hover:bg-applicationPrimary  text-white group"
+              >
+                <ArrowUpIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70 group-hover:text-white" />
+                Asc
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => column.toggleSorting(true)}
+                className="hover:bg-applicationPrimary text-white group"
+              >
+                <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70 group-hover:text-white" />
+                Desc
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+    {
+      accessorKey: "description",
+      header: "Description",
       cell: ({ row }) => {
-        const role = roles.find(
-          (role: any) => role.value === row.original.roles.role
+        return (
+          <p className="max-w-[200px] 2xl:max-w-[450px] truncate">
+            {row.getValue("description")}
+          </p>
+        );
+      },
+    },
+    {
+      id: "branch",
+      accessorKey: "branches",
+      accessorFn: (row) => row.inventory.branches.branch_name,
+      header: "Branch",
+      cell: ({ row }) => {
+        const item = branches?.find(
+          (item: any) =>
+            item.value === row.original.inventory.branches.branch_name
         );
 
-        if (!role) {
+        if (!item) {
           return null;
         }
-
-        return role.label;
+        return <p className="max-w-[85px] truncate">{item.label}</p>;
       },
       filterFn: (row, id, value) => {
         return value.includes(row.getValue(id));
@@ -258,7 +279,7 @@ export const initateColumns = (branches: any, roles: any) => {
               {item.value}
             </p>
           );
-        } else if (item.value === "In Progress") {
+        } else if (item.value === "Low Stock") {
           return (
             <p
               className={
@@ -292,7 +313,7 @@ export const initateColumns = (branches: any, roles: any) => {
         return (
           <Link
             className="w-fit py-2 flex place-items-center justify-center text-slate-400 rounded-full px-4 hover:bg-applicationPrimary hover:text-white hover:border-applicationPrimary transition-all duration-300 primary-glow"
-            href={`/application/management/user/${id}`}
+            href={`/application/inventory/product/${id}`}
           >
             <FaEye className="mr-2 " />
             View
@@ -300,7 +321,10 @@ export const initateColumns = (branches: any, roles: any) => {
         );
       },
     },
+    {
+      id: "barcode",
+      accessorKey: "barcode",
+    },
   ];
-
   return columns;
 };

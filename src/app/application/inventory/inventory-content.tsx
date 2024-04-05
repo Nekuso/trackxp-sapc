@@ -1,5 +1,5 @@
-import { DataTable } from "./inventory-table/data-table";
-import { initialState } from "./inventory-table/columns";
+import { DataTable } from "./inventory-table/products-table/data-table";
+import { initialState } from "./inventory-table/products-table/columns";
 import data from "./inventory-table/data/data.json";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { allProductsDisplay } from "@/types";
@@ -22,7 +22,7 @@ export default function InventoryContent({
       className="w-full flex max-w-[1840px] flex-col justify-center place-items-center gap-2"
     >
       <div className="w-full">
-        <TabsList className="h-fit bg-lightBorder rounded-lg gap-2">
+        <TabsList className="h-fit bg-darkComponentBg border border-lightBorder rounded-lg gap-2">
           <TabsTrigger
             value="products"
             className="data-[state=active]:bg-applicationPrimary data-[state=inactive]:hover:bg-applicationPrimary/80

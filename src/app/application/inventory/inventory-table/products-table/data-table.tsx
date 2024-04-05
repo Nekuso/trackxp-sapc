@@ -37,7 +37,9 @@ export function DataTable<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    barcode: false,
+  });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
@@ -67,9 +69,9 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="w-full h-[725px] 2xl:h-[800px] flex flex-col justify-between gap-3 bg-darkComponentBg border border-lightBorder p-4 rounded-2xl">
+    <div className="w-full min-h-[725px] 2xl:min-h-[800px] flex flex-col justify-between gap-3 bg-darkComponentBg border border-lightBorder p-4 rounded-2xl">
       <div className="w-full flex justify-between ">
-        <DataTableToolbar table={table}/>
+        <DataTableToolbar table={table} />
       </div>
       <div className="w-full h-full overflow-scroll-y">
         <ScrollArea className="w-full h-[580px] 2xl:h-[650px] rounded-2xl relative">

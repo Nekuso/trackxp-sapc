@@ -71,7 +71,6 @@ export const useInventory: any = () => {
     await new Promise((resolve) => setTimeout(resolve, duration));
     return setCurrentInventoryData(data);
   };
-  
 
   return {
     // states

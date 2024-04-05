@@ -6,11 +6,10 @@ import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { statuses} from "./columns";
+import { statuses } from "./columns";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import AddProductButton from "./add-product/add-product-dialog";
 import { toast } from "sonner";
-import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 interface DataTableToolbarProps<TData> {
@@ -27,21 +26,21 @@ export function DataTableToolbar<TData>({
 
   return (
     <div className="flex w-full items-center justify-between">
-      <div className="flex flex-1 items-center space-x-2">
+      <div className="flex flex-1 items-center space-x-2 flex-wrap gap-y-2">
         <Input
-          className="w-[200px] h-10 border-none bg-lightComponentBg rounded-lg text-white placeholder:text-white/40"
-          placeholder="Find Barcode"
-          value={(table.getColumn("barcode")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("barcode")?.setFilterValue(event.target.value)
-          }
-        />
-        <Input
-          className="w-[250px] h-10 border-none bg-lightComponentBg rounded-lg text-white placeholder:text-white/40"
+          className="w-[200px] 2xl:w-[250px] h-10 border-none bg-lightComponentBg rounded-lg text-white placeholder:text-white/40"
           placeholder="Find a Product"
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
+          }
+        />
+        <Input
+          className="w-[180px] 2xl:w-[200px] h-10 border-none bg-lightComponentBg rounded-lg text-white placeholder:text-white/40"
+          placeholder="Find Barcode"
+          value={(table.getColumn("barcode")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("barcode")?.setFilterValue(event.target.value)
           }
         />
 
@@ -79,7 +78,7 @@ export function DataTableToolbar<TData>({
       </div>
       <div className="flex gap-4">
         <Button
-          className="text-xs text-black font-bold rounded-full flex gap-2 bg-white/90 hover:bg-white transition-all duration-300"
+          className="text-xs text-black font-bold rounded-md flex gap-2 bg-white/90 hover:bg-white transition-all duration-300"
           onClick={() =>
             toast("🔔 Notification", {
               description: "Employee data exporting",

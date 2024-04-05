@@ -13,35 +13,31 @@ import {
 } from "@/components/ui/dialog";
 import { RiDeleteBinLine } from "react-icons/ri";
 
-import { useDispatch } from "react-redux";
-import { setEmployeeData } from "@/redux/slices/employeeSlice";
 import { cn } from "@/lib/utils";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { toast } from "@/components/ui/use-toast";
 import { redirect } from "next/navigation";
-import { useEmployees } from "@/hooks/useEmployees";
+import { useProducts } from "@/hooks/useProducts";
 
-export default function DeleteEmployeeDialog({ employeeData }: any) {
+export default function DeleteProductDialog({ productData }: any) {
   const [isPending, startTransition] = useTransition();
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
-  const employee = employeeData;
-  const dispatch = useDispatch();
-  dispatch(setEmployeeData(employee));
-  const { deleteEmployee } = useEmployees();
+  const employee = productData;
+  const { deleteProduct } = useProducts();
 
   async function onSubmit(dataProps?: any) {
     startTransition(async () => {
-      const result = await deleteEmployee(dataProps, 4000);
-      const { error } = JSON.parse(result);
-      if (error?.message) {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: error.message,
-        });
-        console.log(error);
-        return;
-      }
+      await deleteProduct(dataProps, 4000);
+      // const { error } = JSON.parse(result);
+      // if (error?.message) {
+      //   toast({
+      //     variant: "destructive",
+      //     title: "Error",
+      //     description: error.message,
+      //   });
+      //   console.log(error);
+      //   return;
+      // }
 
       toast({
         description: (
@@ -54,7 +50,7 @@ export default function DeleteEmployeeDialog({ employeeData }: any) {
         ),
       });
       setDialogIsOpen(false);
-      redirect("/application/management");
+      redirect("/application/inventory");
     });
   }
 
@@ -71,10 +67,10 @@ export default function DeleteEmployeeDialog({ employeeData }: any) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[400px] bg-darkComponentBg border border-lightBorder shadow-2xl">
         <DialogHeader>
-          <DialogTitle>Delete User</DialogTitle>
+          <DialogTitle>Delete Product</DialogTitle>
           <DialogDescription>
             This operation is destructive. You wont be able to revert this
-            action. Are you sure you want to delete this user?
+            action. Are you sure you want to delete this product?
           </DialogDescription>
         </DialogHeader>
 
