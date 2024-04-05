@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Select,
   SelectContent,
@@ -8,41 +7,40 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { FormControl } from "@/components/ui/form";
-import { useBranches } from "@/hooks/useBranches";
 
-export default function SelectDemo({ data, branchesData }: any) {
-  function findBranchById(idString: any) {
+export default function SelectDemo({ data, uomsData }: any) {
+  function findUOMById(idString: any) {
     const id = parseInt(idString);
 
-    const foundItem = branchesData.find((item: any) => item.id === id);
+    const foundItem = uomsData.find((item: any) => item.id === id);
 
     if (foundItem) {
-      return foundItem.branch_name;
+      return foundItem.role;
     } else {
-      return "No branches found";
+      return "Unit of measure not found";
     }
   }
 
   return (
-    <Select onValueChange={data.onChange}>
+    <Select onValueChange={data.onChange} value={data.value}>
       <FormControl>
         <SelectTrigger
           id="branch"
           name="branch"
+          value={data.value}
           className="w-full bg-lightComponentBg border-slate-600/50 rounded-lg "
-          {...data}
         >
           <SelectValue
             className="text-white"
-            placeholder={data ? findBranchById(data.value) : "Select a branch"}
+            placeholder={data ? findUOMById(data.value) : "Select a unit"}
           />
         </SelectTrigger>
       </FormControl>
       <SelectContent className="rounded-lg bg-lightComponentBg border-slate-600/50 text-white">
         <SelectGroup>
-          {branchesData.map((branch: any) => (
-            <SelectItem key={branch.id} value={branch.id.toString()}>
-              {branch.branch_name}
+          {uomsData.map((uom: any) => (
+            <SelectItem key={uom.id} value={uom.id.toString()}>
+              {uom.unit_name}
             </SelectItem>
           ))}
         </SelectGroup>

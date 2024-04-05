@@ -1,25 +1,24 @@
 import { DataTable } from "./employees-table/data-table";
-import { columns } from "./employees-table/columns";
+import { initateColumns } from "./employees-table/columns";
 import data from "./employees-table/data/data.json";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EmployeeDisplay } from "@/types";
+import { useSelector } from "react-redux";
 
 export default function ManagementContent({
   dataEmployees,
-  branches,
-  roles,
 }: {
   dataEmployees: EmployeeDisplay[];
-  branches: any;
-  roles: any;
 }) {
+  const branchesSlice = useSelector((state: any) => state.branches);
+  const rolesSlice = useSelector((state: any) => state.roles);
   return (
     <Tabs
       defaultValue="system"
       className="w-full flex max-w-[1840px] flex-col justify-center place-items-center gap-2"
     >
       <div className="w-full">
-        <TabsList className="h-fit bg-lightBorder rounded-lg gap-4">
+        <TabsList className="h-fit bg-darkComponentBg border border-lightBorder rounded-lg gap-4">
           <TabsTrigger
             value="system"
             className="data-[state=active]:bg-applicationPrimary  data-[state=active]:text-white rounded-md px-4 py-2 transition-all duration-300"
@@ -36,10 +35,8 @@ export default function ManagementContent({
       </div>
       <TabsContent value="system" className="w-full h-full ">
         <DataTable
-          columns={columns}
+          columns={initateColumns(branchesSlice, rolesSlice)}
           data={dataEmployees}
-          branchesData={branches}
-          rolesData={roles}
         />
       </TabsContent>
       <TabsContent

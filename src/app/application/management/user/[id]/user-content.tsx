@@ -107,12 +107,12 @@ export default function UserContent({ employee, branches, roles }: any) {
             </Avatar>
           </div>
           <div className="w-full flex justify-end gap-4">
+            <DeleteEmployeeButton employeeData={employee[0]} />
             <UpdateEmployeeButton
               employeeData={employee[0]}
               branchesData={branches}
               rolesData={roles}
             />
-            <DeleteEmployeeButton employeeData={employee[0]} />
           </div>
           <div className="w-full flex justify-start gap-4">
             <h2 className="flex text-2xl font-bold place-items-center gap-3">

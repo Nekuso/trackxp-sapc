@@ -50,8 +50,8 @@ export default function UserSkeleton() {
               <Skeleton className="w-48 h-48 cursor-pointer z-0 absolute -bottom-[30%] left-7 border-8 border-transparent rounded-full bg-lightBorder"></Skeleton>
             </div>
             <div className="w-full flex justify-end gap-4">
-              <Skeleton className="w-[96px] h-[40px] text-xs font-bold rounded-full flex gap-2 bg-lightBorder"></Skeleton>
-              <Skeleton className="w-[96px] h-[40px] text-xs font-bold rounded-full flex gap-2 bg-lightBorder"></Skeleton>
+              <Skeleton className="w-[96px] h-[40px] text-xs font-bold rounded-lg flex gap-2 bg-lightBorder"></Skeleton>
+              <Skeleton className="w-[96px] h-[40px] text-xs font-bold rounded-lg flex gap-2 bg-lightBorder"></Skeleton>
             </div>
             <div className="w-full flex justify-start gap-4">
               <Skeleton className="w-[25%] h-[32px] flex text-2xl bg-lightBorder font-bold place-items-center gap-5 rounded-lg"></Skeleton>

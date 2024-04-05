@@ -29,6 +29,7 @@ export const useInventory: any = () => {
         uom,
         price,
         barcode,
+        status,
         created_at
       )
     `);
@@ -37,7 +38,6 @@ export const useInventory: any = () => {
     if (error) {
       return error;
     }
-    console.log(data);
     return setAllInventoryData(data);
   };
   const getInventory = async (id: string, duration?: number) => {
@@ -45,9 +45,25 @@ export const useInventory: any = () => {
       .from("inventory")
       .select(
         `
-      id,
-      role
-    `
+        id,
+        branches(
+          id,
+          branch_name,
+          branch_location
+        ),
+        products(
+          id,
+          name,
+          description,
+          image_url,
+          quantity,
+          uom,
+          price,
+          barcode,
+          status,
+          created_at
+        )
+      `
       )
       .eq("id", id);
     if (error) return error;

@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 
 import { statuses } from "./columns";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
-import AddEmployeeButton from "./add-employee/add-employee-dialog";
+import AddProductButton from "./add-product/add-product-dialog";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 
@@ -22,31 +22,33 @@ export function DataTableToolbar<TData>({
   const isFiltered = table.getState().columnFilters.length > 0;
 
   const branchesSlice = useSelector((state: any) => state.branches);
-  const rolesSlice = useSelector((state: any) => state.roles);
+  const uomsSlice = useSelector((state: any) => state.uoms);
 
   return (
     <div className="flex w-full items-center justify-between">
-      <div className="flex flex-1 items-center space-x-2">
+      <div className="flex flex-1 items-center space-x-2 flex-wrap gap-y-2">
         <Input
-          className="w-[250px] h-10 border-none bg-lightComponentBg rounded-lg text-white placeholder:text-white/40"
-          placeholder="Find Employee"
+          className="w-[200px] 2xl:w-[250px] h-10 border-none bg-lightComponentBg rounded-lg text-white placeholder:text-white/40"
+          placeholder="Find a Product"
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
         />
-        {table.getColumn("status") && (
+        <Input
+          className="w-[180px] 2xl:w-[200px] h-10 border-none bg-lightComponentBg rounded-lg text-white placeholder:text-white/40"
+          placeholder="Find Barcode"
+          value={(table.getColumn("barcode")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("barcode")?.setFilterValue(event.target.value)
+          }
+        />
+
+        {table.getColumn("uom") && (
           <DataTableFacetedFilter
-            column={table.getColumn("status")}
-            title="Status"
-            options={statuses}
-          />
-        )}
-        {table.getColumn("roles") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("roles")}
-            title="Role"
-            options={rolesSlice}
+            column={table.getColumn("uom")}
+            title="Unit Of Measure"
+            options={uomsSlice}
           />
         )}
         {table.getColumn("branch") && (
@@ -54,6 +56,13 @@ export function DataTableToolbar<TData>({
             column={table.getColumn("branch")}
             title="Branch"
             options={branchesSlice}
+          />
+        )}
+        {table.getColumn("status") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("status")}
+            title="Status"
+            options={statuses}
           />
         )}
         {isFiltered && (
@@ -79,7 +88,7 @@ export function DataTableToolbar<TData>({
           <CiExport />
           Export
         </Button>
-        <AddEmployeeButton />
+        <AddProductButton />
       </div>
     </div>
   );

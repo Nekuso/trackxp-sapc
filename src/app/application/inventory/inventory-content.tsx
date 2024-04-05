@@ -1,45 +1,71 @@
-// import { DataTable } from "./employees-table/data-table";
-// import { columns } from "./employees-table/columns";
-// import data from "./employees-table/data/data.json";
+import { DataTable } from "./inventory-table/products-table/data-table";
+import { initialState } from "./inventory-table/products-table/columns";
+import data from "./inventory-table/data/data.json";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { EmployeeDisplay } from "@/types";
+import { allProductsDisplay } from "@/types";
+import { PiGearSixBold } from "react-icons/pi";
+import { BsBoxSeam } from "react-icons/bs";
+import { FaHandsHelping } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 export default function InventoryContent({
-  dataInvetory,
+  dataProducts,
 }: {
-  dataInvetory: EmployeeDisplay[];
+  dataProducts: allProductsDisplay[];
 }) {
+  const branchesSlice = useSelector((state: any) => state.branches);
+  const uomsSlice = useSelector((state: any) => state.uoms);
+
   return (
     <Tabs
-      defaultValue="system"
+      defaultValue="products"
       className="w-full flex max-w-[1840px] flex-col justify-center place-items-center gap-2"
     >
       <div className="w-full">
-        <TabsList className="h-fit bg-lightBorder rounded-lg gap-4">
+        <TabsList className="h-fit bg-darkComponentBg border border-lightBorder rounded-lg gap-2">
           <TabsTrigger
-            value="system"
-            className="data-[state=active]:bg-applicationPrimary  data-[state=active]:text-white rounded-md px-4 py-2 transition-all duration-300"
+            value="products"
+            className="data-[state=active]:bg-applicationPrimary data-[state=inactive]:hover:bg-applicationPrimary/80
+            data-[state=inactive]:hover:text-white/60
+            data-[state=active]:text-white rounded-md px-4 py-2 transition-all duration-300 flex gap-2"
           >
+            <BsBoxSeam />
             Products
           </TabsTrigger>
           <TabsTrigger
-            value="mobile"
-            className="data-[state=active]:bg-applicationPrimary data-[state=active]:text-white rounded-md px-4 py-2 transition-all duration-300"
+            value="parts"
+            className="data-[state=active]:bg-applicationPrimary data-[state=inactive]:hover:bg-applicationPrimary/80
+            data-[state=inactive]:hover:text-white/80
+            data-[state=active]:text-white rounded-md px-4 py-2 transition-all duration-300 flex gap-2"
           >
+            <PiGearSixBold />
             Parts
+          </TabsTrigger>
+          <TabsTrigger
+            value="services"
+            className="data-[state=active]:bg-applicationPrimary data-[state=inactive]:hover:bg-applicationPrimary/80
+            data-[state=inactive]:hover:text-white/80
+            data-[state=active]:text-white rounded-md px-4 py-2 transition-all duration-300 flex gap-2"
+          >
+            <FaHandsHelping />
+            Services
           </TabsTrigger>
         </TabsList>
       </div>
-      <TabsContent value="system" className="w-full h-full ">
-        {/* <DataTable
-          columns={columns}
-          data={dataEmployees}
-          branchesData={branches}
-          rolesData={roles}
-        /> */}
+      <TabsContent value="products" className="w-full h-full ">
+        <DataTable
+          columns={initialState(branchesSlice, uomsSlice)}
+          data={dataProducts}
+        />
       </TabsContent>
       <TabsContent
-        value="mobile"
+        value="parts"
+        className="w-full h-[725px] 2xl:h-[800px] bg-red-300"
+      >
+        {/* <DataTable columns={columns} data={data} /> */}
+      </TabsContent>
+      <TabsContent
+        value="services"
         className="w-full h-[725px] 2xl:h-[800px] bg-red-300"
       >
         {/* <DataTable columns={columns} data={data} /> */}

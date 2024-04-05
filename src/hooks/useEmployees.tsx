@@ -10,7 +10,7 @@ export const useEmployees: any = () => {
   );
   const [currentEmployeeData, setCurrentEmployeeData] = useState<any>([]);
 
-  const createEmployee = async (props: any) => {
+  const createEmployee = async (props: any, duration: number = 2000) => {
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!,
@@ -40,6 +40,7 @@ export const useEmployees: any = () => {
         },
       },
     });
+    await new Promise((resolve) => setTimeout(resolve, duration));
 
     return JSON.stringify(result);
   };
@@ -106,9 +107,9 @@ export const useEmployees: any = () => {
     `
       )
       .eq("id", id);
-    if (error) return redirect("/application/management");
 
     await new Promise((resolve) => setTimeout(resolve, duration));
+    if (data?.length === 0) return true;
     return setCurrentEmployeeData(data);
   };
   const updateEmployee = async (props: any, duration?: number) => {

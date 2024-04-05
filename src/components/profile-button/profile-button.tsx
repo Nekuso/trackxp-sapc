@@ -33,8 +33,8 @@ export default function ProfileButton({ data }: any) {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 bg-darkComponentBg border border-lightBorder shadow-2xl text-white px-2 mr-6">
         <DropdownMenuLabel className="py-1 flex flex-col gap-1">
-          <span>{`${data.user.user_metadata.first_name} ${data.user.user_metadata.last_name}`}</span>
-          <span className="text-xs text-gray-300">{data.user.email}</span>
+          {/* <span>{`${data.user.user_metadata.first_name} ${data.user.user_metadata.last_name}`}</span> */}
+          {/* <span className="text-xs text-gray-300">{data.user.email}</span> */}
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-lightBorder" />
         <DropdownMenuGroup className="py-1">

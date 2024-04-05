@@ -9,11 +9,32 @@ import { toast as sonner } from "sonner";
 import { toast } from "@/components/ui/use-toast";
 import { useBranches } from "@/hooks/useBranches";
 import { useRoles } from "@/hooks/useRoles";
+import { HomeIcon } from "lucide-react";
+import { setBranchesData } from "@/redux/slices/branchesSlice";
+import { useDispatch } from "react-redux";
+import { setRolesData } from "@/redux/slices/rolesSlice";
+import { FaRegUser } from "react-icons/fa";
 
 export default function Management() {
+  const dispatch = useDispatch();
   const { getEmployees, allEmployeesData } = useEmployees();
   const { getBranches, allBranchesData } = useBranches();
   const { getRoles, allRolesData } = useRoles();
+
+  const branchesData = allBranchesData.map((branch: any) => ({
+    id: branch?.id,
+    value: branch?.branch_name,
+    label: branch?.branch_name,
+    icon: HomeIcon,
+  }));
+  const rolesData = allRolesData.map((role: any) => ({
+    id: role?.id,
+    value: role?.role,
+    label: role?.role,
+    icon: FaRegUser,
+  }));
+  dispatch(setBranchesData(branchesData));
+  dispatch(setRolesData(rolesData));
 
   useEffect(() => {
     const { error } = getEmployees();
@@ -38,9 +59,6 @@ export default function Management() {
         { event: "*", schema: "public", table: "employees" },
         (payload: any) => {
           getEmployees();
-          sonner("🔔 Notification", {
-            description: `${payload.new.first_name} ${payload.new.last_name} has been updated`,
-          });
         }
       )
       .subscribe();
@@ -55,11 +73,7 @@ export default function Management() {
       {allEmployeesData.length === 0 ? (
         <Loading />
       ) : (
-        <ManagementContent
-          dataEmployees={allEmployeesData}
-          branches={allBranchesData}
-          roles={allRolesData}
-        />
+        <ManagementContent dataEmployees={allEmployeesData} />
       )}
     </div>
   );
