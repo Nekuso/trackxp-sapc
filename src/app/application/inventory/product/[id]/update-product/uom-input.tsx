@@ -15,7 +15,7 @@ export default function SelectDemo({ data, uomsData }: any) {
     const foundItem = uomsData.find((item: any) => item.id === id);
 
     if (foundItem) {
-      return foundItem.role;
+      return foundItem.uom_name;
     } else {
       return "Unit of measure not found";
     }

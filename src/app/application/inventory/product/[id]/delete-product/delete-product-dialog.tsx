@@ -22,7 +22,7 @@ import { useProducts } from "@/hooks/useProducts";
 export default function DeleteProductDialog({ productData }: any) {
   const [isPending, startTransition] = useTransition();
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
-  const employee = productData;
+  const product = productData;
   const { deleteProduct } = useProducts();
 
   async function onSubmit(dataProps?: any) {
@@ -57,10 +57,7 @@ export default function DeleteProductDialog({ productData }: any) {
   return (
     <Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="destructive"
-          className="text-xs font-bold rounded-lg flex gap-2"
-        >
+        <Button className="text-xs font-bold rounded-lg flex gap-2 bg-transparent hover:bg-transparent text-red-600 hover:text-red-300">
           <RiDeleteBinLine />
           Delete
         </Button>
@@ -85,7 +82,7 @@ export default function DeleteProductDialog({ productData }: any) {
           <Button
             variant="destructive"
             className="text-xs font-bold min-w-[100px] rounded-md flex gap-2 transition-all duration-300"
-            onClick={() => onSubmit(employee)}
+            onClick={() => onSubmit(product)}
           >
             <span
               className={cn("flex gap-2 place-items-center justify-center", {

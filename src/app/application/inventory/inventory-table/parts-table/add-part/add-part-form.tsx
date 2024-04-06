@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { TbCurrencyPeso } from "react-icons/tb";
 
 import BranchInput from "./branch-input";
-import UomInput from "./uom-input";
+import BrandInput from "./brand-input";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,50 +27,50 @@ import ImageInput from "./image-input";
 import { useTransition } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
-import { useProducts } from "@/hooks/useProducts";
+import { useParts } from "@/hooks/useParts";
 
-export const productSchema = z.object({
+export const partSchema = z.object({
   name: z.string().min(1, {
-    message: "Product name is required",
+    message: "Part name is required",
   }),
   description: z.string().min(1, {
-    message: "Product description is required",
+    message: "Part description is required",
   }),
   image_url: z.string().default("something"),
   barcode: z.string().min(1, {
-    message: "Product barcode is required",
+    message: "Part barcode is required",
   }),
   stock_quantity: z.coerce.number().min(1, {
-    message: "Product quantity must be at least 1",
+    message: "Part quantity must be at least 1",
   }),
   price: z.coerce.number().min(1, {
-    message: "Product price is required",
+    message: "Part price is required",
   }),
   inventory_id: z
     .string()
     .min(1, {
-      message: "Product inventory id is required",
+      message: "Part inventory id is required",
     })
     .transform((arg) => new Number(arg)),
-  uom_id: z
+  brand_id: z
     .string()
     .min(1, {
-      message: "Product uom id is required",
+      message: "Part uom id is required",
     })
     .transform((arg) => new Number(arg)),
   status: z
     .string()
     .min(1, {
-      message: "Product status is required",
+      message: "Part status is required",
     })
     .default("Available"),
 });
 
-export default function ProductForm({ setDialogOpen }: any) {
+export default function PartForm({ setDialogOpen }: any) {
   const [isPending, startTransition] = useTransition();
-  const { createProduct } = useProducts();
-  const form = useForm<z.infer<typeof productSchema>>({
-    resolver: zodResolver(productSchema),
+  const { createPart } = useParts();
+  const form = useForm<z.infer<typeof partSchema>>({
+    resolver: zodResolver(partSchema),
     defaultValues: {
       stock_quantity: 0,
       price: 0.0,
@@ -80,7 +80,7 @@ export default function ProductForm({ setDialogOpen }: any) {
 
   async function onSubmit(data: any) {
     startTransition(async () => {
-      const result = await createProduct(data, 5000);
+      const result = await createPart(data, 5000);
 
       const { error } = result;
       if (error?.message) {
@@ -100,7 +100,7 @@ export default function ProductForm({ setDialogOpen }: any) {
       //   ),
       // });
       sonner("✨Success", {
-        description: `Product Added!`,
+        description: `Part Added!`,
       });
       setDialogOpen(false);
     });
@@ -134,13 +134,13 @@ export default function ProductForm({ setDialogOpen }: any) {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-xs">Product Name</FormLabel>
+                        <FormLabel className="text-xs">Part Name</FormLabel>
                         <FormControl>
                           <Input
                             className="rounded-lg bg-lightComponentBg border-slate-600/50"
                             {...field}
                             type="text"
-                            placeholder="Product name"
+                            placeholder="Part name"
                           />
                         </FormControl>
                         <FormMessage />
@@ -152,14 +152,14 @@ export default function ProductForm({ setDialogOpen }: any) {
                   <div className="w-full flex flex-col ">
                     <FormField
                       control={form.control}
-                      name="uom_id"
+                      name="brand_id"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-xs">
-                            Unit Of Measure
+                            Brand
                           </FormLabel>
                           <FormControl>
-                            <UomInput data={field} />
+                            <BrandInput data={field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -300,7 +300,7 @@ export default function ProductForm({ setDialogOpen }: any) {
             className="text-xs font-bold rounded-lg min-w-[105px] flex justify-center place-items-center gap-2 bg-applicationPrimary/90 hover:bg-applicationPrimary primary-glow transition-all duration-300"
             type="submit"
           >
-            <span className={cn({ hidden: isPending })}>Create Product</span>
+            <span className={cn({ hidden: isPending })}>Create Part</span>
             <AiOutlineLoading3Quarters
               className={cn(" animate-spin", { hidden: !isPending })}
             />

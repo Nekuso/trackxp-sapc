@@ -9,7 +9,7 @@ import {
 
 export default function SelectDemo({ data }: { data: any }) {
   return (
-    <Select>
+    <Select onValueChange={data.onChange}>
       <SelectTrigger
         id="gender"
         name="gender"

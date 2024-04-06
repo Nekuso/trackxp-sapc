@@ -1,8 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import UpdateProductButton from "./update-product/update-product-dialog";
-import DeleteProductButton from "./delete-product/delete-product-dialog";
+import UpdatePartButton from "./update-part/update-part-dialog";
+import DeletePartButton from "./delete-part/delete-part-dialog";
 import Barcode from "react-barcode";
 import { FaRegCopy } from "react-icons/fa";
 import {
@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/tooltip";
 import { toast as sonner } from "sonner";
 
-export default function ProductContent({ product, uoms }: any) {
+export default function PartContent({ part, brands }: any) {
   return (
     <div className="w-full h-[805px] 2xl:h-[882px] flex max-w-[1840px] justify-center place-items-center">
       <div className="w-[1000px] 2xl:w-[1200px] h-[570px] 2xl:h-[680px] flex justify-center rounded-xl gap-4">
@@ -24,7 +24,7 @@ export default function ProductContent({ product, uoms }: any) {
               src={
                 "https://hips.hearstapps.com/hmg-prod/images/pile-of-tires-on-white-background-royalty-free-image-672151801-1561751929.jpg?resize=2048:*"
               }
-              alt={product[0].name}
+              alt={part[0].name}
             />
             <AvatarFallback className="bg-darkBg rounded-md">
               No image
@@ -32,9 +32,9 @@ export default function ProductContent({ product, uoms }: any) {
           </Avatar>
           <div className="w-full flex flex-col gap-2">
             <Barcode
-              value={product[0].barcode ? product[0].barcode : "No Barcode"}
+              value={part[0].barcode ? part[0].barcode : "No Barcode"}
               flat={true}
-              displayValue={product[0].barcode ? false : true}
+              displayValue={part[0].barcode ? false : true}
               background="transparent"
               lineColor="white"
               width={3}
@@ -46,14 +46,14 @@ export default function ProductContent({ product, uoms }: any) {
               <Tooltip>
                 <TooltipTrigger
                   onClick={() => {
-                    navigator.clipboard.writeText(product[0].barcode);
+                    navigator.clipboard.writeText(part[0].barcode);
                     sonner("✨Success", {
                       description: "Barcode Copied!",
                     });
                   }}
                 >
                   <div className="flex justify-between">
-                    {product[0].barcode.split("").map((item: any, i: any) => {
+                    {part[0].barcode.split("").map((item: any, i: any) => {
                       return (
                         <h2 key={i} className="text-lg 2xl:text-2xl font-bold">
                           {item}
@@ -72,22 +72,22 @@ export default function ProductContent({ product, uoms }: any) {
         <div className="w-full h-full p-8 bg-darkComponentBg flex flex-col gap-5 2xl:gap-7 rounded-xl shadow-lg border border-lightBorder">
           <div className="w-ful flex flex-col">
             <h2 className="flex text-lg 2xl:text-2xl font-bold place-items-center gap-3">
-              {product[0].name}
+              {part[0].name}
               <div
                 className={cn(
                   "text-xs rounded-full py-1 px-2 border font-normal flex place-items-center gap-1 cursor-pointer",
-                  product[0].status === "Available"
+                  part[0].status === "Available"
                     ? "text-green-500 bg-green-500 bg-opacity-20 border-green-500"
-                    : product[0].status === "Low Stock"
+                    : part[0].status === "Low Stock"
                     ? "text-yellow-300 bg-yellow-300 bg-opacity-20 border-yellow-300"
                     : "text-red-500 bg-red-500 bg-opacity-20 border-red-500"
                 )}
               >
-                {product[0].status}
+                {part[0].status}
               </div>
             </h2>
             <p className="text-sm 2xl:text-md text-slate-400 font-bold">
-              Type: Product
+              Type: Vehicle Part
             </p>
           </div>
           <div className="w-full h-full flex flex-col gap-2 2xl:gap-4">
@@ -98,13 +98,13 @@ export default function ProductContent({ product, uoms }: any) {
                 </span>
                 <div className="w-full flex justify-between place-items-center min-w-0  bg-lightBorder rounded-lg">
                   <p className="text-md 2xl:text-lg text-white gap-2 max-w-[260px] p-3 truncate">
-                    ₱ {product[0].price}
+                    ₱ {part[0].price}
                   </p>
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger
                         onClick={() => {
-                          navigator.clipboard.writeText(product[0].price);
+                          navigator.clipboard.writeText(part[0].price);
                           sonner("✨Success", {
                             description: "Price Copied!",
                           });
@@ -123,21 +123,21 @@ export default function ProductContent({ product, uoms }: any) {
               </div>
               <div className="w-full flex flex-col gap-2">
                 <span className="text-sm font-semibold text-gray-400 flex justify-center place-items-center w-fit gap-1">
-                  Unit Of Measure
+                  Brand
                 </span>
                 <div className="w-full flex justify-between place-items-center min-w-0 bg-lightBorder rounded-lg">
                   <p className="text-md 2xl:text-lg text-white gap-2 p-3 max-w-[260px] truncate">
-                    {product[0].uoms.unit_name}
+                    {part[0].brands.brand_name}
                   </p>
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger
                         onClick={() => {
                           navigator.clipboard.writeText(
-                            product[0].uoms.unit_name
+                            part[0].brands.brand_name
                           );
                           sonner("✨Success", {
-                            description: "Unit of measure Copied!",
+                            description: "Brand Name Copied!",
                           });
                         }}
                       >
@@ -146,7 +146,7 @@ export default function ProductContent({ product, uoms }: any) {
                         </div>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>Copy Unit Name</p>
+                        <p>Copy Brand Name</p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
@@ -160,15 +160,13 @@ export default function ProductContent({ product, uoms }: any) {
                 </span>
                 <div className="w-full flex justify-between place-items-center min-w-0 bg-lightBorder rounded-lg">
                   <p className="text-md 2xl:text-lg text-white gap-2 p-3 max-w-[260px] truncate">
-                    {product[0].stock_quantity}
+                    {part[0].stock_quantity}
                   </p>
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger
                         onClick={() => {
-                          navigator.clipboard.writeText(
-                            product[0].stock_quantity
-                          );
+                          navigator.clipboard.writeText(part[0].stock_quantity);
                           sonner("✨Success", {
                             description: "Stock Quantity Copied!",
                           });
@@ -191,14 +189,14 @@ export default function ProductContent({ product, uoms }: any) {
                 </span>
                 <div className="w-full flex justify-between place-items-center min-w-0 bg-lightBorder rounded-lg">
                   <p className="text-md 2xl:text-lg text-white gap-2 p-3 max-w-[260px] truncate">
-                    {format(product[0].created_at, "PPP")}
+                    {format(part[0].created_at, "PPP")}
                   </p>
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger
                         onClick={() => {
                           navigator.clipboard.writeText(
-                            format(product[0].created_at, "PPP")
+                            format(part[0].created_at, "PPP")
                           );
                           sonner("✨Success", {
                             description: "Created Date Copied!",
@@ -224,14 +222,14 @@ export default function ProductContent({ product, uoms }: any) {
                 </span>
                 <div className="w-full flex justify-between place-items-center min-w-0 bg-lightBorder rounded-lg">
                   <p className="text-md 2xl:text-lg text-white gap-2 p-3 max-w-[210px] 2xl:max-w-[260px] truncate">
-                    {product[0].inventory.branches.branch_name}
+                    {part[0].inventory.branches.branch_name}
                   </p>
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger
                         onClick={() => {
                           navigator.clipboard.writeText(
-                            product[0].inventory.branches.branch_name
+                            part[0].inventory.branches.branch_name
                           );
                           sonner("✨Success", {
                             description: "Branch Name Copied!",
@@ -255,14 +253,14 @@ export default function ProductContent({ product, uoms }: any) {
                 </span>
                 <div className="w-full flex justify-between place-items-center min-w-0 bg-lightBorder rounded-lg">
                   <p className="text-md 2xl:text-lg text-white gap-2 p-3 max-w-[190px] 2xl:max-w-[240px] truncate">
-                    {product[0].inventory.branches.branch_location}
+                    {part[0].inventory.branches.branch_location}
                   </p>
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger
                         onClick={() => {
                           navigator.clipboard.writeText(
-                            product[0].inventory.branches.branch_location
+                            part[0].inventory.branches.branch_location
                           );
                           sonner("✨Success", {
                             description: "Branch Location Copied!",
@@ -288,15 +286,15 @@ export default function ProductContent({ product, uoms }: any) {
                 </span>
                 <div className="w-full h-full min-w-0 bg-lightBorder rounded-lg p-3">
                   <p className="text-md 2xl:text-lg text-white line-clamp-4">
-                    {product[0].description}
+                    {part[0].description}
                   </p>
                 </div>
               </div>
             </div>
           </div>
           <div className="w-full flex gap-4 justify-end">
-            <DeleteProductButton productData={product[0]} />
-            <UpdateProductButton productData={product[0]} uomsData={uoms} />
+            <DeletePartButton partData={part[0]} />
+            <UpdatePartButton partData={part[0]} brandsData={brands} />
           </div>
         </div>
       </div>

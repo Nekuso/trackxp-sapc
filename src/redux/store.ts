@@ -3,6 +3,7 @@ import currentEmployeeReducer from "./slices/employeeSlice";
 import branchesReducer from "./slices/branchesSlice";
 import uomsReducer from "./slices/uomsSlice";
 import rolesReducer from "./slices/rolesSlice";
+import brandsReducer from "./slices/brandsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     branches: branchesReducer,
     uoms: uomsReducer,
     roles: rolesReducer,
+    brands: brandsReducer,
   },
 });
 

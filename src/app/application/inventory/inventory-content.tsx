@@ -1,8 +1,9 @@
-import { DataTable } from "./inventory-table/products-table/data-table";
-import { initialState } from "./inventory-table/products-table/columns";
-import data from "./inventory-table/data/data.json";
+import { DataTable as PartsDataTable } from "./inventory-table/parts-table/data-table";
+import { DataTable as ProductsDataTable } from "./inventory-table/products-table/data-table";
+import { initialState as initiateProductsState } from "./inventory-table/products-table/columns";
+import { initialState as initiatePartsState } from "./inventory-table/parts-table/columns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { allProductsDisplay } from "@/types";
+import { allProductsDisplay, allPartsDisplay } from "@/types";
 import { PiGearSixBold } from "react-icons/pi";
 import { BsBoxSeam } from "react-icons/bs";
 import { FaHandsHelping } from "react-icons/fa";
@@ -10,11 +11,14 @@ import { useSelector } from "react-redux";
 
 export default function InventoryContent({
   dataProducts,
+  dataParts,
 }: {
   dataProducts: allProductsDisplay[];
+  dataParts: allPartsDisplay[];
 }) {
   const branchesSlice = useSelector((state: any) => state.branches);
   const uomsSlice = useSelector((state: any) => state.uoms);
+  const brandsSlice = useSelector((state: any) => state.brands);
 
   return (
     <Tabs
@@ -53,16 +57,18 @@ export default function InventoryContent({
         </TabsList>
       </div>
       <TabsContent value="products" className="w-full h-full ">
-        <DataTable
-          columns={initialState(branchesSlice, uomsSlice)}
+        {/* Products Tab */}
+        <ProductsDataTable
+          columns={initiateProductsState(branchesSlice, uomsSlice)}
           data={dataProducts}
         />
       </TabsContent>
-      <TabsContent
-        value="parts"
-        className="w-full h-[725px] 2xl:h-[800px] bg-red-300"
-      >
-        {/* <DataTable columns={columns} data={data} /> */}
+      {/* Parts Tab */}
+      <TabsContent value="parts" className="w-full h-full ">
+        <PartsDataTable
+          columns={initiatePartsState(branchesSlice, brandsSlice)}
+          data={dataParts}
+        />
       </TabsContent>
       <TabsContent
         value="services"
