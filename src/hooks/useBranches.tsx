@@ -3,12 +3,12 @@ import { QueryData, createClient } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
 import { useState } from "react";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!
-);
 
 export const useBranches: any = () => {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!
+  );
   const [allBranchesData, setAllbranchesData] = useState<any>([]);
   const [currentBranchData, setCurrentBranchData] = useState<any>([]);
 

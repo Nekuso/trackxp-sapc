@@ -61,10 +61,7 @@ export default function DeleteEmployeeDialog({ employeeData }: any) {
   return (
     <Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="destructive"
-          className="text-xs font-bold rounded-lg flex gap-2"
-        >
+        <Button className="text-xs font-bold rounded-lg flex gap-2 bg-transparent hover:bg-transparent text-red-600 hover:text-red-300">
           <RiDeleteBinLine />
           Delete
         </Button>

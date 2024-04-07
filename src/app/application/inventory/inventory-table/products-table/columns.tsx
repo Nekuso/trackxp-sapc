@@ -117,7 +117,7 @@ export const initialState = (branches: any, uoms: any) => {
       cell: ({ row }) => {
         return (
           <p className="max-w-[190px] 2xl:max-w-[220px] truncate">
-            ₱ {row.getValue("price")}
+            ₱ {row.original.price.toFixed(2)}
           </p>
         );
       },

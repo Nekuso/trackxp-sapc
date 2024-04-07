@@ -297,7 +297,7 @@ export default function ProductForm({ setDialogOpen }: any) {
 
         <DialogFooter>
           <Button
-            className="text-xs font-bold rounded-md min-w-[105px] flex justify-center place-items-center gap-2 bg-applicationPrimary/90 hover:bg-applicationPrimary primary-glow transition-all duration-300"
+            className="text-xs font-bold rounded-lg min-w-[105px] flex justify-center place-items-center gap-2 bg-applicationPrimary/90 hover:bg-applicationPrimary primary-glow transition-all duration-300"
             type="submit"
           >
             <span className={cn({ hidden: isPending })}>Create Product</span>

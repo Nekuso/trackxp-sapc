@@ -16,8 +16,8 @@ export default function SelectDemo({ data }: { data: any }) {
     <Select onValueChange={data.onChange} value={data.value}>
       <FormControl>
         <SelectTrigger
-          id="branch"
-          name="branch"
+          id="uom_id"
+          name="uom_id"
           value={data.value}
           className="w-full bg-lightComponentBg border-slate-600/50 rounded-lg "
         >
