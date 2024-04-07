@@ -9,6 +9,7 @@ import { FaTags } from "react-icons/fa";
 import { toast } from "@/components/ui/use-toast";
 import { useParts } from "@/hooks/useParts";
 import { useProducts } from "@/hooks/useProducts";
+import { useServices } from "@/hooks/useServices";
 import { useBranches } from "@/hooks/useBranches";
 import { useUOMS } from "@/hooks/useUOMS";
 import { HomeIcon } from "lucide-react";
@@ -24,6 +25,7 @@ export default function Inventory() {
 
   const { getProducts, productsData } = useProducts();
   const { getParts, partsData } = useParts();
+  const { getServices, servicesData } = useServices();
 
   const { getBranches, allBranchesData } = useBranches();
   const { getUOMS, allUOMSData } = useUOMS();
@@ -52,6 +54,7 @@ export default function Inventory() {
   dispatch(setUOMSData(uomsData));
   dispatch(setBrandsData(brandsData));
 
+  // fetch all products
   useEffect(() => {
     const { error } = getProducts();
 
@@ -66,6 +69,7 @@ export default function Inventory() {
     getUOMS();
   }, []);
 
+  // fetch all parts
   useEffect(() => {
     const { error } = getParts();
 
@@ -79,6 +83,20 @@ export default function Inventory() {
     getBrands();
   }, []);
 
+  // fetch all services
+  useEffect(() => {
+    const { error } = getServices();
+
+    if (error?.message) {
+      toast({
+        variant: "destructive",
+        title: "⚠️ Error",
+        description: error.message,
+      });
+    }
+  }, []);
+
+  // listen for changes in the database
   useEffect(() => {
     const supabase = createSupabaseBrowserClient();
     const subscribedChannel1 = supabase
@@ -101,9 +119,20 @@ export default function Inventory() {
         }
       )
       .subscribe();
+    const subscribedChannel3 = supabase
+      .channel("services-follow-up")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "services" },
+        (payload: any) => {
+          getServices();
+        }
+      )
+      .subscribe();
     return () => {
       supabase.removeChannel(subscribedChannel1);
       supabase.removeChannel(subscribedChannel2);
+      supabase.removeChannel(subscribedChannel3);
     };
   }, []);
 
@@ -112,7 +141,11 @@ export default function Inventory() {
       {productsData.length === 0 ? (
         <Loading />
       ) : (
-        <InventoryContent dataProducts={productsData} dataParts={partsData} />
+        <InventoryContent
+          dataProducts={productsData}
+          dataParts={partsData}
+          dataServices={servicesData}
+        />
       )}
     </div>
   );

@@ -1,9 +1,18 @@
 import { DataTable as PartsDataTable } from "./inventory-table/parts-table/data-table";
 import { DataTable as ProductsDataTable } from "./inventory-table/products-table/data-table";
+import { DataTable as ServicesDataTable } from "./inventory-table/services-table/data-table";
+
 import { initialState as initiateProductsState } from "./inventory-table/products-table/columns";
 import { initialState as initiatePartsState } from "./inventory-table/parts-table/columns";
+import { initialState as initiateServicesState } from "./inventory-table/services-table/columns";
+
+import {
+  allProductsDisplay,
+  allPartsDisplay,
+  allServicesDisplay,
+} from "@/types";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { allProductsDisplay, allPartsDisplay } from "@/types";
 import { PiGearSixBold } from "react-icons/pi";
 import { BsBoxSeam } from "react-icons/bs";
 import { FaHandsHelping } from "react-icons/fa";
@@ -12,9 +21,11 @@ import { useSelector } from "react-redux";
 export default function InventoryContent({
   dataProducts,
   dataParts,
+  dataServices,
 }: {
   dataProducts: allProductsDisplay[];
   dataParts: allPartsDisplay[];
+  dataServices: allServicesDisplay[];
 }) {
   const branchesSlice = useSelector((state: any) => state.branches);
   const uomsSlice = useSelector((state: any) => state.uoms);
@@ -63,18 +74,18 @@ export default function InventoryContent({
           data={dataProducts}
         />
       </TabsContent>
-      {/* Parts Tab */}
       <TabsContent value="parts" className="w-full h-full ">
+        {/* Parts Tab */}
         <PartsDataTable
           columns={initiatePartsState(branchesSlice, brandsSlice)}
           data={dataParts}
         />
       </TabsContent>
-      <TabsContent
-        value="services"
-        className="w-full h-[725px] 2xl:h-[800px] bg-red-300"
-      >
-        {/* <DataTable columns={columns} data={data} /> */}
+      <TabsContent value="services" className="w-full h-full">
+        <ServicesDataTable
+          columns={initiateServicesState(branchesSlice)}
+          data={dataServices}
+        />
       </TabsContent>
     </Tabs>
   );

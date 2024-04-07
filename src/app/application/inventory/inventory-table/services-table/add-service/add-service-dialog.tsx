@@ -9,27 +9,27 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import PartForm from "./add-part-form";
-import { PiGearSixBold } from "react-icons/pi";
+import ServiceForm from "./add-service-form";
+import { BsBoxSeam } from "react-icons/bs";
 
-export default function PartDialog() {
+export default function ServiceDialog() {
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
   return (
     <Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
       <DialogTrigger asChild>
         <Button className="text-xs font-bold rounded-md flex gap-2 bg-applicationPrimary hover:bg-applicationPrimary transition-all duration-300">
-          <PiGearSixBold /> New Part
+          <BsBoxSeam /> New Service
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[570px] bg-darkComponentBg border border-lightBorder shadow-2xl">
         <DialogHeader>
-          <DialogTitle>Part</DialogTitle>
+          <DialogTitle>Service</DialogTitle>
           <DialogDescription>
-            Add a new part to your inventory
+            Add a new service to your inventory
           </DialogDescription>
         </DialogHeader>
-        <PartForm setDialogOpen={setDialogIsOpen} />
+        <ServiceForm setDialogOpen={setDialogIsOpen} />
       </DialogContent>
     </Dialog>
   );

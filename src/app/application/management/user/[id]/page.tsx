@@ -18,7 +18,7 @@ export default function User({ params }: { params: any }) {
 
   useEffect(() => {
     const initialFetch = async () => {
-      const result = await getEmployee(params.id, 2000);
+      const result = await getEmployee(params.id, 1000);
       if (result) setError(result);
       getBranches();
       getRoles();

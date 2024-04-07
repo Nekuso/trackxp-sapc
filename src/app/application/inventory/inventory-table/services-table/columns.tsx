@@ -17,7 +17,7 @@ import {
   CaretSortIcon,
 } from "@radix-ui/react-icons";
 import { FaEye } from "react-icons/fa";
-import { allPartsDisplay } from "@/types";
+import { allServicesDisplay } from "@/types";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -28,19 +28,14 @@ export const statuses = [
     icon: QuestionMarkCircledIcon,
   },
   {
-    value: "Low Stock",
-    label: "Low Stock",
-    icon: CircleIcon,
-  },
-  {
-    value: "Out Of Stock",
-    label: "Out Of Stock",
+    value: "Unavailable",
+    label: "Unavailable",
     icon: CheckCircledIcon,
   },
 ];
 
-export const initialState = (branches: any, brands: any) => {
-  const columns: ColumnDef<allPartsDisplay>[] = [
+export const initialState = (branches: any) => {
+  const columns: ColumnDef<allServicesDisplay>[] = [
     {
       id: "name",
       accessorKey: "name",
@@ -53,7 +48,7 @@ export const initialState = (branches: any, brands: any) => {
                 size="sm"
                 className="-ml-3 h-8 data-[state=open]:bg-applicationPrimary data-[state=open]:text-white hover:bg-slate-50/40 hover:text-white"
               >
-                <span>Part</span>
+                <span>Service</span>
                 {column.getIsSorted() === "desc" ? (
                   <ArrowDownIcon className="ml-2 h-4 w-4" />
                 ) : column.getIsSorted() === "asc" ? (
@@ -91,7 +86,7 @@ export const initialState = (branches: any, brands: any) => {
             <Avatar className="w-10 h-10 cursor-pointer z-0 rounded-md">
               <AvatarImage
                 src={row.original.image_url}
-                alt={row.original.barcode}
+                alt={row.original.image_url}
               />
               <AvatarFallback className="bg-darkBg rounded-md">
                 {row.original.name[0]}
@@ -103,55 +98,10 @@ export const initialState = (branches: any, brands: any) => {
                 {row.original.name}
               </p>
               <p className="max-w-[181px] truncate text-white/50">
-                Barcode: {row.original.barcode}
+                Duration: {row.original.duration}
               </p>
             </div>
           </div>
-        );
-      },
-    },
-    {
-      id: "stock_quantity",
-      accessorKey: "stock_quantity",
-      header: ({ column }) => {
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="-ml-3 h-8 data-[state=open]:bg-applicationPrimary data-[state=open]:text-white hover:bg-slate-50/40 hover:text-white"
-              >
-                <span>Stock</span>
-                {column.getIsSorted() === "desc" ? (
-                  <ArrowDownIcon className="ml-2 h-4 w-4" />
-                ) : column.getIsSorted() === "asc" ? (
-                  <ArrowUpIcon className="ml-2 h-4 w-4" />
-                ) : (
-                  <CaretSortIcon className="ml-2 h-4 w-4" />
-                )}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="start"
-              className="bg-darkComponentBg shadow-2xl border-darkGray border-none"
-            >
-              <DropdownMenuItem
-                onClick={() => column.toggleSorting(false)}
-                className="hover:bg-applicationPrimary  text-white group"
-              >
-                <ArrowUpIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70 group-hover:text-white" />
-                Asc
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => column.toggleSorting(true)}
-                className="hover:bg-applicationPrimary text-white group"
-              >
-                <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70 group-hover:text-white" />
-                Desc
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
         );
       },
     },
@@ -162,32 +112,9 @@ export const initialState = (branches: any, brands: any) => {
       cell: ({ row }) => {
         return (
           <p className="max-w-[190px] 2xl:max-w-[220px] truncate">
-            ₱ {row.original.price.toFixed(2)}
+            {/* with 2 decimals */}₱ {row.original.price.toFixed(2)}
           </p>
         );
-      },
-    },
-    {
-      id: "brand",
-      accessorKey: "brands",
-      accessorFn: (row) => row.brands.brand_name,
-      header: "Brand",
-      cell: ({ row }) => {
-        const item = brands?.find(
-          (item: any) => item.value === row.original.brands.brand_name
-        );
-
-        if (!item) {
-          return null;
-        }
-        return (
-          <p className="max-w-[100px] 2xl:max-w-[110px] truncate">
-            {item.label}
-          </p>
-        );
-      },
-      filterFn: (row, id, value) => {
-        return value.includes(row.getValue(id));
       },
     },
     {
@@ -195,7 +122,7 @@ export const initialState = (branches: any, brands: any) => {
       header: "Description",
       cell: ({ row }) => {
         return (
-          <p className="max-w-[200px] 2xl:max-w-[450px] truncate">
+          <p className="max-w-[400px] 2xl:max-w-[850px] truncate">
             {row.getValue("description")}
           </p>
         );
@@ -317,7 +244,7 @@ export const initialState = (branches: any, brands: any) => {
         return (
           <Link
             className="w-fit py-2 flex place-items-center justify-center text-slate-400 rounded-full px-4 hover:bg-applicationPrimary hover:text-white hover:border-applicationPrimary transition-all duration-300 primary-glow"
-            href={`/application/inventory/part/${id}`}
+            href={`/application/inventory/service/${id}`}
           >
             <FaEye className="mr-2 " />
             View

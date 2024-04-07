@@ -16,7 +16,7 @@ import { toast as sonner } from "sonner";
 export default function ProductContent({ product, uoms }: any) {
   return (
     <div className="w-full h-[805px] 2xl:h-[882px] flex max-w-[1840px] justify-center place-items-center">
-      <div className="w-[1000px] 2xl:w-[1200px] h-[570px] 2xl:h-[680px] flex justify-center rounded-xl gap-4">
+      <div className="w-[1000px] 2xl:w-[1200px] h-[600px] 2xl:h-[680px] flex justify-center rounded-xl gap-4">
         <div className="w-[750px] 2xl:w-[950px] h-full p-6 bg-darkComponentBg flex flex-col justify-between gap-2 2xl:gap-4 rounded-xl shadow-lg border border-lightBorder relative">
           <Avatar className="w-full h-[80%] z-0 rounded-md">
             <AvatarImage
@@ -30,28 +30,30 @@ export default function ProductContent({ product, uoms }: any) {
               No image
             </AvatarFallback>
           </Avatar>
-          <div className="w-full flex flex-col gap-2">
-            <Barcode
-              value={product[0].barcode ? product[0].barcode : "No Barcode"}
-              flat={true}
-              displayValue={product[0].barcode ? false : true}
-              background="transparent"
-              lineColor="white"
-              width={3}
-              height={50}
-              margin={0}
-              className="w-full"
-            />
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger
-                  onClick={() => {
-                    navigator.clipboard.writeText(product[0].barcode);
-                    sonner("✨Success", {
-                      description: "Barcode Copied!",
-                    });
-                  }}
-                >
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger
+                onClick={() => {
+                  navigator.clipboard.writeText(product[0].barcode);
+                  sonner("✨Success", {
+                    description: "Barcode Copied!",
+                  });
+                }}
+              >
+                <div className="w-full flex flex-col gap-4">
+                  <Barcode
+                    value={
+                      product[0].barcode ? product[0].barcode : "No Barcode"
+                    }
+                    flat={true}
+                    displayValue={product[0].barcode ? false : true}
+                    background="transparent"
+                    lineColor="white"
+                    width={3}
+                    height={50}
+                    margin={0}
+                    className="w-full"
+                  />
                   <div className="flex justify-between">
                     {product[0].barcode.split("").map((item: any, i: any) => {
                       return (
@@ -61,13 +63,13 @@ export default function ProductContent({ product, uoms }: any) {
                       );
                     })}
                   </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Copy Barcode </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Copy Barcode </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
         <div className="w-full h-full p-8 bg-darkComponentBg flex flex-col gap-5 2xl:gap-7 rounded-xl shadow-lg border border-lightBorder">
           <div className="w-ful flex flex-col">

@@ -7,7 +7,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { TbCurrencyPeso } from "react-icons/tb";
 
 import BranchInput from "./branch-input";
-import BrandInput from "./brand-input";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,52 +26,41 @@ import ImageInput from "./image-input";
 import { useTransition } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
-import { useParts } from "@/hooks/useParts";
+import { useServices } from "@/hooks/useServices";
 
-export const partSchema = z.object({
+export const serviceSchema = z.object({
   name: z.string().min(1, {
-    message: "Part name is required",
+    message: "Service name is required",
   }),
   description: z.string().min(1, {
-    message: "Part description is required",
+    message: "Service description is required",
   }),
   image_url: z.string().default("something"),
-  barcode: z.string().min(1, {
-    message: "Part barcode is required",
-  }),
-  stock_quantity: z.coerce.number().min(1, {
-    message: "Part quantity must be at least 1",
-  }),
+  duration: z.coerce.number(),
   price: z.coerce.number().min(1, {
-    message: "Part price is required",
+    message: "Service price is required",
   }),
   inventory_id: z
     .string()
     .min(1, {
-      message: "Part inventory id is required",
-    })
-    .transform((arg) => new Number(arg)),
-  brand_id: z
-    .string()
-    .min(1, {
-      message: "Part uom id is required",
+      message: "Service inventory id is required",
     })
     .transform((arg) => new Number(arg)),
   status: z
     .string()
     .min(1, {
-      message: "Part status is required",
+      message: "Service status is required",
     })
     .default("Available"),
 });
 
-export default function PartForm({ setDialogOpen }: any) {
+export default function ServiceForm({ setDialogOpen }: any) {
   const [isPending, startTransition] = useTransition();
-  const { createPart } = useParts();
-  const form = useForm<z.infer<typeof partSchema>>({
-    resolver: zodResolver(partSchema),
+  const { createService } = useServices();
+  const form = useForm<z.infer<typeof serviceSchema>>({
+    resolver: zodResolver(serviceSchema),
     defaultValues: {
-      stock_quantity: 0,
+      duration: 0,
       price: 0.0,
       status: "Available",
     },
@@ -80,7 +68,7 @@ export default function PartForm({ setDialogOpen }: any) {
 
   async function onSubmit(data: any) {
     startTransition(async () => {
-      const result = await createPart(data, 5000);
+      const result = await createService(data, 5000);
 
       const { error } = result;
       if (error?.message) {
@@ -100,7 +88,7 @@ export default function PartForm({ setDialogOpen }: any) {
       //   ),
       // });
       sonner("✨Success", {
-        description: `Part Added!`,
+        description: `Service Added!`,
       });
       setDialogOpen(false);
     });
@@ -134,13 +122,13 @@ export default function PartForm({ setDialogOpen }: any) {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-xs">Part Name</FormLabel>
+                        <FormLabel className="text-xs">Service Name</FormLabel>
                         <FormControl>
                           <Input
                             className="rounded-lg bg-lightComponentBg border-slate-600/50"
                             {...field}
                             type="text"
-                            placeholder="Part name"
+                            placeholder="Service name"
                           />
                         </FormControl>
                         <FormMessage />
@@ -149,16 +137,27 @@ export default function PartForm({ setDialogOpen }: any) {
                   />
                 </div>
                 <div className="w-full flex gap-4">
-                  <div className="w-full flex flex-col ">
+                  <div className="w-full flex flex-col">
                     <FormField
                       control={form.control}
-                      name="brand_id"
+                      name="price"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-xs">Brand</FormLabel>
-                          <FormControl>
-                            <BrandInput data={field} />
-                          </FormControl>
+                          <FormLabel className="text-xs">Price</FormLabel>
+                          <div className="w-full flex place-items-center rounded-lg bg-lightComponentBg border border-slate-600/50 ">
+                            <div className="h-full px-3 bg-darkBg rounded-tl-lg rounded-bl-lg">
+                              <TbCurrencyPeso className="h-full w-5 text-center" />
+                            </div>
+                            <FormControl>
+                              <Input
+                                className="w-full text-start bg-transparent border-none rounded-tr-lg rounded-br-lg"
+                                {...field}
+                                type="number"
+                                placeholder="0.00"
+                              />
+                            </FormControl>
+                          </div>
+
                           <FormMessage />
                         </FormItem>
                       )}
@@ -167,42 +166,20 @@ export default function PartForm({ setDialogOpen }: any) {
                   <div className="w-full flex flex-col">
                     <FormField
                       control={form.control}
-                      name="stock_quantity"
+                      name="duration"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-xs">Quantity</FormLabel>
-                          <div className="w-full flex justify-between place-items-center gap-2">
-                            <div
-                              className="bg-lightComponentBg p-3 rounded-lg cursor-pointer hover:bg-applicationPrimary transition-all duration-300 text-center select-none"
-                              onClick={() => {
-                                form.setValue(
-                                  "stock_quantity",
-                                  form.getValues("stock_quantity") - 10
-                                );
-                              }}
-                            >
-                              <FiMinus />
-                            </div>
-                            <FormControl>
-                              <Input
-                                className="rounded-lg bg-lightComponentBg border-slate-600/50 text-center"
-                                {...field}
-                                type="number"
-                                placeholder="0"
-                              />
-                            </FormControl>
-                            <div
-                              className="bg-lightComponentBg p-3 rounded-lg cursor-pointer hover:bg-applicationPrimary transition-all duration-300 text-center select-none"
-                              onClick={() => {
-                                form.setValue(
-                                  "stock_quantity",
-                                  form.getValues("stock_quantity") + 10
-                                );
-                              }}
-                            >
-                              <IoMdAdd />
-                            </div>
-                          </div>
+                          <FormLabel className="text-xs">
+                            Duration (mins)
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              className="rounded-lg bg-lightComponentBg border-slate-600/50"
+                              {...field}
+                              type="number"
+                              placeholder="Duration"
+                            />
+                          </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -211,34 +188,7 @@ export default function PartForm({ setDialogOpen }: any) {
                 </div>
               </div>
             </div>
-
             <div className="w-full flex gap-4">
-              <div className="w-[70%] flex flex-col">
-                <FormField
-                  control={form.control}
-                  name="price"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-xs">Price</FormLabel>
-                      <div className="w-full flex place-items-center rounded-lg bg-lightComponentBg border border-slate-600/50 ">
-                        <div className="h-full px-3 bg-darkBg rounded-tl-lg rounded-bl-lg">
-                          <TbCurrencyPeso className="h-full w-5 text-center" />
-                        </div>
-                        <FormControl>
-                          <Input
-                            className="w-full text-start bg-transparent border-none rounded-tr-lg rounded-br-lg"
-                            {...field}
-                            type="number"
-                            placeholder="0.00"
-                          />
-                        </FormControl>
-                      </div>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
               <div className="w-full">
                 <FormField
                   control={form.control}
@@ -252,26 +202,6 @@ export default function PartForm({ setDialogOpen }: any) {
                   )}
                 />
               </div>
-            </div>
-            <div className="w-full ">
-              <FormField
-                control={form.control}
-                name="barcode"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs">Barcode</FormLabel>
-                    <FormControl>
-                      <Input
-                        className="rounded-lg bg-lightComponentBg border-slate-600/50"
-                        {...field}
-                        type="text"
-                        placeholder="Enter Barcode"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </div>
             <div className="w-full">
               <FormField
@@ -298,7 +228,7 @@ export default function PartForm({ setDialogOpen }: any) {
             className="text-xs font-bold rounded-lg min-w-[105px] flex justify-center place-items-center gap-2 bg-applicationPrimary/90 hover:bg-applicationPrimary primary-glow transition-all duration-300"
             type="submit"
           >
-            <span className={cn({ hidden: isPending })}>Create Part</span>
+            <span className={cn({ hidden: isPending })}>Create Service</span>
             <AiOutlineLoading3Quarters
               className={cn(" animate-spin", { hidden: !isPending })}
             />
