@@ -3,7 +3,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 
-export default function InventorySkeleton() {
+export default function TransactionSkeleton() {
   return (
     <div className="w-full h-full flex justify-center place-items-center">
       <Tabs

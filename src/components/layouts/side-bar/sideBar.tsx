@@ -51,7 +51,7 @@ export default function SideBar() {
                           .includes(pathNameFilter(pathname).toLowerCase())
                       ? "applicationPrimary"
                       : "transparent"
-                  } hover:bg-applicationPrimary text-sm font-medium p-4 rounded-xl primary-glow transition-all duration-300 gap-4`}
+                  } hover:bg-applicationPrimary text-sm font-medium p-4 rounded-xl primary-glow transition-all duration-300 gap-4 hover:scale-110`}
                   key={`b_${i}`}
                 >
                   <Image src={icon} alt="trackxp icon" className="w-6" />

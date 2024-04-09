@@ -134,3 +134,36 @@ export type allServicesDisplay = {
   };
   created_at: string;
 };
+
+export type allPurchaseOrdersDisplay = {
+  id: number;
+  customer_first_name: string;
+  customer_last_name: string;
+  customer_contact_number: string;
+  customer_email: string;
+  inventory_id: string;
+  employee_id: string;
+  purchase_orders: {}[];
+  purchase_parts: {}[];
+  total_price: number;
+  payment_method: string;
+  status: string;
+  created_at: string;
+};
+
+export type allPurchaseServicesDisplay = {
+  id: number;
+  customer_first_name: string;
+  customer_last_name: string;
+  customer_contact_number: string;
+  customer_email: string;
+  inventory_id: string;
+  employee_id: string;
+  purchase_orders: {}[];
+  purchase_parts: {}[];
+  purchase_services: {}[];
+  progress_collection: {}[];
+  total_price: number;
+  payment_method: string;
+  created_at: string;
+};

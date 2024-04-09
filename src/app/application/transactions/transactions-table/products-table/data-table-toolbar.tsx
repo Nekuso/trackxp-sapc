@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 
 import { statuses } from "./columns";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
-import AddParttButton from "./add-part/add-part-dialog";
+import AddProductButton from "./add-product/add-product-dialog";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 
@@ -22,14 +22,14 @@ export function DataTableToolbar<TData>({
   const isFiltered = table.getState().columnFilters.length > 0;
 
   const branchesSlice = useSelector((state: any) => state.branches);
-  const brandsSlice = useSelector((state: any) => state.brands);
+  const uomsSlice = useSelector((state: any) => state.uoms);
 
   return (
     <div className="flex w-full items-center justify-between">
       <div className="flex flex-1 items-center space-x-2 flex-wrap gap-y-2">
         <Input
           className="w-[200px] 2xl:w-[250px] h-10 border-none bg-lightComponentBg rounded-lg text-white placeholder:text-white/40"
-          placeholder="Find a Part"
+          placeholder="Find a Product"
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
@@ -44,11 +44,11 @@ export function DataTableToolbar<TData>({
           }
         />
 
-        {table.getColumn("brand") && (
+        {table.getColumn("uom") && (
           <DataTableFacetedFilter
-            column={table.getColumn("brand")}
-            title="Brands"
-            options={brandsSlice}
+            column={table.getColumn("uom")}
+            title="Unit Of Measure"
+            options={uomsSlice}
           />
         )}
         {table.getColumn("branch") && (
@@ -88,7 +88,7 @@ export function DataTableToolbar<TData>({
           <CiExport />
           Export
         </Button>
-        <AddParttButton />
+        <AddProductButton />
       </div>
     </div>
   );
