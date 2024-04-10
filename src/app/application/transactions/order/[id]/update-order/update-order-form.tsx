@@ -6,7 +6,6 @@ import { FiMinus } from "react-icons/fi";
 import { Textarea } from "@/components/ui/textarea";
 import { TbCurrencyPeso } from "react-icons/tb";
 
-import BranchInput from "./branch-input";
 import UomInput from "./uom-input";
 
 import { z } from "zod";
@@ -29,7 +28,8 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
 import { useProducts } from "@/hooks/useProducts";
 
-export const productSchema = z.object({
+export const orderSchema = z.object({
+  id: z.number(),
   name: z.string().min(1, {
     message: "Product name is required",
   }),
@@ -46,12 +46,6 @@ export const productSchema = z.object({
   price: z.coerce.number().min(1, {
     message: "Product price is required",
   }),
-  inventory_id: z
-    .string()
-    .min(1, {
-      message: "Product inventory id is required",
-    })
-    .transform((arg) => new Number(arg)),
   uom_id: z
     .string()
     .min(1, {
@@ -66,21 +60,27 @@ export const productSchema = z.object({
     .default("Available"),
 });
 
-export default function ProductForm({ setDialogOpen }: any) {
+export default function OrderForm({ setDialogOpen, product, uoms }: any) {
   const [isPending, startTransition] = useTransition();
-  const { createProduct } = useProducts();
-  const form = useForm<z.infer<typeof productSchema>>({
-    resolver: zodResolver(productSchema),
+  const { updateProduct } = useProducts();
+  const form = useForm<z.infer<typeof orderSchema>>({
+    resolver: zodResolver(orderSchema),
     defaultValues: {
-      stock_quantity: 0,
-      price: 0.0,
-      status: "Available",
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      image_url: product.image_url,
+      barcode: product.barcode,
+      uom_id: product.uoms.id.toString(),
+      stock_quantity: product.stock_quantity,
+      price: product.price,
+      status: product.status,
     },
   });
 
   async function onSubmit(data: any) {
     startTransition(async () => {
-      const result = await createProduct(data, 5000);
+      const result = await updateProduct(data, 5000);
 
       const { error } = result;
       if (error?.message) {
@@ -91,16 +91,9 @@ export default function ProductForm({ setDialogOpen }: any) {
         });
         return;
       }
-      // toast({
-      //   description: (
-      //     <pre className="mt-2 w-[340px] rounded-md border border-lightBorder bg-slate-950 p-4">
-      //       {/* <code className="text-white">Successfully Registered!</code> */}
-      //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-      //     </pre>
-      //   ),
-      // });
+
       sonner("✨Success", {
-        description: `Product Added!`,
+        description: `Product Updated!`,
       });
       setDialogOpen(false);
     });
@@ -159,7 +152,7 @@ export default function ProductForm({ setDialogOpen }: any) {
                             Unit Of Measure
                           </FormLabel>
                           <FormControl>
-                            <UomInput data={field} />
+                            <UomInput data={field} uomsData={uoms} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -215,7 +208,7 @@ export default function ProductForm({ setDialogOpen }: any) {
             </div>
 
             <div className="w-full flex gap-4">
-              <div className="w-[70%] flex flex-col">
+              <div className="w-full flex flex-col">
                 <FormField
                   control={form.control}
                   name="price"
@@ -236,19 +229,6 @@ export default function ProductForm({ setDialogOpen }: any) {
                         </FormControl>
                       </div>
 
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="w-full">
-                <FormField
-                  control={form.control}
-                  name="inventory_id"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-xs">Branch</FormLabel>
-                      <BranchInput data={field} />
                       <FormMessage />
                     </FormItem>
                   )}
@@ -297,7 +277,7 @@ export default function ProductForm({ setDialogOpen }: any) {
 
         <DialogFooter>
           <Button
-            className="text-xs font-bold rounded-lg min-w-[105px] flex justify-center place-items-center gap-2 bg-applicationPrimary/90 hover:bg-applicationPrimary primary-glow transition-all duration-300"
+            className="text-xs font-bold rounded-md min-w-[105px] flex justify-center place-items-center gap-2 bg-applicationPrimary/90 hover:bg-applicationPrimary primary-glow transition-all duration-300"
             type="submit"
           >
             <span className={cn({ hidden: isPending })}>Create Product</span>

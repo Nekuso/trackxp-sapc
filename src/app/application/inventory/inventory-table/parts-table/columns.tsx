@@ -161,7 +161,7 @@ export const initialState = (branches: any, brands: any) => {
       header: "Price",
       cell: ({ row }) => {
         return (
-          <p className="max-w-[190px] 2xl:max-w-[220px] truncate">
+          <p className="max-w-[190px] 2xl:max-w-[220px] truncate font-bold">
             ₱ {row.original.price.toFixed(2)}
           </p>
         );

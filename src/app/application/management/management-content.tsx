@@ -15,7 +15,7 @@ export default function ManagementContent({
   return (
     <Tabs
       defaultValue="system"
-      className="w-full flex max-w-[1840px] flex-col justify-center place-items-center gap-2"
+      className="w-full flex max-w-[1840px] flex-col justify-center place-items-center gap-4"
     >
       <div className="w-full">
         <TabsList className="h-fit bg-darkComponentBg border border-lightBorder rounded-lg gap-4">

@@ -111,7 +111,7 @@ export const initialState = (branches: any) => {
       header: "Price",
       cell: ({ row }) => {
         return (
-          <p className="max-w-[190px] 2xl:max-w-[220px] truncate">
+          <p className="max-w-[190px] 2xl:max-w-[220px] truncate font-bold">
             {/* with 2 decimals */}₱ {row.original.price.toFixed(2)}
           </p>
         );

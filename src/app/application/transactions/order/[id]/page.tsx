@@ -3,22 +3,19 @@
 
 import { useEffect, useState } from "react";
 import Loading from "./skeleton";
-import ProductContent from "./product-content";
+import OrderContent from "./order-content";
 import createSupabaseBrowserClient from "@/lib/supabase/client";
-import { useProducts } from "@/hooks/useProducts";
-import { useUOMS } from "@/hooks/useUOMS";
-import ProductNotFound from "./not-found";
+import { useOrders } from "@/hooks/useOrders";
+import OrderNotFound from "./not-found";
 
-export default function Product({ params }: { params: any }) {
-  const { getProduct, currentProductData } = useProducts();
-  const { getUOMS, allUOMSData } = useUOMS();
+export default function Order({ params }: { params: any }) {
+  const { getOrder, currentOrderData } = useOrders();
   const [error, setError] = useState(false);
 
   useEffect(() => {
     const initialFetch = async () => {
-      const result = await getProduct(params.id, 2000);
+      const result = await getOrder(params.id, 2000);
       if (result) setError(result);
-      getUOMS();
     };
 
     initialFetch();
@@ -28,12 +25,12 @@ export default function Product({ params }: { params: any }) {
     if (!error) {
       const supabase = createSupabaseBrowserClient();
       const subscribedChannel = supabase
-        .channel("product-follow-up")
+        .channel("order-follow-up")
         .on(
           "postgres_changes",
-          { event: "*", schema: "public", table: "products" },
+          { event: "*", schema: "public", table: "orders" },
           (payload: any) => {
-            getProduct(params.id, 0);
+            getOrder(params.id, 0);
           }
         )
         .subscribe();
@@ -47,15 +44,11 @@ export default function Product({ params }: { params: any }) {
   return (
     <div className="w-full flex justify-center place-items-center">
       {error ? (
-        <ProductNotFound />
-      ) : currentProductData.length === 0 ? (
+        <OrderNotFound />
+      ) : currentOrderData.length === 0 ? (
         <Loading />
       ) : (
-        <ProductContent
-          params={params}
-          product={currentProductData}
-          uoms={allUOMSData}
-        />
+        <OrderContent params={params} order={currentOrderData} />
       )}
     </div>
   );

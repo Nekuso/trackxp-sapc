@@ -11,10 +11,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import UpdateProductForm from "./update-product-form";
+import UpdateProductForm from "./update-order-form";
 import { MdOutlineModeEdit } from "react-icons/md";
 
-export default function UpdateProductDialog({ productData, uomsData }: any) {
+export default function UpdateOrderDialog({ productData, uomsData }: any) {
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
   return (
