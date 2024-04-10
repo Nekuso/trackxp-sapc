@@ -45,7 +45,6 @@ export default function ProductContent({ product, uoms }: any) {
                     value={
                       product[0].barcode ? product[0].barcode : "No Barcode"
                     }
-                    flat={true}
                     displayValue={product[0].barcode ? false : true}
                     background="transparent"
                     lineColor="white"

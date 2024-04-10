@@ -4,6 +4,8 @@ import branchesReducer from "./slices/branchesSlice";
 import uomsReducer from "./slices/uomsSlice";
 import rolesReducer from "./slices/rolesSlice";
 import brandsReducer from "./slices/brandsSlice";
+import orderCartOptionSlice from "./slices/orderCartOptionSlice";
+import orderCartSlice from "./slices/orderCartSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +14,9 @@ export const store = configureStore({
     uoms: uomsReducer,
     roles: rolesReducer,
     brands: brandsReducer,
+
+    orderCartOptionSlice: orderCartOptionSlice,
+    orderCart: orderCartSlice
   },
 });
 

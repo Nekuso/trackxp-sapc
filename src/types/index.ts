@@ -134,3 +134,66 @@ export type allServicesDisplay = {
   };
   created_at: string;
 };
+
+export type allPurchaseOrdersDisplay = {
+  id: string;
+  customer_first_name: string;
+  customer_last_name: string;
+  customer_contact_number: string;
+  customer_email: string;
+  inventory: {
+    id: number;
+    branches: {
+      id: number;
+      branch_name: string;
+      branch_location: string;
+    };
+  };
+  employees: {
+    id: number;
+    first_name: string;
+    last_name: string;
+    image_url: string;
+    contact_number: string;
+    email: string;
+    roles: { role: string };
+  };
+  purchase_products: {}[];
+  purchase_parts: {}[];
+  total_price: number;
+  payment_method: string;
+  status: string;
+  created_at: string;
+};
+
+export type allPurchaseServicesDisplay = {
+  id: number;
+  customer_first_name: string;
+  customer_last_name: string;
+  customer_contact_number: string;
+  customer_email: string;
+  inventory: {
+    id: number;
+    branches: {
+      id: number;
+      branch_name: string;
+      branch_location: string;
+    };
+  };
+  employees: {
+    id: number;
+    first_name: string;
+    last_name: string;
+    image_url: string;
+    contact_number: string;
+    email: string;
+    roles: { role: string };
+  };
+  purchase_products: {}[];
+  purchase_parts: {}[];
+  purchase_services: {}[];
+  progress_collection: {}[];
+  total_price: number;
+  payment_method: string;
+  created_at: string;
+};
