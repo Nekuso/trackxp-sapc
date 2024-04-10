@@ -40,7 +40,7 @@ export default function ProductContent({ product, uoms }: any) {
                   });
                 }}
               >
-                <div className="w-full flex flex-col gap-4">
+                <div className="w-full max-w-full flex flex-col place-items-center gap-4">
                   <Barcode
                     value={
                       product[0].barcode ? product[0].barcode : "No Barcode"
@@ -48,12 +48,11 @@ export default function ProductContent({ product, uoms }: any) {
                     displayValue={product[0].barcode ? false : true}
                     background="transparent"
                     lineColor="white"
-                    width={3}
+                    width={2.8}
                     height={50}
                     margin={0}
-                    className="w-full"
                   />
-                  <div className="flex justify-between">
+                  <div className="w-full flex justify-between">
                     {product[0].barcode.split("").map((item: any, i: any) => {
                       return (
                         <h2 key={i} className="text-lg 2xl:text-2xl font-bold">
