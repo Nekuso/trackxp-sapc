@@ -4,7 +4,7 @@ const initialState: any = {
   productsCart: [
     {
       product_id: 1,
-      Inventory_id: 1,
+      inventory_id: 1,
       name: "product1",
       description: "product1 description",
       image: "product1 image",
@@ -14,7 +14,7 @@ const initialState: any = {
     },
     {
       product_id: 2,
-      Inventory_id: 2,
+      inventory_id: 2,
       name: "product2",
       description: "product2 description",
       image: "product2 image",
@@ -26,7 +26,7 @@ const initialState: any = {
   partsCart: [
     {
       product_id: 1,
-      Inventory_id: 1,
+      inventory_id: 1,
       name: "part1",
       description: "part1 description",
       image: "part1 image",
@@ -36,7 +36,7 @@ const initialState: any = {
     },
     {
       product_id: 2,
-      Inventory_id: 2,
+      inventory_id: 2,
       name: "part2",
       description: "part2 description",
       image: "part2 image",
