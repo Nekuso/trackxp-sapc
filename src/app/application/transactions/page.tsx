@@ -13,7 +13,10 @@ import { setBranchesData } from "@/redux/slices/branchesSlice";
 import { useDispatch } from "react-redux";
 import { useProducts } from "@/hooks/useProducts";
 import { useParts } from "@/hooks/useParts";
-import { setPartsData, setProductsData } from "@/redux/slices/orderCartOptionSlice";
+import {
+  setPartsData,
+  setProductsData,
+} from "@/redux/slices/orderCartOptionSlice";
 
 export default function Inventory() {
   const dispatch = useDispatch();
@@ -60,7 +63,6 @@ export default function Inventory() {
         { event: "*", schema: "public", table: "orders" },
         (payload: any) => {
           getOrders();
-          console.log();
         }
       )
       .subscribe();
@@ -74,7 +76,11 @@ export default function Inventory() {
       {ordersData.length === 0 ? (
         <Loading />
       ) : (
-        <TransactionsContent dataOrders={ordersData} partsData={partsData} productsData={productsData}  />
+        <TransactionsContent
+          dataOrders={ordersData}
+          partsData={partsData}
+          productsData={productsData}
+        />
       )}
     </div>
   );

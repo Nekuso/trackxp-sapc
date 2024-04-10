@@ -36,20 +36,6 @@ export function DataTableToolbar<TData>({
             table.getColumn("id")?.setFilterValue(event.target.value)
           }
         />
-        <Input
-          className="w-[180px] 2xl:w-[200px] h-10 border-none bg-lightComponentBg rounded-lg text-white placeholder:text-white/40"
-          placeholder="Find Customer"
-          value={
-            (table
-              .getColumn("customer_first_name")
-              ?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table
-              .getColumn("customer_first_name")
-              ?.setFilterValue(event.target.value)
-          }
-        />
 
         {table.getColumn("branch") && (
           <DataTableFacetedFilter

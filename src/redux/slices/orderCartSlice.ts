@@ -1,64 +1,10 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: any = {
-  productsCart: [
-    {
-      product_id: 1,
-      inventory_id: 1,
-      name: "product1",
-      description: "product1 description",
-      image: "product1 image",
-      uom_name: "product1 uom",
-      quantity: 1,
-      price: 100,
-    },
-    {
-      product_id: 2,
-      inventory_id: 2,
-      name: "product2",
-      description: "product2 description",
-      image: "product2 image",
-      uom_name: "product2 uom",
-      quantity: 3,
-      price: 200,
-    },
-  ],
-  partsCart: [
-    {
-      product_id: 1,
-      inventory_id: 1,
-      name: "part1",
-      description: "part1 description",
-      image: "part1 image",
-      brand: "part1 brand",
-      quantity: 3,
-      price: 100,
-    },
-    {
-      product_id: 2,
-      inventory_id: 2,
-      name: "part2",
-      description: "part2 description",
-      image: "part2 image",
-      brand: "part2 brand",
-      quantity: 1,
-      price: 200,
-    },
-  ],
-
-  get products_total_price() {
-    return this.productsCart.reduce(
-      (total: number, product: any) => total + product.price * product.quantity,
-      0
-    );
-  },
-
-  get parts_total_price() {
-    return this.partsCart.reduce(
-      (total: number, part: any) => total + part.price * part.quantity,
-      0
-    );
-  },
+  productsCart: [],
+  partsCart: [],
+  productsTotalPrice: 0,
+  partsTotalPrice: 0,
 };
 
 const orderCart = createSlice({
@@ -67,6 +13,11 @@ const orderCart = createSlice({
   reducers: {
     addProductToCart: (state, action: PayloadAction<any>) => {
       state.productsCart.push(action.payload);
+      state.productsTotalPrice = state.productsCart.reduce(
+        (acc: number, product: any) => acc + product.price * product.quantity,
+        0
+      );
+      console.log(state.productsTotalPrice);
     },
     addPartToCart: (state, action: PayloadAction<any>) => {
       state.partsCart.push(action.payload);
@@ -122,7 +73,6 @@ const orderCart = createSlice({
 });
 
 export const {
-  addPartToCart,
   addProductToCart,
   removePartFromCart,
   removeProductFromCart,

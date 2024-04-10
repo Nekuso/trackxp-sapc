@@ -22,9 +22,9 @@ export default function OrderDialog() {
           <BsBoxSeam /> Purchase Order
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-[1270px] 2xl:max-w-[1570px] bg-darkComponentBg border border-lightBorder shadow-2xl">
+      <DialogContent className="max-w-[1170px] 2xl:max-w-[1570px] bg-darkComponentBg border border-lightBorder shadow-2xl">
         <DialogHeader>
-          <DialogTitle>Order</DialogTitle>
+          <DialogTitle>New Order</DialogTitle>
           <DialogDescription>
             Add a new regular transaction order
           </DialogDescription>

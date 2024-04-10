@@ -19,6 +19,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
 import { useProducts } from "@/hooks/useProducts";
 import { useSelector } from "react-redux";
+import OrderCartOptions from "./add-order-table/lists";
 
 export const orderSchema = z.object({
   customer_first_name: z.string().nullable(),
@@ -33,7 +34,7 @@ export const orderSchema = z.object({
     .array(
       z.object({
         product_id: z.coerce.number(),
-        Inventory_id: z.coerce.number(),
+        inventory_id: z.coerce.number(),
         name: z.string(),
         description: z.string(),
         image: z.string(),
@@ -47,7 +48,7 @@ export const orderSchema = z.object({
     .array(
       z.object({
         product_id: z.coerce.number(),
-        Inventory_id: z.coerce.number(),
+        inventory_id: z.coerce.number(),
         name: z.string(),
         description: z.string(),
         image: z.string(),
@@ -64,7 +65,6 @@ export default function OrderForm({ setDialogOpen }: any) {
   const { createProduct } = useProducts();
 
   const orderCart = useSelector((state: any) => state.orderCart);
-  console.log(orderCart.productsCart);
   const form = useForm<z.infer<typeof orderSchema>>({
     resolver: zodResolver(orderSchema),
     defaultValues: {
@@ -77,7 +77,19 @@ export default function OrderForm({ setDialogOpen }: any) {
       employee_id: 0,
       purchase_products: orderCart.productsCart,
       purchase_parts: orderCart.partsCart,
-      total_price: orderCart.products_total_price + orderCart.parts_total_price,
+      total_price: 0,
+    },
+    values: {
+      customer_first_name: null,
+      customer_last_name: null,
+      customer_email: null,
+      customer_contact_number: null,
+      status: "",
+      inventory_id: 0,
+      employee_id: 0,
+      total_price: (orderCart.productsTotalPrice + orderCart.partsTotalPrice).toFixed(2),
+      purchase_products: orderCart.productsCart,
+      purchase_parts: orderCart.partsCart,
     },
   });
 
@@ -95,7 +107,7 @@ export default function OrderForm({ setDialogOpen }: any) {
       //   return;
       // }
       // sonner("✨Success", {
-      //   description: `Product Added!`,
+      //   description: `Order Successful!`,
       // });
       toast({
         title: "✨Success",
@@ -116,7 +128,10 @@ export default function OrderForm({ setDialogOpen }: any) {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-5"
       >
-        <div className="w-full min-h-[600px] flex justify-between gap-4">
+        <div className="w-full flex justify-between gap-4">
+          <div className="w-[60%] h-full rounded-lg overflow-hidden">
+            <OrderCartOptions />
+          </div>
           <div className="w-full h-full bg-lightComponentBg rounded-lg"></div>
         </div>
 

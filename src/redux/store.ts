@@ -16,7 +16,7 @@ export const store = configureStore({
     brands: brandsReducer,
 
     orderCartOptionSlice: orderCartOptionSlice,
-    orderCart: orderCartSlice
+    orderCart: orderCartSlice,
   },
 });
 
