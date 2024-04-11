@@ -51,7 +51,16 @@ export const initiateColumns = (dispatch: any, productsCart: any) => {
                 {`₱ ${row.original.price} • ${row.original.uoms.unit_name}`}
               </p>
               <p className="text-xs max-w-[181px] truncate text-white/50">
-                {`Stock: ${row.original.stock_quantity}`}
+                Stock:
+                <span
+                  className={cn(
+                    "",
+                    row.original.stock_quantity === 0 ? "text-red-500" : ""
+                  )}
+                >
+                  {" "}
+                  {row.original.stock_quantity}
+                </span>
               </p>
             </div>
           </div>

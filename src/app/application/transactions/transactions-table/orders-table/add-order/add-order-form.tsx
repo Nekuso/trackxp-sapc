@@ -22,6 +22,13 @@ import { useSelector } from "react-redux";
 import OrderCartOptions from "./add-order-table/lists";
 import { useDispatch } from "react-redux";
 import { resetCart } from "@/redux/slices/orderCartSlice";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export const orderSchema = z.object({
   customer_first_name: z.string().nullable(),
@@ -137,12 +144,40 @@ export default function OrderForm({ setDialogOpen }: any) {
         className="flex flex-col gap-5"
       >
         <div className="w-full flex justify-between gap-4">
-          <div className="w-[60%] h-full rounded-lg overflow-hidden">
+          <div className="w-[60%] 2xl:w-[50%] h-full rounded-lg overflow-hidden">
             <OrderCartOptions />
           </div>
-          <div className="w-full h-full bg-darkBg rounded-lg">
-            
-          </div>
+          <ScrollArea className="w-full h-[553px] 2xl:h-[657px] flex flex-col justify-between bg-darkBg rounded-lg border border-lightBorder p-0 px-4 relative gap-0">
+            <Accordion type="multiple" className="w-full">
+              <AccordionItem value="item-1" className="sticky top-0 bg-darkBg">
+                <AccordionTrigger className="font-bold">
+                  Customer
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="w-full h-[300px] bg-red-300"></div>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-2" className="sticky top-0 bg-darkBg">
+                <AccordionTrigger className="font-bold">
+                  Products Summary
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="w-full h-[300px] bg-purple-500"></div>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-3" className="sticky top-0 bg-darkBg">
+                <AccordionTrigger className="font-bold">
+                  Parts Summary
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="w-full h-[300px] bg-orange-500"></div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+            <div className="w-full py-6 flex justify-end position sticky bottom-[-4px] bg-darkBg m-0">
+              Total: 9,089.49
+            </div>
+          </ScrollArea>
         </div>
 
         <DialogFooter>

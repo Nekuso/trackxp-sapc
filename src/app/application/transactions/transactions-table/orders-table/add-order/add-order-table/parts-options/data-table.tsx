@@ -75,7 +75,7 @@ export function DataTable<TData, TValue>({
       </div>
       <Separator className="bg-lightBorder"></Separator>
       <div className="w-full h-full overflow-hidden">
-        <ScrollArea className="w-full h-[428px] 2xl:h-[527px] relative">
+        <ScrollArea className="w-full h-[425px] 2xl:h-[520px] relative">
           <Table>
             <TableHeader className="bg-darkBg border-none sticky top-0 z-[5]">
               {table.getHeaderGroups().map((headerGroup) => (
