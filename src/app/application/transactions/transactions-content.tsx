@@ -1,4 +1,4 @@
-import { DataTable as PartsDataTable } from "./transactions-table/service-orders-table/data-table";
+import { DataTable as OrderServicesDataTable } from "./transactions-table/service-orders-table/data-table";
 import { DataTable as OrdersDataTable } from "./transactions-table/orders-table/data-table";
 
 import { initialState as initiateOrdersState } from "./transactions-table/orders-table/columns";
@@ -12,12 +12,8 @@ import { BsBoxSeam } from "react-icons/bs";
 import { useSelector } from "react-redux";
 
 export default function InventoryContent({
-  partsData,
-  productsData,
   dataOrders,
 }: {
-  partsData: any[];
-  productsData: any[];
   dataOrders: allPurchaseOrdersDisplay[];
 }) {
   const branchesSlice = useSelector((state: any) => state.branches);
@@ -58,7 +54,10 @@ export default function InventoryContent({
       </TabsContent>
       <TabsContent value="parts" className="w-full h-full ">
         {/* Service Order Tab */}
-        <PartsDataTable columns={initiatePartsState(branchesSlice)} data={[]} />
+        <OrderServicesDataTable
+          columns={initiatePartsState(branchesSlice)}
+          data={[]}
+        />
       </TabsContent>
     </Tabs>
   );

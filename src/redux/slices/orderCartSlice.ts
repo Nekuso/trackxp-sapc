@@ -17,19 +17,22 @@ const orderCart = createSlice({
         (acc: number, product: any) => acc + product.price * product.quantity,
         0
       );
-      console.log(state.productsTotalPrice);
     },
     addPartToCart: (state, action: PayloadAction<any>) => {
       state.partsCart.push(action.payload);
+      state.partsTotalPrice = state.partsCart.reduce(
+        (acc: number, part: any) => acc + part.price * part.quantity,
+        0
+      );
     },
     removeProductFromCart: (state, action: PayloadAction<any>) => {
       state.productsCart = state.productsCart.filter(
-        (product: any) => product.id !== action.payload
+        (product: any) => product.product_id !== action.payload
       );
     },
     removePartFromCart: (state, action: PayloadAction<any>) => {
       state.partsCart = state.partsCart.filter(
-        (part: any) => part.id !== action.payload
+        (part: any) => part.part_id !== action.payload
       );
     },
 
@@ -46,7 +49,14 @@ const orderCart = createSlice({
         (product: any) => product.id === action.payload
       );
       if (product) {
-        product.quantity -= 1;
+        //if product quantity is 1, remove it from the cart
+        if (product.quantity === 1) {
+          state.productsCart = state.productsCart.filter(
+            (product: any) => product.id !== action.payload
+          );
+        } else {
+          product.quantity -= 1;
+        }
       }
     },
     incrementPartQuantity: (state, action: PayloadAction<any>) => {
@@ -68,12 +78,15 @@ const orderCart = createSlice({
     resetCart: (state) => {
       state.productsCart = [];
       state.partsCart = [];
+      state.productsTotalPrice = 0;
+      state.partsTotalPrice = 0;
     },
   },
 });
 
 export const {
   addProductToCart,
+  addPartToCart,
   removePartFromCart,
   removeProductFromCart,
   incrementProductQuantity,

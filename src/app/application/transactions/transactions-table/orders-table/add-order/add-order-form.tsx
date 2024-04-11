@@ -20,6 +20,8 @@ import { cn } from "@/lib/utils";
 import { useProducts } from "@/hooks/useProducts";
 import { useSelector } from "react-redux";
 import OrderCartOptions from "./add-order-table/lists";
+import { useDispatch } from "react-redux";
+import { resetCart } from "@/redux/slices/orderCartSlice";
 
 export const orderSchema = z.object({
   customer_first_name: z.string().nullable(),
@@ -47,12 +49,12 @@ export const orderSchema = z.object({
   purchase_parts: z
     .array(
       z.object({
-        product_id: z.coerce.number(),
+        part_id: z.coerce.number(),
         inventory_id: z.coerce.number(),
         name: z.string(),
         description: z.string(),
         image: z.string(),
-        brand: z.string(),
+        brand_name: z.string(),
         quantity: z.coerce.number(),
         price: z.coerce.number(),
       })
@@ -63,6 +65,7 @@ export const orderSchema = z.object({
 export default function OrderForm({ setDialogOpen }: any) {
   const [isPending, startTransition] = useTransition();
   const { createProduct } = useProducts();
+  const dispatch = useDispatch();
 
   const orderCart = useSelector((state: any) => state.orderCart);
   const form = useForm<z.infer<typeof orderSchema>>({
@@ -87,7 +90,9 @@ export default function OrderForm({ setDialogOpen }: any) {
       status: "",
       inventory_id: 0,
       employee_id: 0,
-      total_price: (orderCart.productsTotalPrice + orderCart.partsTotalPrice).toFixed(2),
+      total_price: (
+        orderCart.productsTotalPrice + orderCart.partsTotalPrice
+      ).toFixed(2),
       purchase_products: orderCart.productsCart,
       purchase_parts: orderCart.partsCart,
     },
@@ -119,6 +124,9 @@ export default function OrderForm({ setDialogOpen }: any) {
       });
 
       setDialogOpen(false);
+      new Promise((resolve) => setTimeout(resolve, 1500)).then(() => {
+        dispatch(resetCart());
+      });
     });
   }
 
@@ -132,7 +140,9 @@ export default function OrderForm({ setDialogOpen }: any) {
           <div className="w-[60%] h-full rounded-lg overflow-hidden">
             <OrderCartOptions />
           </div>
-          <div className="w-full h-full bg-lightComponentBg rounded-lg"></div>
+          <div className="w-full h-full bg-darkBg rounded-lg">
+            
+          </div>
         </div>
 
         <DialogFooter>

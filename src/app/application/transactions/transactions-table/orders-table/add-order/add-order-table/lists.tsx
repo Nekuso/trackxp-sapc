@@ -1,19 +1,24 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PiGearSixBold } from "react-icons/pi";
 import { BsBoxSeam } from "react-icons/bs";
-import { DataTable } from "./products-options/data-table";
-import { initiateColumns } from "./products-options/columns";
+import { DataTable as ProductsOptionsDataTable } from "./products-options/data-table";
+import { DataTable as PartsOptionsDataTable } from "./parts-options/data-table";
+import { initiateColumns as initiateProductsColumns } from "./products-options/columns";
+import { initiateColumns as initiatePartsColumns } from "./parts-options/columns";
 import { useSelector, useDispatch } from "react-redux";
-import { setProductsData } from "@/redux/slices/orderCartOptionSlice";
 
 export default function OrderCartOptions({}: {}) {
   const productsOption = useSelector(
     (state: any) => state.orderCartOptionSlice.productsData
   );
+  const partsOption = useSelector(
+    (state: any) => state.orderCartOptionSlice.partsData
+  );
 
   const productsCart = useSelector(
     (state: any) => state.orderCart.productsCart
   );
+  const partsCart = useSelector((state: any) => state.orderCart.partsCart);
   const dispatch = useDispatch();
 
   return (
@@ -47,15 +52,20 @@ export default function OrderCartOptions({}: {}) {
         value="products"
         className="w-full h-full bg-darkBg border border-lightBorder rounded-xl max-h-[500px] min-h-[500px] 2xl:max-h-[600px] 2xl:min-h-[600px]"
       >
-        <DataTable
-          columns={initiateColumns(dispatch, productsCart)}
+        <ProductsOptionsDataTable
+          columns={initiateProductsColumns(dispatch, productsCart)}
           data={productsOption}
         />
       </TabsContent>
       <TabsContent
         value="parts"
-        className="w-full h-full bg-yellow-300"
-      ></TabsContent>
+        className="w-full h-full bg-darkBg border border-lightBorder rounded-xl max-h-[500px] min-h-[500px] 2xl:max-h-[600px] 2xl:min-h-[600px]"
+      >
+        <PartsOptionsDataTable
+          columns={initiatePartsColumns(dispatch, partsCart)}
+          data={partsOption}
+        />
+      </TabsContent>
     </Tabs>
   );
 }

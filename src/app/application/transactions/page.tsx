@@ -10,7 +10,7 @@ import { useOrders } from "@/hooks/useOrders";
 import { useBranches } from "@/hooks/useBranches";
 import { HomeIcon } from "lucide-react";
 import { setBranchesData } from "@/redux/slices/branchesSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useProducts } from "@/hooks/useProducts";
 import { useParts } from "@/hooks/useParts";
 import {
@@ -18,7 +18,7 @@ import {
   setProductsData,
 } from "@/redux/slices/orderCartOptionSlice";
 
-export default function Inventory() {
+export default function Transactions() {
   const dispatch = useDispatch();
 
   const { getOrders, ordersData } = useOrders();
@@ -33,9 +33,15 @@ export default function Inventory() {
     icon: HomeIcon,
   }));
 
+  const productsCart = useSelector(
+    (state: any) => state.orderCart.productsCart
+  );
+  const partsCart = useSelector((state: any) => state.orderCart.partsCart);
+
   dispatch(setBranchesData(branchesData));
-  dispatch(setProductsData(productsData));
-  dispatch(setPartsData(partsData));
+
+  dispatch(setProductsData({ productsData, productsCart }));
+  dispatch(setPartsData({ partsData, partsCart }));
 
   // fetch all products
   useEffect(() => {
@@ -66,8 +72,32 @@ export default function Inventory() {
         }
       )
       .subscribe();
+    const subscribedChannel2 = supabase
+      .channel("orders-follow-up")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "products" },
+        (payload: any) => {
+          getProducts();
+          dispatch(setProductsData(productsData));
+        }
+      )
+      .subscribe();
+    const subscribedChannel3 = supabase
+      .channel("orders-follow-up")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "parts" },
+        (payload: any) => {
+          getParts();
+          dispatch(setPartsData(partsData));
+        }
+      )
+      .subscribe();
     return () => {
       supabase.removeChannel(subscribedChannel1);
+      supabase.removeChannel(subscribedChannel2);
+      supabase.removeChannel(subscribedChannel3);
     };
   }, []);
 
@@ -76,11 +106,7 @@ export default function Inventory() {
       {ordersData.length === 0 ? (
         <Loading />
       ) : (
-        <TransactionsContent
-          dataOrders={ordersData}
-          partsData={partsData}
-          productsData={productsData}
-        />
+        <TransactionsContent dataOrders={ordersData} />
       )}
     </div>
   );

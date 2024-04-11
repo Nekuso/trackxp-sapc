@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
-  addProductToCart,
-  removeProductFromCart,
+  addPartToCart,
+  removePartFromCart,
 } from "@/redux/slices/orderCartSlice";
 import { cn } from "@/lib/utils";
 import { IoMdRemove } from "react-icons/io";
@@ -20,16 +20,16 @@ type option = {
   barcode: string;
   status: string;
   created_at: string;
-  uoms: any;
+  brands: any;
   inventory: any;
 };
 
-export const initiateColumns = (dispatch: any, productsCart: any) => {
+export const initiateColumns = (dispatch: any, partsCart: any) => {
   const columns: ColumnDef<option>[] = [
     {
       id: "name",
       accessorKey: "name",
-      header: "Product",
+      header: "Part",
       cell: ({ row }) => {
         return (
           <div className="flex place-items-between gap-4">
@@ -48,7 +48,7 @@ export const initiateColumns = (dispatch: any, productsCart: any) => {
                 {row.original.name}
               </p>
               <p className="text-md max-w-[181px] truncate text-white font-bold">
-                {`₱ ${row.original.price} • ${row.original.uoms.unit_name}`}
+                {`₱ ${row.original.price} • ${row.original.brands.brand_name}`}
               </p>
               <p className="text-xs max-w-[181px] truncate text-white/50">
                 {`Stock: ${row.original.stock_quantity}`}
@@ -75,41 +75,39 @@ export const initiateColumns = (dispatch: any, productsCart: any) => {
               )}
               type="button"
               disabled={
-                productsCart.some(
-                  (product: any) => product.product_id === row.original.id
+                partsCart.some(
+                  (product: any) => product.part_id === row.original.id
                 ) || row.original.stock_quantity === 0
               }
               onClick={() => {
                 dispatch(
-                  addProductToCart({
-                    product_id: row.original.id,
+                  addPartToCart({
+                    part_id: row.original.id,
                     inventory_id: row.original.inventory.id,
                     name: row.original.name,
                     description: row.original.description,
                     image: row.original.image_url,
-                    uom_name: row.original.uoms.unit_name,
+                    brand_name: row.original.brands.brand_name,
                     quantity: 1,
                     price: row.original.price,
                   })
                 );
               }}
             >
-              {productsCart.some(
-                (product: any) => product.product_id === row.original.id
-              )
+              {partsCart.some((part: any) => part.part_id === row.original.id)
                 ? "Added"
                 : row.original.stock_quantity === 0
                 ? "Out of Stock"
                 : "Add"}
             </Button>
-            {productsCart.some(
-              (product: any) => product.product_id === row.original.id
+            {partsCart.some(
+              (part: any) => part.part_id === row.original.id
             ) && (
               <Button
                 className="text-xs font-bold rounded-md flex gap-2 hover:text-white transition-all duration-300 px-4 py-2 cursor-pointer bg-red-500 hover:bg-red-600"
                 type="button"
                 onClick={() => {
-                  dispatch(removeProductFromCart(row.original.id));
+                  dispatch(removePartFromCart(row.original.id));
                 }}
               >
                 <IoMdRemove />
