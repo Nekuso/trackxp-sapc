@@ -67,7 +67,6 @@ export default function ServiceForm({ setDialogIsOpen, service }: any) {
       });
       setDialogIsOpen(false);
     });
-    console.log("this works");
   }
 
   return (

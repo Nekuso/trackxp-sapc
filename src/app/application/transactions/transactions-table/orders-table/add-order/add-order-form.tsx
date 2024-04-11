@@ -19,6 +19,16 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
 import { useProducts } from "@/hooks/useProducts";
 import { useSelector } from "react-redux";
+import OrderCartOptions from "./add-order-table/lists";
+import { useDispatch } from "react-redux";
+import { resetCart } from "@/redux/slices/orderCartSlice";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export const orderSchema = z.object({
   customer_first_name: z.string().nullable(),
@@ -33,7 +43,7 @@ export const orderSchema = z.object({
     .array(
       z.object({
         product_id: z.coerce.number(),
-        Inventory_id: z.coerce.number(),
+        inventory_id: z.coerce.number(),
         name: z.string(),
         description: z.string(),
         image: z.string(),
@@ -46,12 +56,12 @@ export const orderSchema = z.object({
   purchase_parts: z
     .array(
       z.object({
-        product_id: z.coerce.number(),
-        Inventory_id: z.coerce.number(),
+        part_id: z.coerce.number(),
+        inventory_id: z.coerce.number(),
         name: z.string(),
         description: z.string(),
         image: z.string(),
-        brand: z.string(),
+        brand_name: z.string(),
         quantity: z.coerce.number(),
         price: z.coerce.number(),
       })
@@ -62,9 +72,9 @@ export const orderSchema = z.object({
 export default function OrderForm({ setDialogOpen }: any) {
   const [isPending, startTransition] = useTransition();
   const { createProduct } = useProducts();
+  const dispatch = useDispatch();
 
   const orderCart = useSelector((state: any) => state.orderCart);
-  console.log(orderCart.productsCart);
   const form = useForm<z.infer<typeof orderSchema>>({
     resolver: zodResolver(orderSchema),
     defaultValues: {
@@ -77,7 +87,21 @@ export default function OrderForm({ setDialogOpen }: any) {
       employee_id: 0,
       purchase_products: orderCart.productsCart,
       purchase_parts: orderCart.partsCart,
-      total_price: orderCart.products_total_price + orderCart.parts_total_price,
+      total_price: 0,
+    },
+    values: {
+      customer_first_name: null,
+      customer_last_name: null,
+      customer_email: null,
+      customer_contact_number: null,
+      status: "",
+      inventory_id: 0,
+      employee_id: 0,
+      total_price: (
+        orderCart.productsTotalPrice + orderCart.partsTotalPrice
+      ).toFixed(2),
+      purchase_products: orderCart.productsCart,
+      purchase_parts: orderCart.partsCart,
     },
   });
 
@@ -95,7 +119,7 @@ export default function OrderForm({ setDialogOpen }: any) {
       //   return;
       // }
       // sonner("✨Success", {
-      //   description: `Product Added!`,
+      //   description: `Order Successful!`,
       // });
       toast({
         title: "✨Success",
@@ -107,6 +131,9 @@ export default function OrderForm({ setDialogOpen }: any) {
       });
 
       setDialogOpen(false);
+      new Promise((resolve) => setTimeout(resolve, 1500)).then(() => {
+        dispatch(resetCart());
+      });
     });
   }
 
@@ -116,8 +143,41 @@ export default function OrderForm({ setDialogOpen }: any) {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-5"
       >
-        <div className="w-full min-h-[600px] flex justify-between gap-4">
-          <div className="w-full h-full bg-lightComponentBg rounded-lg"></div>
+        <div className="w-full flex justify-between gap-4">
+          <div className="w-[60%] 2xl:w-[50%] h-full rounded-lg overflow-hidden">
+            <OrderCartOptions />
+          </div>
+          <ScrollArea className="w-full h-[553px] 2xl:h-[657px] flex flex-col justify-between bg-darkBg rounded-lg border border-lightBorder p-0 px-4 relative gap-0">
+            <Accordion type="multiple" className="w-full">
+              <AccordionItem value="item-1" className="sticky top-0 bg-darkBg">
+                <AccordionTrigger className="font-bold">
+                  Customer
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="w-full h-[300px] bg-red-300"></div>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-2" className="sticky top-0 bg-darkBg">
+                <AccordionTrigger className="font-bold">
+                  Products Summary
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="w-full h-[300px] bg-purple-500"></div>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-3" className="sticky top-0 bg-darkBg">
+                <AccordionTrigger className="font-bold">
+                  Parts Summary
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="w-full h-[300px] bg-orange-500"></div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+            <div className="w-full py-6 flex justify-end position sticky bottom-[-4px] bg-darkBg m-0">
+              Total: 9,089.49
+            </div>
+          </ScrollArea>
         </div>
 
         <DialogFooter>
