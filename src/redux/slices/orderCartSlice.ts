@@ -3,8 +3,6 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 const initialState: any = {
   productsCart: [],
   partsCart: [],
-  productsTotalPrice: 0,
-  partsTotalPrice: 0,
 };
 
 const orderCart = createSlice({
@@ -13,17 +11,9 @@ const orderCart = createSlice({
   reducers: {
     addProductToCart: (state, action: PayloadAction<any>) => {
       state.productsCart.push(action.payload);
-      state.productsTotalPrice = state.productsCart.reduce(
-        (acc: number, product: any) => acc + product.price * product.quantity,
-        0
-      );
     },
     addPartToCart: (state, action: PayloadAction<any>) => {
       state.partsCart.push(action.payload);
-      state.partsTotalPrice = state.partsCart.reduce(
-        (acc: number, part: any) => acc + part.price * part.quantity,
-        0
-      );
     },
     removeProductFromCart: (state, action: PayloadAction<any>) => {
       state.productsCart = state.productsCart.filter(
@@ -37,43 +27,48 @@ const orderCart = createSlice({
     },
 
     incrementProductQuantity: (state, action: PayloadAction<any>) => {
-      const product = state.productsCart.find(
-        (product: any) => product.id === action.payload
-      );
-      if (product) {
-        product.quantity += 1;
-      }
+      state.productsCart = state.productsCart.map((product: any) => {
+        if (product.product_id === action.payload) {
+          return { ...product, quantity: product.quantity + 1 };
+        }
+        return product;
+      });
     },
     decrementProductQuantity: (state, action: PayloadAction<any>) => {
-      const product = state.productsCart.find(
-        (product: any) => product.id === action.payload
-      );
-      if (product) {
-        //if product quantity is 1, remove it from the cart
-        if (product.quantity === 1) {
-          state.productsCart = state.productsCart.filter(
-            (product: any) => product.id !== action.payload
-          );
-        } else {
-          product.quantity -= 1;
-        }
-      }
+      state.productsCart = state.productsCart
+        .map((product: any) => {
+          if (product.product_id === action.payload) {
+            if (product.quantity === 1) {
+              return null; // Remove the product from cart
+            } else {
+              return { ...product, quantity: product.quantity - 1 };
+            }
+          }
+          return product;
+        })
+        .filter((product: any) => product !== null);
     },
     incrementPartQuantity: (state, action: PayloadAction<any>) => {
-      const part = state.partsCart.find(
-        (part: any) => part.id === action.payload
-      );
-      if (part) {
-        part.quantity += 1;
-      }
+      state.partsCart = state.partsCart.map((part: any) => {
+        if (part.part_id === action.payload) {
+          return { ...part, quantity: part.quantity + 1 };
+        }
+        return part;
+      });
     },
     decrementPartQuantity: (state, action: PayloadAction<any>) => {
-      const part = state.partsCart.find(
-        (part: any) => part.id === action.payload
-      );
-      if (part) {
-        part.quantity -= 1;
-      }
+      state.partsCart = state.partsCart
+        .map((part: any) => {
+          if (part.part_id === action.payload) {
+            if (part.quantity === 1) {
+              return null; // Remove the part from cart
+            } else {
+              return { ...part, quantity: part.quantity - 1 };
+            }
+          }
+          return part;
+        })
+        .filter((part: any) => part !== null);
     },
     resetCart: (state) => {
       state.productsCart = [];

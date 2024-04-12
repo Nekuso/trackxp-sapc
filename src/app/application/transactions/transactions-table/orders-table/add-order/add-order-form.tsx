@@ -4,6 +4,16 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
+import BranchInput from "./branch-input";
+import PaymentInput from "./payment-input";
+import StatusInput from "./status-input";
+
+import { DataTable as ProductsCart } from "./add-order-cart/products-cart/data-table";
+import { DataTable as PartsCart } from "./add-order-cart/parts-cart/data-table";
+
+import { initiateColumns as initiateProductsCartColumns } from "./add-order-cart/products-cart/columns";
+import { initiateColumns as initiatePartsCartColumns } from "./add-order-cart/parts-cart/columns";
+
 import {
   Form,
   FormControl,
@@ -29,6 +39,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Input } from "@/components/ui/input";
 
 export const orderSchema = z.object({
   customer_first_name: z.string().nullable(),
@@ -36,7 +47,11 @@ export const orderSchema = z.object({
   customer_email: z.string().nullable(),
   customer_contact_number: z.coerce.number().nullable(),
   status: z.string(),
-  inventory_id: z.coerce.number(),
+  payment_method: z.string(),
+  inventory_id: z
+    .string()
+    .min(1, { message: "Branch is required" })
+    .transform((arg) => new Number(arg)),
   employee_id: z.coerce.number(),
   total_price: z.coerce.number(),
   purchase_products: z
@@ -75,6 +90,9 @@ export default function OrderForm({ setDialogOpen }: any) {
   const dispatch = useDispatch();
 
   const orderCart = useSelector((state: any) => state.orderCart);
+  const orderCartOptions = useSelector(
+    (state: any) => state.orderCartOptionSlice
+  );
   const form = useForm<z.infer<typeof orderSchema>>({
     resolver: zodResolver(orderSchema),
     defaultValues: {
@@ -83,23 +101,22 @@ export default function OrderForm({ setDialogOpen }: any) {
       customer_email: "",
       customer_contact_number: 0,
       status: "pending",
-      inventory_id: 0,
+      payment_method: "Cash",
       employee_id: 0,
       purchase_products: orderCart.productsCart,
       purchase_parts: orderCart.partsCart,
       total_price: 0,
     },
     values: {
-      customer_first_name: null,
-      customer_last_name: null,
-      customer_email: null,
-      customer_contact_number: null,
+      customer_first_name: "",
+      customer_last_name: "",
+      customer_email: "",
+      customer_contact_number: 0,
       status: "",
+      payment_method: "",
       inventory_id: 0,
-      employee_id: 0,
-      total_price: (
-        orderCart.productsTotalPrice + orderCart.partsTotalPrice
-      ).toFixed(2),
+      employee_id: 1,
+      total_price: 0,
       purchase_products: orderCart.productsCart,
       purchase_parts: orderCart.partsCart,
     },
@@ -147,35 +164,195 @@ export default function OrderForm({ setDialogOpen }: any) {
           <div className="w-[60%] 2xl:w-[50%] h-full rounded-lg overflow-hidden">
             <OrderCartOptions />
           </div>
-          <ScrollArea className="w-full h-[553px] 2xl:h-[657px] flex flex-col justify-between bg-darkBg rounded-lg border border-lightBorder p-0 px-4 relative gap-0">
-            <Accordion type="multiple" className="w-full">
-              <AccordionItem value="item-1" className="sticky top-0 bg-darkBg">
-                <AccordionTrigger className="font-bold">
-                  Customer
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="w-full h-[300px] bg-red-300"></div>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-2" className="sticky top-0 bg-darkBg">
-                <AccordionTrigger className="font-bold">
-                  Products Summary
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="w-full h-[300px] bg-purple-500"></div>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-3" className="sticky top-0 bg-darkBg">
-                <AccordionTrigger className="font-bold">
-                  Parts Summary
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="w-full h-[300px] bg-orange-500"></div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-            <div className="w-full py-6 flex justify-end position sticky bottom-[-4px] bg-darkBg m-0">
-              Total: 9,089.49
+          <ScrollArea className="w-full h-[553px] 2xl:h-[657px] flex flex-col justify-between bg-darkBg rounded-lg border border-lightBorder p-0 px-4 gap-0 relative">
+            <div className="w-full h-full flex flex-col justify-between relative">
+              <Accordion
+                type="multiple"
+                className="w-full rounded-none relative"
+                defaultValue={["item-1", "item-2", "item-3"]}
+              >
+                <AccordionItem value="item-1">
+                  <AccordionTrigger className="font-bold bg-darkBg sticky top-0">
+                    Customer
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="w-full flex flex-col gap-4 px-2">
+                      <div className="w-full flex gap-4">
+                        <div className="w-[75%] flex flex-col">
+                          <FormField
+                            control={form.control}
+                            name="customer_first_name"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-xs">
+                                  First Name
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    className="rounded-lg bg-lightComponentBg border-slate-600/50"
+                                    {...field}
+                                    type="text"
+                                    placeholder="Enter First Name"
+                                    value={field.value || ""}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        <div className="w-[75%] flex flex-col">
+                          <FormField
+                            control={form.control}
+                            name="customer_last_name"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-xs">
+                                  Last Name
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    className="rounded-lg bg-lightComponentBg border-slate-600/50"
+                                    {...field}
+                                    type="text"
+                                    placeholder="Enter Last Name"
+                                    value={field.value || ""}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        <div className="w-full flex flex-col">
+                          <FormField
+                            control={form.control}
+                            name="customer_contact_number"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-xs">
+                                  Contact Number
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    className="rounded-lg bg-lightComponentBg border-slate-600/50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                    {...field}
+                                    accept="number"
+                                    type="number"
+                                    placeholder="#"
+                                    value={field.value || ""}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
+                      <div className="w-full flex gap-4">
+                        <div className="w-[75%] flex flex-col ">
+                          <FormField
+                            control={form.control}
+                            name="inventory_id"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-xs">
+                                  Branch
+                                </FormLabel>
+                                <BranchInput data={field} />
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        <div className="w-[75%] flex flex-col ">
+                          <FormField
+                            control={form.control}
+                            name="payment_method"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-xs">
+                                  Payment
+                                </FormLabel>
+                                <PaymentInput data={field} />
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        <div className="w-full flex flex-col ">
+                          <FormField
+                            control={form.control}
+                            name="status"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-xs">
+                                  Status
+                                </FormLabel>
+                                <StatusInput data={field} />
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
+                      <div className="w-[29%] flex flex-col">
+                        <FormField
+                          control={form.control}
+                          name="customer_email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-xs">Email</FormLabel>
+                              <FormControl>
+                                <Input
+                                  className="rounded-lg bg-lightComponentBg border-slate-600/50"
+                                  {...field}
+                                  type="text"
+                                  placeholder="example@gmail.com"
+                                  value={field.value || ""}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-2">
+                  <AccordionTrigger className="font-bold bg-darkBg sticky top-0">
+                    Products Summary
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <ProductsCart
+                      columns={initiateProductsCartColumns(
+                        dispatch,
+                        orderCartOptions.productsData
+                      )}
+                      data={orderCart.productsCart}
+                    />
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-3">
+                  <AccordionTrigger className="font-bold bg-darkBg sticky top-0">
+                    Parts Summary
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <PartsCart
+                      columns={initiatePartsCartColumns(
+                        dispatch,
+                        orderCartOptions.partsData
+                      )}
+                      data={orderCart.partsCart}
+                    />
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+              <div className="w-full py-6 flex justify-between position sticky bottom-[-4px] bg-darkBg m-0 text-lg font-bold">
+                <span>Total</span>
+                <span>{`₱${"Money"}`}</span>
+              </div>
             </div>
           </ScrollArea>
         </div>
