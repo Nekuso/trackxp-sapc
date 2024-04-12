@@ -47,7 +47,7 @@ export const initiateColumns = (dispatch: any, productsCart: any) => {
               <p className="text-xs max-w-[100px] 2xl:max-w-[200px] truncate font-semibold">
                 {row.original.name}
               </p>
-              <p className="text-md max-w-[181px] truncate text-white font-bold">
+              <p className="text-sx max-w-[120px] 2xl:max-w-[180px] truncate text-white font-bold">
                 {`₱ ${row.original.price} • ${row.original.uoms.unit_name}`}
               </p>
               <p className="text-xs max-w-[181px] truncate text-white/50">
@@ -97,6 +97,7 @@ export const initiateColumns = (dispatch: any, productsCart: any) => {
                     description: row.original.description,
                     image: row.original.image_url,
                     uom_name: row.original.uoms.unit_name,
+                    barcode: row.original.barcode,
                     quantity: 1,
                     price: row.original.price,
                   })

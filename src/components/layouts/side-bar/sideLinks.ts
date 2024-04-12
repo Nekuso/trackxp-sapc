@@ -25,14 +25,14 @@ export const sideLinks = [
     icon: inventoryIcon,
   },
   {
-    title: "Announcements",
-    href: "/application/announcements",
-    icon: announcementIcon,
-  },
-  {
     title: "Management",
     href: "/application/management",
     icon: managementIcon,
+  },
+  {
+    title: "Announcements",
+    href: "/application/announcements",
+    icon: announcementIcon,
   },
   {
     title: "Analytics",
