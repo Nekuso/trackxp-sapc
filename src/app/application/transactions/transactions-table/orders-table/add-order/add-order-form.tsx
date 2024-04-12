@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
 import { toast as sonner } from "sonner";
-import { useTransition } from "react";
+import { useEffect, useTransition } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
 import { useProducts } from "@/hooks/useProducts";
@@ -100,27 +100,28 @@ export default function OrderForm({ setDialogOpen }: any) {
       customer_last_name: "",
       customer_email: "",
       customer_contact_number: 0,
-      status: "pending",
-      payment_method: "Cash",
       employee_id: 0,
-      purchase_products: orderCart.productsCart,
-      purchase_parts: orderCart.partsCart,
       total_price: 0,
-    },
-    values: {
-      customer_first_name: "",
-      customer_last_name: "",
-      customer_email: "",
-      customer_contact_number: 0,
-      status: "",
-      payment_method: "",
-      inventory_id: 0,
-      employee_id: 1,
-      total_price: 0,
-      purchase_products: orderCart.productsCart,
-      purchase_parts: orderCart.partsCart,
     },
   });
+
+  useEffect(() => {
+    form.setValue("purchase_products", orderCart.productsCart);
+    form.setValue("purchase_parts", orderCart.partsCart);
+    form.setValue(
+      "total_price",
+      (
+        orderCart.productsCart.reduce(
+          (acc: any, product: any) => acc + product.price * product.quantity,
+          0
+        ) +
+        orderCart.partsCart.reduce(
+          (acc: any, part: any) => acc + part.price * part.quantity,
+          0
+        )
+      ).toFixed(2)
+    );
+  }, [orderCart.productsCart, orderCart.partsCart, form]);
 
   async function onSubmit(data: any) {
     startTransition(async () => {
@@ -351,7 +352,20 @@ export default function OrderForm({ setDialogOpen }: any) {
               </Accordion>
               <div className="w-full py-6 flex justify-between position sticky bottom-[-4px] bg-darkBg m-0 text-lg font-bold">
                 <span>Total</span>
-                <span>{`₱${"Money"}`}</span>
+                <span>{`₱ ${
+                  // sum all the products and parts
+                  (
+                    orderCart.productsCart.reduce(
+                      (acc: any, product: any) =>
+                        acc + product.price * product.quantity,
+                      0
+                    ) +
+                    orderCart.partsCart.reduce(
+                      (acc: any, part: any) => acc + part.price * part.quantity,
+                      0
+                    )
+                  ).toFixed(2)
+                }`}</span>
               </div>
             </div>
           </ScrollArea>

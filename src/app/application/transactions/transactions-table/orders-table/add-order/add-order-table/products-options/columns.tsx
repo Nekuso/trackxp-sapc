@@ -82,7 +82,6 @@ export const initiateColumns = (dispatch: any, productsCart: any) => {
                   ? "bg-red-500"
                   : "bg-applicationPrimary hover:bg-applicationPrimary/70"
               )}
-              type="button"
               disabled={
                 productsCart.some(
                   (product: any) => product.product_id === row.original.id
