@@ -155,41 +155,6 @@ export const initialState = (branches: any) => {
         );
       },
     },
-    // {
-    //   id: "price",
-    //   accessorKey: "price",
-    //   header: "Price",
-    //   cell: ({ row }) => {
-    //     return (
-    //       <p className="max-w-[190px] 2xl:max-w-[220px] truncate">
-    //         ₱ {row.original.price.toFixed(2)}
-    //       </p>
-    //     );
-    //   },
-    // },
-    // {
-    //   id: "brand",
-    //   accessorKey: "brands",
-    //   accessorFn: (row) => row.brands.brand_name,
-    //   header: "Brand",
-    //   cell: ({ row }) => {
-    //     const item = brands?.find(
-    //       (item: any) => item.value === row.original.brands.brand_name
-    //     );
-
-    //     if (!item) {
-    //       return null;
-    //     }
-    //     return (
-    //       <p className="max-w-[100px] 2xl:max-w-[110px] truncate">
-    //         {item.label}
-    //       </p>
-    //     );
-    //   },
-    //   filterFn: (row, id, value) => {
-    //     return value.includes(row.getValue(id));
-    //   },
-    // },
     {
       accessorKey: "description",
       header: "Description",

@@ -24,7 +24,9 @@ export default function ServiceContent({ service }: any) {
               <AvatarImage
                 className="object-cover bg-center bg-cover rounded-xl"
                 src={
-                  "https://hips.hearstapps.com/hmg-prod/images/pile-of-tires-on-white-background-royalty-free-image-672151801-1561751929.jpg?resize=2048:*"
+                  service[0].image_url
+                    ? service[0].image_url
+                    : "https://via.placeholder.com/150"
                 }
                 alt={service[0].name}
               />
@@ -49,7 +51,10 @@ export default function ServiceContent({ service }: any) {
                   </span>
                   <div className="w-full flex justify-between place-items-center min-w-0  bg-lightBorder rounded-lg">
                     <p className="text-md 2xl:text-lg text-white gap-2 max-w-[260px] p-3 truncate">
-                      ₱ {service[0].price.toFixed(2)}
+                      ₱{" "}
+                      {service[0].price
+                        .toFixed(2)
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                     </p>
                     <TooltipProvider>
                       <Tooltip>

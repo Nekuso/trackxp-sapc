@@ -66,7 +66,7 @@ export default function ServiceForm({ setDialogOpen, service }: any) {
 
   async function onSubmit(data: any) {
     startTransition(async () => {
-      const result = await updateService(data, 5000);
+      const result = await updateService(data, 2000);
 
       const { error } = result;
       if (error?.message) {

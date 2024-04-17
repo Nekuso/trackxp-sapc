@@ -81,7 +81,7 @@ export default function PartForm({ setDialogOpen, part, brands }: any) {
 
   async function onSubmit(data: any) {
     startTransition(async () => {
-      const result = await updatePart(data, 5000);
+      const result = await updatePart(data, 2000);
 
       const { error } = result;
       if (error?.message) {
@@ -279,7 +279,7 @@ export default function PartForm({ setDialogOpen, part, brands }: any) {
             className="text-xs font-bold rounded-md min-w-[105px] flex justify-center place-items-center gap-2 bg-applicationPrimary/90 hover:bg-applicationPrimary primary-glow transition-all duration-300"
             type="submit"
           >
-            <span className={cn({ hidden: isPending })}>Create Part</span>
+            <span className={cn({ hidden: isPending })}>Update Part</span>
             <AiOutlineLoading3Quarters
               className={cn(" animate-spin", { hidden: !isPending })}
             />

@@ -13,7 +13,7 @@ type cartItem = {
   part_id: number;
   name: string;
   description: string;
-  image_url: string;
+  image: string;
   quantity: number;
   price: number;
   barcode: string;
@@ -34,10 +34,7 @@ export const initiateColumns = (dispatch: any, partsDataOptions: any) => {
         return (
           <div className="flex place-items-between gap-4">
             <Avatar className="w-14 h-14 2xl:w-20 2xl:h-20 cursor-pointer z-0 rounded-md">
-              <AvatarImage
-                src={row.original.image_url}
-                alt={row.original.image_url}
-              />
+              <AvatarImage src={row.original.image} alt={row.original.image} />
               <AvatarFallback className="bg-lightBorder rounded-md">
                 {row.original.name[0]}
               </AvatarFallback>
@@ -102,7 +99,10 @@ export const initiateColumns = (dispatch: any, partsDataOptions: any) => {
       cell: ({ row }) => {
         return (
           <div className="w-full flex min-w-[150px] gap-2 justify-end text-white font-bold">
-            ₱ {(row.original.price * row.original.quantity).toFixed(2)}
+            ₱{" "}
+            {(row.original.price * row.original.quantity)
+              .toFixed(2)
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           </div>
         );
       },

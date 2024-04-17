@@ -72,7 +72,7 @@ export function DataTable<TData, TValue>({
       <div className="w-full h-full overflow-hidden">
         <ScrollArea className="w-full relative">
           <Table>
-            <TableHeader className="bg-darkBg border-none ">
+            <TableHeader className=" border-none ">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow
                   key={headerGroup.id}
@@ -130,7 +130,8 @@ export function DataTable<TData, TValue>({
                     .reduce((acc, item: any) => {
                       return acc + item.price * item.quantity;
                     }, 0)
-                    .toFixed(2)}`}
+                    .toFixed(2)
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`}
                 </TableCell>
               </TableRow>
             </TableFooter>

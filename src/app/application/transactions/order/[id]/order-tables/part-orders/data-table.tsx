@@ -19,12 +19,11 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DataTablePagination } from "./data-table-pagination";
-import { DataTableToolbar } from "./data-table-toolbar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface DataTableProps<TData, TValue> {
@@ -39,13 +38,17 @@ export function DataTable<TData, TValue>({
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     barcode: false,
-    created_at: false,
   });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
     data,
     columns,
+    initialState: {
+      pagination: {
+        pageSize: 999,
+      },
+    },
     state: {
       sorting,
       columnVisibility,
@@ -65,14 +68,11 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="w-full min-h-[715px] 2xl:min-h-[792px] flex flex-col justify-between gap-3 bg-darkComponentBg border border-lightBorder p-4 rounded-2xl">
-      <div className="w-full flex justify-between ">
-        <DataTableToolbar table={table} />
-      </div>
-      <div className="w-full h-full overflow-scroll-y">
-        <ScrollArea className="w-full h-[580px] 2xl:h-[650px] rounded-2xl relative">
+    <div className="w-full flex flex-col justify-between gap-1 ">
+      <div className="w-full h-full overflow-hidden">
+        <ScrollArea className="w-full relative">
           <Table>
-            <TableHeader className="bg-darkComponentBg border-none sticky top-0 z-[5]">
+            <TableHeader className=" border-none ">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow
                   key={headerGroup.id}
@@ -99,7 +99,7 @@ export function DataTable<TData, TValue>({
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    className=" border-none hover:bg-slate-300/20 transition-all duration-300 cursor-pointer"
+                    className=" border-none hover:bg-slate-300/20 transition-all duration-300"
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
@@ -117,7 +117,7 @@ export function DataTable<TData, TValue>({
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    No results.
+                    Parts Empty.
                   </TableCell>
                 </TableRow>
               )}
@@ -125,7 +125,6 @@ export function DataTable<TData, TValue>({
           </Table>
         </ScrollArea>
       </div>
-      <DataTablePagination table={table} />
     </div>
   );
 }

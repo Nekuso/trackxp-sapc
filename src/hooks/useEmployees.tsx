@@ -86,25 +86,25 @@ export const useEmployees: any = () => {
       .from("employees")
       .select(
         `
-      id,
-      email,
-      first_name,
-      last_name,
-      image_url,
-      branches (
         id,
-        branch_name,
-        branch_location
-      ),
-      address,
-      contact_number,
-      gender,
-      roles (id, role),
-      status,
-      dob,
-      created_at,
-      password
-    `
+        email,
+        first_name,
+        last_name,
+        image_url,
+        branches (
+          id,
+          branch_name,
+          branch_location
+        ),
+        address,
+        contact_number,
+        gender,
+        roles (id, role),
+        status,
+        dob,
+        created_at,
+        password
+      `
       )
       .eq("id", id);
 
