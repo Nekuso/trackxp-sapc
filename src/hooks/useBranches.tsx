@@ -45,7 +45,7 @@ export const useBranches: any = () => {
   };
   const getRole = async (id: string, duration?: number) => {
     const { data, error } = await supabase
-      .from("roles")
+      .from("branches")
       .select(
         `
       id,

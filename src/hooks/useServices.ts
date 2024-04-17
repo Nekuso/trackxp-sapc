@@ -25,7 +25,10 @@ export const useServices: any = () => {
     return result;
   };
   const getServices = async () => {
-    const result = await supabase.from("services").select(`
+    const result = await supabase
+      .from("services")
+      .select(
+        `
         id,
         name,
         description,
@@ -42,7 +45,9 @@ export const useServices: any = () => {
             )
         ),
         created_at
-    `);
+    `
+      )
+      .order("created_at", { ascending: false });
 
     const { data, error } = result;
     if (error) {
@@ -102,7 +107,7 @@ export const useServices: any = () => {
         status: props.status,
       })
       .eq("id", props.id);
-      console.log(result)
+    console.log(result);
 
     await new Promise((resolve) => setTimeout(resolve, duration));
 

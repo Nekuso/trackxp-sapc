@@ -73,24 +73,28 @@ export default function Transactions() {
       )
       .subscribe();
     const subscribedChannel2 = supabase
-      .channel("orders-follow-up")
+      .channel("products-follow-up")
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "products" },
         (payload: any) => {
           getProducts();
-          dispatch(setProductsData(productsData));
+          getOrders();
+
+          // dispatch(setProductsData(productsData));
         }
       )
       .subscribe();
     const subscribedChannel3 = supabase
-      .channel("orders-follow-up")
+      .channel("parts-follow-up")
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "parts" },
         (payload: any) => {
           getParts();
-          dispatch(setPartsData(partsData));
+          getOrders();
+
+          // dispatch(setPartsData(partsData));
         }
       )
       .subscribe();

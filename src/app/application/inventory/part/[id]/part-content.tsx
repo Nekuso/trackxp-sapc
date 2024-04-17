@@ -22,7 +22,9 @@ export default function PartContent({ part, brands }: any) {
             <AvatarImage
               className="object-cover bg-center bg-cover rounded-xl"
               src={
-                "https://hips.hearstapps.com/hmg-prod/images/pile-of-tires-on-white-background-royalty-free-image-672151801-1561751929.jpg?resize=2048:*"
+                part[0].image_url
+                  ? part[0].image_url
+                  : "https://via.placeholder.com/300"
               }
               alt={part[0].name}
             />

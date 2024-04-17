@@ -27,38 +27,7 @@ export const useParts: any = () => {
     return result;
   };
   const getParts = async () => {
-    const result = await supabase.from("parts").select(`
-        id,
-        name,
-        description,
-        image_url,
-        stock_quantity,
-        brands(
-            id,
-            brand_name
-        ),
-        price,
-        barcode,
-        status,
-        inventory(
-            id,
-            branches(
-                id,
-                branch_name,
-                branch_location
-            )
-        ),
-        created_at
-    `);
-
-    const { data, error } = result;
-    if (error) {
-      return error;
-    }
-    return setPartsData(data);
-  };
-  const getPart = async (id: string, duration?: number) => {
-    const { data, error } = await supabase
+    const result = await supabase
       .from("parts")
       .select(
         `
@@ -75,15 +44,51 @@ export const useParts: any = () => {
         barcode,
         status,
         inventory(
+          id,
+          branches(
+              id,
+              branch_name,
+              branch_location
+          )
+        ),
+        created_at
+      `
+      )
+      .order("created_at", { ascending: false });
+
+    const { data, error } = result;
+    if (error) {
+      return error;
+    }
+    return setPartsData(data);
+  };
+  const getPart = async (id: string, duration?: number) => {
+    const { data, error } = await supabase
+      .from("parts")
+      .select(
+        `
+          id,
+          name,
+          description,
+          image_url,
+          stock_quantity,
+          brands(
+            id,
+            brand_name
+          ),
+          price,
+          barcode,
+          status,
+          inventory(
             id,
             branches(
                 id,
                 branch_name,
                 branch_location
             )
-        ),
-        created_at
-      `
+          ),
+          created_at
+        `
       )
       .eq("id", id);
 

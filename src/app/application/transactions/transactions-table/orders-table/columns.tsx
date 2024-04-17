@@ -101,110 +101,10 @@ export const initialState = (branches: any) => {
         );
       },
     },
-    // {
-    //   id: "name",
-    //   accessorKey: "name",
-    //   header: ({ column }) => {
-    //     return (
-    //       <DropdownMenu>
-    //         <DropdownMenuTrigger asChild>
-    //           <Button
-    //             variant="ghost"
-    //             size="sm"
-    //             className="-ml-3 h-8 data-[state=open]:bg-applicationPrimary data-[state=open]:text-white hover:bg-slate-50/40 hover:text-white"
-    //           >
-    //             <span>Product</span>
-    //             {column.getIsSorted() === "desc" ? (
-    //               <ArrowDownIcon className="ml-2 h-4 w-4" />
-    //             ) : column.getIsSorted() === "asc" ? (
-    //               <ArrowUpIcon className="ml-2 h-4 w-4" />
-    //             ) : (
-    //               <CaretSortIcon className="ml-2 h-4 w-4" />
-    //             )}
-    //           </Button>
-    //         </DropdownMenuTrigger>
-    //         <DropdownMenuContent
-    //           align="start"
-    //           className="bg-darkComponentBg shadow-2xl border-darkGray border-none"
-    //         >
-    //           <DropdownMenuItem
-    //             onClick={() => column.toggleSorting(false)}
-    //             className="hover:bg-applicationPrimary  text-white group"
-    //           >
-    //             <ArrowUpIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70 group-hover:text-white" />
-    //             Asc
-    //           </DropdownMenuItem>
-    //           <DropdownMenuItem
-    //             onClick={() => column.toggleSorting(true)}
-    //             className="hover:bg-applicationPrimary text-white group"
-    //           >
-    //             <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70 group-hover:text-white" />
-    //             Desc
-    //           </DropdownMenuItem>
-    //         </DropdownMenuContent>
-    //       </DropdownMenu>
-    //     );
-    //   },
-    //   cell: ({ row }) => {
-    //     return (
-    //       <div className="flex place-items-center gap-2">
-    //         <Avatar className="w-10 h-10 cursor-pointer z-0 rounded-md">
-    //           <AvatarImage
-    //             src={row.original.image_url}
-    //             alt={row.original.barcode}
-    //           />
-    //           <AvatarFallback className="bg-darkBg rounded-md">
-    //             {row.original.name[0]}
-    //           </AvatarFallback>
-    //         </Avatar>
-
-    //         <div className="flex flex-col">
-    //           <p className="max-w-[190px] 2xl:max-w-[220px] truncate font-semibold">
-    //             {row.original.name}
-    //           </p>
-    //           <p className="max-w-[181px] truncate text-white/50">
-    //             Barcode: {row.original.barcode}
-    //           </p>
-    //         </div>
-    //       </div>
-    //     );
-    //   },
-    // },
-    // {
-    //   id: "price",
-    //   accessorKey: "price",
-    //   header: "Price",
-    //   cell: ({ row }) => {
-    //     return (
-    //       <p className="max-w-[190px] 2xl:max-w-[220px] truncate">
-    //         ₱ {row.original.price.toFixed(2)}
-    //       </p>
-    //     );
-    //   },
-    // },
-    // {
-    //   id: "uom",
-    //   accessorKey: "uom",
-    //   accessorFn: (row) => row.uoms.unit_name,
-    //   header: "Unit",
-    //   cell: ({ row }) => {
-    //     const item = uoms?.find(
-    //       (item: any) => item.value === row.original.uoms.unit_name
-    //     );
-
-    //     if (!item) {
-    //       return null;
-    //     }
-    //     return item.label;
-    //   },
-    //   filterFn: (row, id, value) => {
-    //     return value.includes(row.getValue(id));
-    //   },
-    // },
     {
       id: "customer_first_name",
       accessorKey: "customer_first_name",
-      header: "Customer Name",
+      header: "Customer",
       cell: ({ row }) => {
         return (
           <p className="max-w-[110px] 2xl:max-w-[220px] truncate">
@@ -336,7 +236,7 @@ export const initialState = (branches: any) => {
           return (
             <p
               className={
-                "w-fit text-xs flex place-items-center gap-1 truncate text-white bg-applicationPrimary px-2 py-1 rounded-3xl font-semibold"
+                "w-fit text-xs flex place-items-center gap-1 truncate text-white bg-black px-2 py-1 rounded-3xl font-semibold"
               }
             >
               None
@@ -392,7 +292,10 @@ export const initialState = (branches: any) => {
       cell: ({ row }) => {
         return (
           <p className="max-w-[190px] 2xl:max-w-[220px] truncate font-bold">
-            ₱ {row.original.total_price.toFixed(2)}
+            ₱{" "}
+            {row.original.total_price
+              .toFixed(2)
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           </p>
         );
       },
@@ -463,7 +366,7 @@ export const initialState = (branches: any) => {
           return (
             <p
               className={
-                "w-fit text-xs font-normal flex place-items-center gap-2 truncate text-yellow-300 bg-yellow-300 bg-opacity-20 px-2 py-1 rounded-3xl border border-yellow-600"
+                "w-fit text-xs font-normal flex place-items-center gap-2 truncate text-yellow-300 bg-yellow-300 bg-opacity-20 px-3 py-1 rounded-3xl border border-yellow-600"
               }
             >
               {item.value}
@@ -473,7 +376,7 @@ export const initialState = (branches: any) => {
           return (
             <p
               className={
-                "w-fit text-xs font-normal flex place-items-center gap-2 truncate text-red-300 bg-red-300 bg-opacity-20 px-2 py-1 rounded-3xl border border-red-600"
+                "w-fit text-xs font-normal flex place-items-center gap-2 truncate text-red-300 bg-red-300 bg-opacity-20 px-3 py-1 rounded-3xl border border-red-600"
               }
             >
               {item.value}
@@ -504,6 +407,14 @@ export const initialState = (branches: any) => {
     {
       id: "barcode",
       accessorKey: "barcode",
+    },
+    {
+      id: "created_at",
+      accessorKey: "created_at",
+      accessorFn: (row) => format(new Date(row.created_at), "PPP"),
+      filterFn: (row, id, value) => {
+        return value.includes(row.getValue(id));
+      },
     },
   ];
   return columns;

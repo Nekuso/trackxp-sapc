@@ -24,10 +24,10 @@ import {
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
 import { toast as sonner } from "sonner";
-import { useTransition } from "react";
+import { useEffect, useTransition } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
-import { useProducts } from "@/hooks/useProducts";
+import { useOrders } from "@/hooks/useOrders";
 import { useSelector } from "react-redux";
 import OrderCartOptions from "./add-order-table/lists";
 import { useDispatch } from "react-redux";
@@ -40,6 +40,9 @@ import {
 } from "@/components/ui/accordion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
+import DiscountInput from "./discount-input";
+import { sub } from "date-fns";
+import { TbCurrencyPeso } from "react-icons/tb";
 
 export const orderSchema = z.object({
   customer_first_name: z.string().nullable(),
@@ -52,8 +55,12 @@ export const orderSchema = z.object({
     .string()
     .min(1, { message: "Branch is required" })
     .transform((arg) => new Number(arg)),
-  employee_id: z.coerce.number(),
+  employee_id: z.string(),
+  discount: z.string().transform((arg) => new Number(arg)),
+  tax: z.coerce.number(),
+  subtotal: z.coerce.number(),
   total_price: z.coerce.number(),
+  amount_paid: z.coerce.number(),
   purchase_products: z
     .array(
       z.object({
@@ -62,12 +69,13 @@ export const orderSchema = z.object({
         name: z.string(),
         description: z.string(),
         image: z.string(),
+        barcode: z.string(),
         uom_name: z.string(),
         quantity: z.coerce.number(),
         price: z.coerce.number(),
       })
     )
-    .nullable(),
+    .min(1, { message: "Products are required" }),
   purchase_parts: z
     .array(
       z.object({
@@ -76,17 +84,18 @@ export const orderSchema = z.object({
         name: z.string(),
         description: z.string(),
         image: z.string(),
+        barcode: z.string(),
         brand_name: z.string(),
         quantity: z.coerce.number(),
         price: z.coerce.number(),
       })
     )
-    .nullable(),
+    .min(1, { message: "Parts are required" }),
 });
 
 export default function OrderForm({ setDialogOpen }: any) {
   const [isPending, startTransition] = useTransition();
-  const { createProduct } = useProducts();
+  const { createOrder } = useOrders();
   const dispatch = useDispatch();
 
   const orderCart = useSelector((state: any) => state.orderCart);
@@ -100,44 +109,66 @@ export default function OrderForm({ setDialogOpen }: any) {
       customer_last_name: "",
       customer_email: "",
       customer_contact_number: 0,
-      status: "pending",
-      payment_method: "Cash",
-      employee_id: 0,
-      purchase_products: orderCart.productsCart,
-      purchase_parts: orderCart.partsCart,
-      total_price: 0,
-    },
-    values: {
-      customer_first_name: "",
-      customer_last_name: "",
-      customer_email: "",
-      customer_contact_number: 0,
-      status: "",
+      employee_id: "",
       payment_method: "",
-      inventory_id: 0,
-      employee_id: 1,
+      subtotal: 0,
       total_price: 0,
-      purchase_products: orderCart.productsCart,
-      purchase_parts: orderCart.partsCart,
+      discount: "0",
+      tax: 0,
+      amount_paid: 0,
     },
   });
 
+  form.setValue("purchase_products", orderCart.productsCart);
+  form.setValue("purchase_parts", orderCart.partsCart);
+  form.setValue(
+    "subtotal",
+    (
+      orderCart.productsCart.reduce(
+        (acc: any, product: any) => acc + product.price * product.quantity,
+        0
+      ) +
+      orderCart.partsCart.reduce(
+        (acc: any, part: any) => acc + part.price * part.quantity,
+        0
+      )
+    ).toFixed(2)
+  );
+  form.setValue(
+    "total_price",
+    Number(
+      (
+        (orderCart.productsCart.reduce(
+          (acc: any, product: any) => acc + product.price * product.quantity,
+          0
+        ) +
+          orderCart.partsCart.reduce(
+            (acc: any, part: any) => acc + part.price * part.quantity,
+            0
+          )) *
+        ((100 - Number(form.getValues("discount"))) / 100)
+      )
+        .toFixed(2)
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    )
+  );
+
   async function onSubmit(data: any) {
     startTransition(async () => {
-      // const result = await createProduct(data, 5000);
+      const result = await createOrder(data, 1000);
 
-      // const { error } = result;
-      // if (error?.message) {
-      //   toast({
-      //     variant: "destructive",
-      //     title: "⚠️Error",
-      //     description: error.message,
-      //   });
-      //   return;
-      // }
-      // sonner("✨Success", {
-      //   description: `Order Successful!`,
-      // });
+      const { error } = result;
+      if (error?.message) {
+        toast({
+          variant: "destructive",
+          title: "⚠️Error",
+          description: error.message,
+        });
+        return;
+      }
+      sonner("✨Success", {
+        description: `Order Successful!`,
+      });
       toast({
         title: "✨Success",
         description: (
@@ -165,7 +196,7 @@ export default function OrderForm({ setDialogOpen }: any) {
             <OrderCartOptions />
           </div>
           <ScrollArea className="w-full h-[553px] 2xl:h-[657px] flex flex-col justify-between bg-darkBg rounded-lg border border-lightBorder p-0 px-4 gap-0 relative">
-            <div className="w-full h-full flex flex-col justify-between relative">
+            <div className="w-full h-full flex flex-col gap-6 justify-between relative">
               <Accordion
                 type="multiple"
                 className="w-full rounded-none relative"
@@ -175,7 +206,7 @@ export default function OrderForm({ setDialogOpen }: any) {
                   <AccordionTrigger className="font-bold bg-darkBg sticky top-0">
                     Customer
                   </AccordionTrigger>
-                  <AccordionContent>
+                  <AccordionContent className="bg-darkComponentBg rounded-xl">
                     <div className="w-full flex flex-col gap-4 px-2">
                       <div className="w-full flex gap-4">
                         <div className="w-[75%] flex flex-col">
@@ -296,26 +327,71 @@ export default function OrderForm({ setDialogOpen }: any) {
                           />
                         </div>
                       </div>
-                      <div className="w-[29%] flex flex-col">
-                        <FormField
-                          control={form.control}
-                          name="customer_email"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-xs">Email</FormLabel>
-                              <FormControl>
-                                <Input
-                                  className="rounded-lg bg-lightComponentBg border-slate-600/50"
-                                  {...field}
-                                  type="text"
-                                  placeholder="example@gmail.com"
-                                  value={field.value || ""}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
+                      <div className="w-full flex gap-4">
+                        <div className="w-[75%] flex flex-col">
+                          <FormField
+                            control={form.control}
+                            name="customer_email"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-xs">Email</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    className="rounded-lg bg-lightComponentBg border-slate-600/50"
+                                    {...field}
+                                    type="text"
+                                    placeholder="example@gmail.com"
+                                    value={field.value || ""}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        <div className="w-[75%] flex flex-col ">
+                          <FormField
+                            control={form.control}
+                            name="amount_paid"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-xs">
+                                  Amount Paid
+                                </FormLabel>
+                                <div className="w-full flex place-items-center rounded-lg bg-lightComponentBg ">
+                                  <div className="h-full px-3 bg-darkBg rounded-tl-lg rounded-bl-lg">
+                                    <TbCurrencyPeso className="h-full w-5 text-center" />
+                                  </div>
+                                  <FormControl>
+                                    <Input
+                                      className="rounded-lg bg-lightComponentBg border-slate-600/50"
+                                      {...field}
+                                      type="number"
+                                      placeholder="Amount"
+                                      value={field.value || ""}
+                                    />
+                                  </FormControl>
+                                </div>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        <div className="w-full flex flex-col ">
+                          <FormField
+                            control={form.control}
+                            name="discount"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-xs">
+                                  Discount
+                                </FormLabel>
+                                <DiscountInput data={field} />
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
                       </div>
                     </div>
                   </AccordionContent>
@@ -324,7 +400,7 @@ export default function OrderForm({ setDialogOpen }: any) {
                   <AccordionTrigger className="font-bold bg-darkBg sticky top-0">
                     Products Summary
                   </AccordionTrigger>
-                  <AccordionContent>
+                  <AccordionContent className="bg-darkComponentBg rounded-xl">
                     <ProductsCart
                       columns={initiateProductsCartColumns(
                         dispatch,
@@ -338,7 +414,7 @@ export default function OrderForm({ setDialogOpen }: any) {
                   <AccordionTrigger className="font-bold bg-darkBg sticky top-0">
                     Parts Summary
                   </AccordionTrigger>
-                  <AccordionContent>
+                  <AccordionContent className="bg-darkComponentBg rounded-xl">
                     <PartsCart
                       columns={initiatePartsCartColumns(
                         dispatch,
@@ -349,9 +425,75 @@ export default function OrderForm({ setDialogOpen }: any) {
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
-              <div className="w-full py-6 flex justify-between position sticky bottom-[-4px] bg-darkBg m-0 text-lg font-bold">
-                <span>Total</span>
-                <span>{`₱${"Money"}`}</span>
+              <div className="w-full flex-col relative">
+                <div className="w-full py-2 flex gap-8 position sticky bottom-[-4px] bg-darkBg m-0 text-sm">
+                  <span className="w-full text-end text-slate-400">
+                    Subtotal
+                  </span>
+                  <span className="w-[20%] text-end">{`₱ ${(
+                    orderCart.productsCart.reduce(
+                      (acc: any, product: any) =>
+                        acc + product.price * product.quantity,
+                      0
+                    ) +
+                    orderCart.partsCart.reduce(
+                      (acc: any, part: any) => acc + part.price * part.quantity,
+                      0
+                    )
+                  )
+                    .toFixed(
+                      // sum all the products and parts
+                      2
+                    )
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`}</span>
+                </div>
+
+                <div className="w-full py-2 flex gap-8 position sticky bottom-[-4px] bg-darkBg m-0 text-sm">
+                  <span className="w-full text-end text-slate-400">Tax</span>
+                  <span className="w-[20%] text-end">₱ 0.00</span>
+                </div>
+                <div className="w-full py-2 flex gap-8 position sticky bottom-[-4px] bg-darkBg m-0 text-sm">
+                  <span className="w-full text-end text-slate-400">
+                    Discount{" "}
+                    {Number(form.watch("discount")) > 0 &&
+                      `(${form.getValues("discount")}%)`}
+                  </span>
+                  <span className="w-[20%] text-end">
+                    {`- ₱ ${(
+                      (orderCart.productsCart.reduce(
+                        (acc: any, product: any) =>
+                          acc + product.price * product.quantity,
+                        0
+                      ) +
+                        orderCart.partsCart.reduce(
+                          (acc: any, part: any) =>
+                            acc + part.price * part.quantity,
+                          0
+                        )) *
+                      (Number(form.getValues("discount")) / 100)
+                    )
+                      .toFixed(2)
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`}
+                  </span>
+                </div>
+                <div className="w-full py-6 flex gap-8 position sticky bottom-[-4px] bg-darkBg m-0 text-lg font-bold">
+                  <span className="w-full text-end">Total</span>
+                  <span className="w-[20%] text-end">{`₱ ${(
+                    (orderCart.productsCart.reduce(
+                      (acc: any, product: any) =>
+                        acc + product.price * product.quantity,
+                      0
+                    ) +
+                      orderCart.partsCart.reduce(
+                        (acc: any, part: any) =>
+                          acc + part.price * part.quantity,
+                        0
+                      )) *
+                    ((100 - Number(form.getValues("discount"))) / 100)
+                  )
+                    .toFixed(2)
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`}</span>
+                </div>
               </div>
             </div>
           </ScrollArea>

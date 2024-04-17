@@ -27,29 +27,34 @@ export const useProducts: any = () => {
     return result;
   };
   const getProducts = async () => {
-    const result = await supabase.from("products").select(`
-        id,
-        name,
-        description,
-        image_url,
-        stock_quantity,
-        uoms(
+    const result = await supabase
+      .from("products")
+      .select(
+        `
+          id,
+          name,
+          description,
+          image_url,
+          stock_quantity,
+          uoms(
             id,
             unit_name
-        ),
-        price,
-        barcode,
-        status,
-        inventory(
+          ),
+          price,
+          barcode,
+          status,
+          inventory(
             id,
             branches(
-                id,
-                branch_name,
-                branch_location
+              id,
+              branch_name,
+              branch_location
             )
-        ),
-        created_at
-    `);
+          ),
+          created_at
+        `
+      )
+      .order("created_at", { ascending: false });
 
     const { data, error } = result;
     if (error) {

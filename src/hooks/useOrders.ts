@@ -10,15 +10,63 @@ export const useOrders: any = () => {
   const [currentOrderData, setCurrentOrderData] = useState<any>([]);
 
   const createOrder = async (props: any, duration?: any) => {
-    const result = await supabase.from("orders").insert({
-      name: props.name,
-      description: props.description,
-      image_url: props.image_url,
-      total: props.total,
-      inventory_id: props.inventory_id,
-      status: props.status,
-      payment_method: props.payment_method,
-    });
+    const result: any = await supabase
+      .from("orders")
+      .insert({
+        customer_first_name: props.customer_first_name,
+        customer_last_name: props.customer_last_name,
+        customer_contact_number: props.customer_contact_number,
+        customer_email: props.customer_email,
+        employee_id: "6232cf7a-000f-4026-a583-96be937a0adf",
+        inventory_id: props.inventory_id,
+        subtotal: props.subtotal,
+        total_price: props.total_price,
+        status: props.status,
+        discount: props.discount,
+        payment_method: props.payment_method,
+        amount_paid: props.amount_paid,
+      })
+      .select();
+
+    if (result.error) {
+      return result.error;
+    }
+
+    const productResult = await supabase
+      .from("purchase_products")
+      .insert(
+        props.purchase_products.map((product: any) => ({
+          order_id: result.data[0].id,
+          product_id: product.product_id,
+          name: product.name,
+          description: product.description,
+          inventory_id: product.inventory_id,
+          image_url: product.image,
+          barcode: product.barcode,
+          price: product.price,
+          quantity: product.quantity,
+          uom_name: product.uom_name,
+        }))
+      )
+      .select();
+
+    const partResult = await supabase
+      .from("purchase_parts")
+      .insert(
+        props.purchase_parts.map((part: any) => ({
+          order_id: result.data[0].id,
+          part_id: part.part_id,
+          name: part.name,
+          description: part.description,
+          inventory_id: part.inventory_id,
+          image_url: part.image,
+          barcode: part.barcode,
+          price: part.price,
+          quantity: part.quantity,
+          brand: part.brand_name,
+        }))
+      )
+      .select();
 
     await new Promise((resolve) => setTimeout(resolve, duration));
 
@@ -56,6 +104,7 @@ export const useOrders: any = () => {
           name,
           description,
           image_url,
+          barcode,
           price,
           quantity,
           uom_name
@@ -66,18 +115,21 @@ export const useOrders: any = () => {
           name,
           description,
           image_url,
+          barcode,
           price,
           quantity,
           brand
         ),
+        subtotal,
         total_price,
+        amount_paid,
         status,
+        discount,
         payment_method,
         created_at
     `);
 
     const { data, error } = result;
-    console.log(result);
     if (error) {
       return error;
     }
@@ -99,7 +151,10 @@ export const useOrders: any = () => {
           last_name,
           image_url,
           contact_number,
-          email
+          email,
+          roles(
+            role
+          )
         ),
         inventory(
           id,
@@ -114,6 +169,7 @@ export const useOrders: any = () => {
           product_id,
           name,
           description,
+          barcode,
           image_url,
           price,
           quantity,
@@ -124,22 +180,27 @@ export const useOrders: any = () => {
           part_id,
           name,
           description,
+          barcode,
           image_url,
           price,
           quantity,
           brand
         ),
+        subtotal,
         total_price,
+        amount_paid,
         status,
+        discount,
         payment_method,
         created_at
-      `
+    `
       )
       .eq("id", id);
 
     await new Promise((resolve) => setTimeout(resolve, duration));
     if (data?.length === 0) return true;
-    return setCurrentOrderData(data);
+    setCurrentOrderData(data);
+    return error;
   };
   const updateOrder = async (props: any, duration?: number) => {
     const result = await supabase

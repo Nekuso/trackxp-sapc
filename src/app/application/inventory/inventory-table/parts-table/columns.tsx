@@ -162,7 +162,10 @@ export const initialState = (branches: any, brands: any) => {
       cell: ({ row }) => {
         return (
           <p className="max-w-[190px] 2xl:max-w-[220px] truncate font-bold">
-            ₱ {row.original.price.toFixed(2)}
+            ₱{" "}
+            {row.original.price
+              .toFixed(2)
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           </p>
         );
       },
