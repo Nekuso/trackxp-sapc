@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
 import { toast as sonner } from "sonner";
-import { useEffect, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
 import { useOrders } from "@/hooks/useOrders";
@@ -41,28 +41,45 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import DiscountInput from "./discount-input";
-import { sub } from "date-fns";
 import { TbCurrencyPeso } from "react-icons/tb";
+import { useRouter } from "next/navigation";
 
-export const orderSchema = z.object({
-  customer_first_name: z.string().nullable(),
-  customer_last_name: z.string().nullable(),
-  customer_email: z.string().nullable(),
-  customer_contact_number: z.coerce.number().nullable(),
-  status: z.string(),
-  payment_method: z.string(),
-  inventory_id: z
-    .string()
-    .min(1, { message: "Branch is required" })
-    .transform((arg) => new Number(arg)),
-  employee_id: z.string(),
-  discount: z.string().transform((arg) => new Number(arg)),
-  tax: z.coerce.number(),
-  subtotal: z.coerce.number(),
-  total_price: z.coerce.number(),
-  amount_paid: z.coerce.number(),
-  purchase_products: z
-    .array(
+export default function OrderForm({ setDialogOpen }: any) {
+  const [isPending, startTransition] = useTransition();
+  const { createOrder } = useOrders();
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const orderCart = useSelector((state: any) => state.orderCart);
+  const orderCartOptions = useSelector(
+    (state: any) => state.orderCartOptionSlice
+  );
+
+  const [minTotalPrice, setMinTotalPrice] = useState(0);
+
+  const orderSchema: any = z.object({
+    customer_first_name: z.string().nullable(),
+    customer_last_name: z.string().nullable(),
+    customer_email: z.string().nullable(),
+    customer_contact_number: z.coerce.number().nullable(),
+    status: z.string(),
+    payment_method: z
+      .string()
+      .min(1, { message: "Payment method is required" }),
+    inventory_id: z
+      .string()
+      .min(1, { message: "Branch is required" })
+      .transform((arg) => new Number(arg)),
+    employee_id: z.string(),
+    discount: z.string().transform((arg) => new Number(arg)),
+    tax: z.coerce.number(),
+    subtotal: z.coerce.number(),
+    total_price: z.coerce.number(),
+    amount_paid: z.coerce.number().min(minTotalPrice, {
+      message: "Amount paid should be equal or greater than total price",
+    }),
+
+    purchase_products: z.array(
       z.object({
         product_id: z.coerce.number(),
         inventory_id: z.coerce.number(),
@@ -74,10 +91,8 @@ export const orderSchema = z.object({
         quantity: z.coerce.number(),
         price: z.coerce.number(),
       })
-    )
-    .min(1, { message: "Products are required" }),
-  purchase_parts: z
-    .array(
+    ),
+    purchase_parts: z.array(
       z.object({
         part_id: z.coerce.number(),
         inventory_id: z.coerce.number(),
@@ -89,19 +104,8 @@ export const orderSchema = z.object({
         quantity: z.coerce.number(),
         price: z.coerce.number(),
       })
-    )
-    .min(1, { message: "Parts are required" }),
-});
-
-export default function OrderForm({ setDialogOpen }: any) {
-  const [isPending, startTransition] = useTransition();
-  const { createOrder } = useOrders();
-  const dispatch = useDispatch();
-
-  const orderCart = useSelector((state: any) => state.orderCart);
-  const orderCartOptions = useSelector(
-    (state: any) => state.orderCartOptionSlice
-  );
+    ),
+  });
   const form = useForm<z.infer<typeof orderSchema>>({
     resolver: zodResolver(orderSchema),
     defaultValues: {
@@ -115,7 +119,6 @@ export default function OrderForm({ setDialogOpen }: any) {
       total_price: 0,
       discount: "0",
       tax: 0,
-      amount_paid: 0,
     },
   });
 
@@ -153,9 +156,35 @@ export default function OrderForm({ setDialogOpen }: any) {
     )
   );
 
+  const discountData = form.getValues("discount");
+
+  useEffect(() => {
+    setMinTotalPrice(
+      Number(
+        (
+          (orderCart.productsCart.reduce(
+            (acc: any, product: any) => acc + product.price * product.quantity,
+            0
+          ) +
+            orderCart.partsCart.reduce(
+              (acc: any, part: any) => acc + part.price * part.quantity,
+              0
+            )) *
+          ((100 - Number(form.getValues("discount"))) / 100)
+        ).toFixed(2)
+      )
+    );
+  }, [
+    orderCart.productsCart,
+    orderCart.partsCart,
+    discountData,
+    minTotalPrice,
+    form,
+  ]);
+
   async function onSubmit(data: any) {
     startTransition(async () => {
-      const result = await createOrder(data, 1000);
+      const result = await createOrder(data, 500);
 
       const { error } = result;
       if (error?.message) {
@@ -166,20 +195,17 @@ export default function OrderForm({ setDialogOpen }: any) {
         });
         return;
       }
-      sonner("✨Success", {
-        description: `Order Successful!`,
-      });
-      toast({
-        title: "✨Success",
-        description: (
-          <pre className="mt-2 w-[340px] max-h-[600px] rounded-md bg-slate-950 p-4 overflow-y-scroll">
-            <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-          </pre>
-        ),
-      });
 
       setDialogOpen(false);
-      new Promise((resolve) => setTimeout(resolve, 1500)).then(() => {
+      sonner("✨Success", {
+        description: `Order Successful!`,
+        action: {
+          label: "Print",
+          onClick: () =>
+            router.push(`/application/transactions/order/${result.data[0].id}`),
+        },
+      });
+      new Promise((resolve) => setTimeout(resolve, 500)).then(() => {
         dispatch(resetCart());
       });
     });
@@ -453,6 +479,10 @@ export default function OrderForm({ setDialogOpen }: any) {
                   <span className="w-[20%] text-end">₱ 0.00</span>
                 </div>
                 <div className="w-full py-2 flex gap-8 position sticky bottom-[-4px] bg-darkBg m-0 text-sm">
+                  <span className="w-full text-end text-slate-400">VAT</span>
+                  <span className="w-[20%] text-end">₱ 0.00</span>
+                </div>
+                <div className="w-full py-2 flex gap-8 position sticky bottom-[-4px] bg-darkBg m-0 text-sm">
                   <span className="w-full text-end text-slate-400">
                     Discount{" "}
                     {Number(form.watch("discount")) > 0 &&
@@ -503,6 +533,12 @@ export default function OrderForm({ setDialogOpen }: any) {
           <Button
             className="text-xs font-bold rounded-lg min-w-[105px] flex justify-center place-items-center gap-2 bg-applicationPrimary/90 hover:bg-applicationPrimary primary-glow transition-all duration-300"
             type="submit"
+            disabled={
+              orderCart.partsCart.length === 0 &&
+              orderCart.productsCart.length === 0
+                ? true
+                : false
+            }
           >
             <span className={cn({ hidden: isPending })}>Create Order</span>
             <AiOutlineLoading3Quarters

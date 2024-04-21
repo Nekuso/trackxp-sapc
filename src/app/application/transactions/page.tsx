@@ -80,8 +80,6 @@ export default function Transactions() {
         (payload: any) => {
           getProducts();
           getOrders();
-
-          // dispatch(setProductsData(productsData));
         }
       )
       .subscribe();
@@ -93,8 +91,6 @@ export default function Transactions() {
         (payload: any) => {
           getParts();
           getOrders();
-
-          // dispatch(setPartsData(partsData));
         }
       )
       .subscribe();

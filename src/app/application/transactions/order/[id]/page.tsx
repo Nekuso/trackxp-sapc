@@ -14,7 +14,7 @@ export default function Order({ params }: { params: any }) {
 
   useEffect(() => {
     const initialFetch = async () => {
-      const result = await getOrder(params.id, 2000);
+      const result = await getOrder(params.id, 500);
       if (result) setError(result);
     };
 

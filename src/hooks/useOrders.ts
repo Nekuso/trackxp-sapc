@@ -73,7 +73,10 @@ export const useOrders: any = () => {
     return result;
   };
   const getOrders = async () => {
-    const result = await supabase.from("orders").select(`
+    const result = await supabase
+      .from("orders")
+      .select(
+        `
         id,
         customer_first_name,
         customer_last_name,
@@ -127,7 +130,9 @@ export const useOrders: any = () => {
         discount,
         payment_method,
         created_at
-    `);
+    `
+      )
+      .order("created_at", { ascending: false });
 
     const { data, error } = result;
     if (error) {
