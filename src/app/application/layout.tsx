@@ -6,8 +6,6 @@ import TopBar from "@/components/layouts/top-bar/top-bar";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
-import { redirect } from "next/navigation";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
 import Providers from "@/redux/Provider";
 
 const montserrat = Montserrat({

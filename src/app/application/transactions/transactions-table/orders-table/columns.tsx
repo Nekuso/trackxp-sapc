@@ -38,6 +38,11 @@ export const statuses = [
     label: "Pending",
     icon: CircleIcon,
   },
+  {
+    value: "Archive",
+    label: "Archive ",
+    icon: CircleIcon,
+  },
 ];
 
 export const initialState = (branches: any) => {
@@ -376,7 +381,7 @@ export const initialState = (branches: any) => {
           return (
             <p
               className={
-                "w-fit text-xs font-normal flex place-items-center gap-2 truncate text-red-300 bg-red-300 bg-opacity-20 px-3 py-1 rounded-3xl border border-red-600"
+                "w-fit text-xs font-normal flex place-items-center gap-2 truncate text-slate-300 bg-slate-200 bg-opacity-20 px-4 py-1 rounded-3xl "
               }
             >
               {item.value}

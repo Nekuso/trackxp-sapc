@@ -68,12 +68,12 @@ export default function Dashboard() {
     <div className="w-full h-[805px] 2xl:h-[882px] flex justify-center place-items-center py-4">
       <div className="w-full h-full max-w-[1840px] flex justify-between gap-6">
         <div className="w-full h-full flex flex-col justify-between gap-6">
-          <div className="w-full h-[30%] max-h-[35%] flex justify-between gap-6">
+          <div className="w-full h-[30%] max-h-[35%] flex justify-between gap-6 ">
             {widgets.map((widget, i) => (
               <Widget key={i} {...widget} />
             ))}
           </div>
-          <div className="w-full h-[55%] bg-darkComponentBg rounded-xl border border-lightBorder shadow-xl">
+          <div className="w-full h-[55%] bg-darkComponentBg rounded-xl border border-lightBorder shadow-xl ">
             <div className="w-full h-full p-5 flex flex-col justify-between place-items-between">
               <h3 className="text-sm font-semibold text-slate-200">
                 Most Vehicle Job
@@ -91,7 +91,7 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-          <div className="w-full h-full bg-darkComponentBg rounded-xl border border-lightBorder shadow-xl">
+          <div className="w-full h-full bg-darkComponentBg rounded-xl border border-lightBorder shadow-xl ">
             <div className="w-full h-full p-5 flex flex-col justify-between place-items-between gap-4">
               <div className="w-full flex justify-between">
                 <h3 className="text-sm font-semibold text-slate-200">
