@@ -69,7 +69,7 @@ export default function SideBar() {
               return (
                 <Link
                   href={href}
-                  className="group relative w-auto flex place-items-center justify-start bg-transparent hover:bg-applicationPrimary text-sm font-medium p-4 rounded-full hover:shadow-sm hover:shadow-applicationPrimary transition-all gap-4"
+                  className="group relative w-auto flex place-items-center justify-start bg-transparent hover:bg-applicationPrimary text-sm font-medium p-4 rounded-xl primary-glow transition-all duration-300 gap-4 hover:scale-110"
                   key={`b_${i}`}
                 >
                   <Image
@@ -88,7 +88,7 @@ export default function SideBar() {
               onClick={() => {
                 onSignOut();
               }}
-              className="cursor-pointer group relative w-auto flex place-items-center justify-center bg-transparent hover:bg-red-500 text-sm font-medium p-4 rounded-full hover:shadow-sm primary-glow transition-all gap-4"
+              className="cursor-pointer group relative w-auto flex place-items-center justify-center bg-transparent hover:bg-red-500 text-sm font-medium p-4 rounded-xl hover:shadow-sm primary-glow transition-all gap-4"
             >
               <LogOut className={cn("w-4 h-5", { hidden: isPending })} />
               <AiOutlineLoading3Quarters
