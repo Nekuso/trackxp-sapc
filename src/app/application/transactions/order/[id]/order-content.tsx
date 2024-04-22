@@ -48,7 +48,7 @@ export default function OrderContent({ order }: any) {
 
   return (
     <div className="w-full h-[805px] 2xl:h-[882px] flex max-w-[1840px] justify-center place-items-start gap-4">
-      <ScrollArea className="w-[650px] 2xl:w-[55%] h-[695px] 2xl:h-[795px] px-8 pt-4 pb-8  bg-darkComponentBg rounded-xl border border-lightBorder shadow-lg gap-0 relative">
+      <ScrollArea className="w-[650px] 2xl:w-[55%] h-[720px] 2xl:h-[838px] px-8 pt-4 pb-8  bg-darkComponentBg rounded-xl border border-lightBorder shadow-lg gap-0 relative">
         <Accordion
           type="multiple"
           className="w-full rounded-none relative"
@@ -125,6 +125,12 @@ export default function OrderContent({ order }: any) {
               <p className="text-xs 2xl:text-sm text-slate-400">Status</p>
               <p className="text-xs 2xl:text-sm text-slate-50">
                 {order[0].status}
+              </p>
+            </div>
+            <div className="flex justify-between">
+              <p className="text-xs 2xl:text-sm text-slate-400">Cashier</p>
+              <p className="text-xs 2xl:text-sm text-slate-50">
+                {order[0].employees.first_name}
               </p>
             </div>
             <div className="flex justify-between">
@@ -236,13 +242,20 @@ export default function OrderContent({ order }: any) {
           className="w-full min-h-[600px] 2xl:min-h-[680px] flex flex-col place-items-center"
           ref={contentToPrint}
         >
-          <img src={recieptLogo.src} alt="logo" />
-          <Separator className="bg-slate-400" />
+          <div className="w-full flex flex-col gap-0.5 justify-center place-items-center py-2">
+            <img src={recieptLogo.src} alt="logo" className="mb-2" />
+            <p className="w-full text-center text-[8px] font-semibold text-black space-mono-regular tracking-tighter">
+              {`${order[0].inventory.branches.branch_location}`}
+            </p>
+            <p className="w-full text-center text-[8px] font-semibold text-black space-mono-regular tracking-tighter">
+              {`${order[0].inventory.branches.contact_number}`}
+            </p>
+          </div>
 
           <div className="w-full flex flex-col gap-1">
             <div className="flex flex-col justify-between gap-1">
               <h2 className="flex gap-1 place-items-center text-sm font-bold text-black space-mono-regular tracking-tighter">
-                <FiBox />
+                {/* <FiBox /> */}
                 Order Details
               </h2>
               <p className="text-[8px] font-semibold text-black space-mono-regular tracking-tighter">
@@ -301,10 +314,18 @@ export default function OrderContent({ order }: any) {
               </div>
               <div className="flex justify-between">
                 <p className="text-[10px] font-semibold text-black space-mono-regular tracking-tighter">
+                  Cashier
+                </p>
+                <p className="text-[10px] font-semibold text-black space-mono-regular tracking-tighter">
+                  {order[0].employees.first_name}
+                </p>
+              </div>
+              <div className="flex justify-between">
+                <p className="text-[10px] font-semibold text-black space-mono-regular tracking-tighter">
                   Created At
                 </p>
                 <p className="text-[10px] font-semibold text-black space-mono-regular tracking-tighter">
-                  {format(new Date(order[0].created_at), "PPP")}
+                  {format(new Date(order[0].created_at), "P")}
                 </p>
               </div>
             </div>
@@ -312,7 +333,7 @@ export default function OrderContent({ order }: any) {
             <div className="flex flex-col gap-1">
               <div className="flex justify-between">
                 <p className="flex gap-1 place-items-center text-[13px] font-semibold text-black space-mono-regular tracking-tighter">
-                  <BsBoxes />
+                  {/* <BsBoxes /> */}
                   Purchased Products
                 </p>
               </div>
@@ -350,7 +371,7 @@ export default function OrderContent({ order }: any) {
               <div className="flex flex-col gap-1">
                 <div className="flex justify-between">
                   <p className="flex gap-1 place-items-center text-[13px] font-semibold text-black space-mono-regular tracking-tighter">
-                    <SiTemporal />
+                    {/* <SiTemporal /> */}
                     Purchased Parts
                   </p>
                 </div>
@@ -485,6 +506,13 @@ export default function OrderContent({ order }: any) {
                 renderer="img"
               />
             </div>
+            <p className="w-full text-center text-[8px] font-semibold text-black space-mono-regular tracking-tighter">
+              Visit us at
+              <br />{" "}
+              <span className="underline">
+                https://trackxp-sapsc.vercel.app/
+              </span>
+            </p>
           </div>
         </div>
       </div>

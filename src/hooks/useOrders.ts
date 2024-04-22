@@ -166,7 +166,8 @@ export const useOrders: any = () => {
           branches(
             id,
             branch_name,
-            branch_location
+            branch_location,
+            contact_number
           )
         ),
         purchase_products(
