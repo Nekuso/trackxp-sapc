@@ -13,7 +13,6 @@ import ActivityLogs from "@/components/dashboard/activity-logs-widget/activity-l
 import EmployeesWidget from "@/components/dashboard/employees-widget/employees-widget";
 import ActivityLogsDialog from "@/components/dashboard/activity-logs-dialog/activity-logs-dialog";
 import EmployeesDialog from "@/components/dashboard/employees-dialog/employees-dialog";
-import { Suspense } from "react";
 
 const mostVehciles = [
   {

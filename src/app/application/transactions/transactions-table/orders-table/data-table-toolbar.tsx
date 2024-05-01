@@ -1,5 +1,5 @@
 "use client";
-import * as React from "react";
+import React from "react";
 import { CiExport } from "react-icons/ci";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 
 import { statuses } from "./columns";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
-import AddProductButton from "./add-order/add-order-dialog";
+import AddOrderButton from "./add-order/add-order-dialog";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import DatePickerWithRange from "./date-picker";
@@ -68,7 +68,7 @@ export function DataTableToolbar<TData>({
       </div>
       <div className="flex gap-4">
         <DatePickerWithRange />
-        <AddProductButton />
+        <AddOrderButton />
       </div>
     </div>
   );

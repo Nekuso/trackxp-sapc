@@ -39,6 +39,7 @@ export function DataTable<TData, TValue>({
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     barcode: false,
+    created_at: false,
   });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -64,7 +65,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="w-full min-h-[725px] 2xl:min-h-[800px] flex flex-col justify-between gap-3 bg-darkComponentBg border border-lightBorder p-4 rounded-2xl">
+    <div className="w-full min-h-[715px] 2xl:min-h-[792px] flex flex-col justify-between gap-3 bg-darkComponentBg border border-lightBorder p-4 rounded-2xl">
       <div className="w-full flex justify-between ">
         <DataTableToolbar table={table} />
       </div>

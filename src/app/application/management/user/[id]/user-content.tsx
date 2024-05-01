@@ -100,7 +100,7 @@ export default function UserContent({ employee, branches, roles }: any) {
             />
 
             <Avatar className="w-48 h-48 cursor-pointer z-0 absolute -bottom-[30%] left-7 border-8 border-darkComponentBg">
-              <AvatarImage src={employee.img_url} alt={employee.id} />
+              <AvatarImage src={employee[0].image_url} alt={employee[0].id} />
               <AvatarFallback className="bg-lightComponentBg font-bold text-2xl">
                 {`${employee[0].first_name[0]} ${employee[0].last_name[0]}`}
               </AvatarFallback>

@@ -29,13 +29,18 @@ export const useBranches: any = () => {
     return data;
   };
   const getBranches = async () => {
-    const result = await supabase.from("branches").select(`
+    const result = await supabase
+      .from("branches")
+      .select(
+        `
       id,
       branch_name,
       branch_location,
       branch_manager,
       created_at
-    `);
+    `
+      )
+      .order("created_at", { ascending: false });;
 
     const { data, error } = result;
     if (error) {

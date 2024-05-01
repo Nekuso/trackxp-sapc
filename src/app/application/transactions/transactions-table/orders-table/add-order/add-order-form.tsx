@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import { z } from "zod";
@@ -31,7 +32,7 @@ import { useOrders } from "@/hooks/useOrders";
 import { useSelector } from "react-redux";
 import OrderCartOptions from "./add-order-table/lists";
 import { useDispatch } from "react-redux";
-import { resetCart } from "@/redux/slices/orderCartSlice";
+import { resetOrderCart } from "@/redux/slices/orderCartSlice";
 import {
   Accordion,
   AccordionContent,
@@ -45,6 +46,7 @@ import { TbCurrencyPeso } from "react-icons/tb";
 import { useRouter } from "next/navigation";
 
 export default function OrderForm({ setDialogOpen }: any) {
+  const currentUser = useSelector((state: any) => state.currentSession);
   const [isPending, startTransition] = useTransition();
   const { createOrder } = useOrders();
   const dispatch = useDispatch();
@@ -113,12 +115,13 @@ export default function OrderForm({ setDialogOpen }: any) {
       customer_last_name: "",
       customer_email: "",
       customer_contact_number: 0,
-      employee_id: "",
+      employee_id: currentUser.id,
       payment_method: "",
       subtotal: 0,
       total_price: 0,
       discount: "0",
       tax: 0,
+      inventory_id: currentUser.branches.id.toString(),
     },
   });
 
@@ -206,9 +209,14 @@ export default function OrderForm({ setDialogOpen }: any) {
         },
       });
       new Promise((resolve) => setTimeout(resolve, 500)).then(() => {
-        dispatch(resetCart());
+        dispatch(resetOrderCart());
       });
     });
+  }
+
+  function onCancel() {
+    dispatch(resetOrderCart());
+    setDialogOpen(false);
   }
 
   return (
@@ -530,6 +538,12 @@ export default function OrderForm({ setDialogOpen }: any) {
         </div>
 
         <DialogFooter>
+          <Button
+            className="text-xs font-bold rounded-lg min-w-[105px] flex justify-center place-items-center gap-2 text-red-500 bg-transparent hover:bg-transparent"
+            onClick={() => onCancel()}
+          >
+            Cancel
+          </Button>
           <Button
             className="text-xs font-bold rounded-lg min-w-[105px] flex justify-center place-items-center gap-2 bg-applicationPrimary/90 hover:bg-applicationPrimary primary-glow transition-all duration-300"
             type="submit"

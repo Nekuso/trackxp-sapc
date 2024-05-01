@@ -95,9 +95,13 @@ export const initateColumns = (branches: any, roles: any) => {
         const item = row.original;
         return (
           <div className="flex place-items-center gap-4 z-0">
-            <Avatar className="w-10 h-10 cursor-pointer z-0">
-              <AvatarImage src={item.image_url} alt={item.id} />
-              <AvatarFallback className="bg-darkBg">
+            <Avatar className="w-10 h-10 cursor-pointer z-0 rounded-md">
+              <AvatarImage
+                src={item.image_url}
+                alt={item.id}
+                className="rounded-md"
+              />
+              <AvatarFallback className="bg-darkBg rounded-md">
                 {`${item.first_name[0]}${item.last_name[0]}`}
               </AvatarFallback>
             </Avatar>

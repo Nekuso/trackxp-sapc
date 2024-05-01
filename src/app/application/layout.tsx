@@ -7,6 +7,9 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import Providers from "@/redux/Provider";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
+import { createClient } from "@supabase/supabase-js";
 
 const montserrat = Montserrat({
   subsets: ["cyrillic-ext"],
@@ -23,13 +26,45 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const supabase = await createSupabaseServerClient();
-  // const { data, error } = await supabase.auth.getUser();
-  // if (error || !data?.user) {
-  //   redirect("/auth/login");
-  // }
+  const supabase = await createSupabaseServerClient();
+  const supabase2 = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!
+  );
+  const { data, error } = await supabase.auth.getUser();
+  const result: any = !error
+    ? await supabase2
+        .from("employees")
+        .select(
+          `
+        id,
+        email,
+        first_name,
+        last_name,
+        image_url,
+        branches (
+          id,
+          branch_name,
+          branch_location
+        ),
+        address,
+        contact_number,
+        gender,
+        roles (id, role),
+        status,
+        dob,
+        created_at,
+        password
+      `
+        )
+        .eq("id", data.user.id)
+    : null;
+  const currentUser = result?.data[0];
+  if (error || !data?.user) {
+    redirect("/auth/login");
+  }
 
-  const data = {};
+  // const data = {};
   return (
     <html lang="en">
       <body className={cn("font-montserrat", montserrat.variable)}>
@@ -42,7 +77,7 @@ export default async function RootLayout({
           <div className="relative flex place-items-start justify-center w-full min-h-screen h-screen bg-darkBg px-8 gap-10 max-lg:hidden overflow-y-scroll overflow-x-hidden no-scrollbar">
             <SideBar />
             <div className="flex flex-col justify-start place-items-start w-full min-h-full h-full relative">
-              <TopBar data={data} />
+              <TopBar data={currentUser} />
               {children}
             </div>
           </div>

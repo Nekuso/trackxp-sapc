@@ -144,6 +144,7 @@ export default function ServiceForm({ setDialogOpen, service }: any) {
                                 className="w-full text-start bg-transparent border-none rounded-tr-lg rounded-br-lg"
                                 {...field}
                                 type="number"
+                                min="1"
                                 placeholder="0.00"
                               />
                             </FormControl>
