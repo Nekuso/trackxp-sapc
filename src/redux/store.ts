@@ -13,7 +13,6 @@ import allEmployeesSlice from "./slices/allEmployeesSlice";
 
 export const store = configureStore({
   reducer: {
-    allEmployees: allEmployeesSlice,
     currentEmployee: currentEmployeeReducer,
     branches: branchesReducer,
     uoms: uomsReducer,
@@ -26,6 +25,7 @@ export const store = configureStore({
     orderServiceCart: orderServiceCartSlice,
 
     currentSession: currentSessionSlice,
+    allEmployees: allEmployeesSlice,
   },
 });
 

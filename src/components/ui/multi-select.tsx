@@ -120,7 +120,7 @@ const MultiSelectFormField = React.forwardRef<
             ref={ref}
             {...props}
             onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-            className="flex w-full rounded-md border border-slate-600/50 min-h-9 h-auto items-center justify-between bg-lightComponentBg hover:bg-applicationPrimary hover:text-white group px-3"
+            className="flex w-full rounded-md border border-slate-600/50 min-h-9 h-auto items-center justify-between bg-lightComponentBg hover:bg-applicationPrimary hover:text-white group px-2"
           >
             {selectedValues.length > 0 ? (
               <div className="flex justify-between items-center w-full">
@@ -132,6 +132,7 @@ const MultiSelectFormField = React.forwardRef<
                       <Badge
                         key={value}
                         className={cn(
+                          "bg-applicationPrimary text-white ",
                           isAnimating ? "animate-bounce" : "",
                           multiSelectVariants({ variant, className })
                         )}
@@ -156,7 +157,7 @@ const MultiSelectFormField = React.forwardRef<
                 </div>
                 <div className="flex items-center justify-between">
                   <XIcon
-                    className="h-4 mx-1 cursor-pointer text-muted-foreground"
+                    className="h-3 mx-1 cursor-pointer text-muted-foreground group-hover:text-white"
                     onClick={(event) => {
                       setSelectedValues([]);
                       selectedValuesSet.current.clear();
@@ -166,23 +167,23 @@ const MultiSelectFormField = React.forwardRef<
                   />
                   <Separator
                     orientation="vertical"
-                    className="flex min-h-6 h-full"
+                    className="flex min-h-5 h-full"
                   />
-                  <ChevronDown className="h-4 mx-2 cursor-pointer text-muted-foreground" />
+                  <ChevronDown className="h-3 mx-2 cursor-pointer text-muted-foreground group-hover:text-white" />
                 </div>
               </div>
             ) : (
               <div className="flex items-center justify-between w-full mx-auto">
-                <span className="text-sm text-muted-foreground group-hover:text-white mx-3">
+                <span className="text-sm text-muted-foreground group-hover:text-white mx-1">
                   {placeholder}
                 </span>
-                <ChevronDown className="h-4 cursor-pointer text-muted-foreground mx-2 group-hover:text-white" />
+                <ChevronDown className="h-4 cursor-pointer text-muted-foreground mx-1 group-hover:text-white" />
               </div>
             )}
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-[200px] p-0 drop-shadow-sm"
+          className="w-[200px] p-0 border border-slate-600/50 rounded-lg bg-lightComponentBg text-white shadow-xl"
           align="start"
           onEscapeKeyDown={() => setIsPopoverOpen(false)}
           onInteractOutside={(event) => {
@@ -191,8 +192,9 @@ const MultiSelectFormField = React.forwardRef<
             }
           }}
         >
-          <Command>
+          <Command className="bg-lightComponentBg">
             <CommandInput
+              className="text-white"
               placeholder="Search..."
               onKeyDown={handleInputKeyDown}
             />
@@ -226,12 +228,12 @@ const MultiSelectFormField = React.forwardRef<
                       {option.icon && (
                         <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
                       )}
-                      <span>{option.label}</span>
+                      <span className="text-white">{option.label}</span>
                     </CommandItem>
                   );
                 })}
               </CommandGroup>
-              <CommandSeparator />
+              <CommandSeparator className="bg-slate-600/50" />
               <CommandGroup>
                 <div className="flex items-center justify-between">
                   {selectedValues.length > 0 && (
@@ -246,24 +248,24 @@ const MultiSelectFormField = React.forwardRef<
                           pointerEvents: "auto",
                           opacity: 1,
                         }}
-                        className="flex-1 justify-center cursor-pointer"
+                        className="flex-1 justify-center cursor-pointer text-white"
                       >
                         Clear
                       </CommandItem>
                       <Separator
                         orientation="vertical"
-                        className="flex min-h-6 h-full"
+                        className="flex min-h-6 h-full bg-slate-600/50"
                       />
                     </>
                   )}
-                  <CommandSeparator />
+                  <CommandSeparator className="bg-slate-600/50" />
                   <CommandItem
                     onSelect={() => setIsPopoverOpen(false)}
                     style={{
                       pointerEvents: "auto",
                       opacity: 1,
                     }}
-                    className="flex-1 justify-center cursor-pointer"
+                    className="flex-1 justify-center cursor-pointer text-white"
                   >
                     Close
                   </CommandItem>
@@ -275,7 +277,7 @@ const MultiSelectFormField = React.forwardRef<
         {animation > 0 && selectedValues.length > 0 && (
           <Sparkles
             className={cn(
-              "cursor-pointer my-2 text-foreground bg-background w-3 h-3",
+              "cursor-pointer my-2 text-white bg-transparent w-3 h-3",
               isAnimating ? "" : "text-muted-foreground"
             )}
             onClick={() => setIsAnimating(!isAnimating)}

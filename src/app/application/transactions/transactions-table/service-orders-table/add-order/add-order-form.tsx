@@ -384,27 +384,6 @@ export default function OrderForm({ setDialogOpen }: any) {
                         </div>
                       </div>
                       <div className="w-full flex gap-4">
-                        <FormField
-                          control={form.control}
-                          name="mechanic_entries"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Mechanics</FormLabel>
-                              <FormControl>
-                                <MultiSelectFormField
-                                  options={frameworksList}
-                                  defaultValue={field.value}
-                                  onValueChange={field.onChange}
-                                  placeholder="Select options"
-                                  animation={2}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                      <div className="w-full flex gap-4">
                         <div className="w-[75%] flex flex-col ">
                           <FormField
                             control={form.control}
@@ -450,6 +429,27 @@ export default function OrderForm({ setDialogOpen }: any) {
                             )}
                           />
                         </div>
+                      </div>
+                      <div className="w-full flex gap-4">
+                        <FormField
+                          control={form.control}
+                          name="mechanic_entries"
+                          render={({ field }) => (
+                            <FormItem className="w-full">
+                              <FormLabel>Mechanics</FormLabel>
+                              <FormControl>
+                                <MultiSelectFormField
+                                  options={frameworksList}
+                                  defaultValue={field.value}
+                                  onValueChange={field.onChange}
+                                  placeholder="Select options"
+                                  animation={2}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
                       </div>
                       <div className="w-full flex gap-4">
                         <div className="w-[75%] flex flex-col">
