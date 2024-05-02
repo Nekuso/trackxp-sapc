@@ -48,30 +48,10 @@ import { TbCurrencyPeso } from "react-icons/tb";
 import { useRouter } from "next/navigation";
 import { resetOrderServiceCart } from "@/redux/slices/orderServiceCartSlice";
 import MultiSelectFormField from "@/components/ui/multi-select";
+import SupervisorInput from "./supervisor-input";
+import MobileUserInput from "./mobile-user-input";
 
 export default function OrderForm({ setDialogOpen }: any) {
-  const frameworksList = [
-    {
-      value: "next.js",
-      label: "Next.js",
-    },
-    {
-      value: "sveltekit",
-      label: "SvelteKit",
-    },
-    {
-      value: "nuxt.js",
-      label: "Nuxt.js",
-    },
-    {
-      value: "remix",
-      label: "Remix",
-    },
-    {
-      value: "astro",
-      label: "Astro",
-    },
-  ];
   const currentUser = useSelector((state: any) => state.currentSession);
   const [isPending, startTransition] = useTransition();
   const { createOrder } = useOrders();
@@ -84,14 +64,31 @@ export default function OrderForm({ setDialogOpen }: any) {
     (state: any) => state.orderCartOptionSlice
   );
 
+  const allMechanics = useSelector(
+    (state: any) => state.allEmployees.allMechanics
+  )
+    .map((mechanic: any) => ({
+      value: mechanic.id,
+      label: mechanic.first_name + " " + mechanic.last_name,
+      branch: mechanic.branches.id,
+    }))
+    .filter((mechanic: any) => mechanic.value !== currentUser.id)
+    .filter((mechanic: any) => {
+      if (currentUser.roles.role === "Administrator") {
+        return true;
+      } else {
+        return mechanic.branch === currentUser.branches.id;
+      }
+    });
+
   const [minTotalPrice, setMinTotalPrice] = useState(0);
+  const [min, setMin] = useState(0);
 
   const orderServiceSchema: any = z.object({
     customer_first_name: z.string().nullable(),
     customer_last_name: z.string().nullable(),
     customer_email: z.string().nullable(),
     customer_contact_number: z.coerce.number().nullable(),
-    status: z.string(),
     payment_method: z
       .string()
       .min(1, { message: "Payment method is required" }),
@@ -99,57 +96,66 @@ export default function OrderForm({ setDialogOpen }: any) {
       .string()
       .min(1, { message: "Branch is required" })
       .transform((arg) => new Number(arg)),
+    supervisor_id: z.string().min(1, { message: "Supervisor is required" }),
     employee_id: z.string(),
+    mobile_user_id: z.string().nullable(),
     discount: z.string().transform((arg) => new Number(arg)),
     tax: z.coerce.number(),
     subtotal: z.coerce.number(),
     total_price: z.coerce.number(),
-    amount_paid: z.coerce.number().min(minTotalPrice, {
+    status: z.string(),
+    amount_paid: z.coerce.number().min(min, {
       message: "Amount paid should be equal or greater than total price",
     }),
 
     purchase_products: z.array(
       z.object({
-        product_id: z.coerce.number(),
-        inventory_id: z.coerce.number(),
-        name: z.string(),
-        description: z.string(),
-        image: z.string(),
-        barcode: z.string(),
-        uom_name: z.string(),
-        quantity: z.coerce.number(),
-        price: z.coerce.number(),
+        product_id: z.coerce.number().nullable(),
+        inventory_id: z.coerce.number().nullable(),
+        name: z.string().nullable(),
+        description: z.string().nullable(),
+        image: z.string().nullable(),
+        barcode: z.string().nullable(),
+        uom_name: z.string().nullable(),
+        quantity: z.coerce.number().nullable(),
+        price: z.coerce.number().nullable(),
       })
     ),
     purchase_parts: z.array(
       z.object({
-        part_id: z.coerce.number(),
-        inventory_id: z.coerce.number(),
-        name: z.string(),
-        description: z.string(),
-        image: z.string(),
-        barcode: z.string(),
-        brand_name: z.string(),
-        quantity: z.coerce.number(),
-        price: z.coerce.number(),
+        part_id: z.coerce.number().nullable(),
+        inventory_id: z.coerce.number().nullable(),
+        name: z.string().nullable(),
+        description: z.string().nullable(),
+        image: z.string().nullable(),
+        barcode: z.string().nullable(),
+        brand_name: z.string().nullable(),
+        quantity: z.coerce.number().nullable(),
+        price: z.coerce.number().nullable(),
       })
     ),
     purchase_services: z.array(
       z.object({
-        id: z.coerce.number(),
-        inventory_id: z.coerce.number(),
-        name: z.string(),
-        description: z.string(),
-        image: z.string(),
-        duration: z.coerce.number(),
-        price: z.coerce.number(),
+        id: z.coerce.number().nullable(),
+        inventory_id: z.coerce.number().nullable(),
+        name: z.string().nullable(),
+        description: z.string().nullable(),
+        image: z.string().nullable(),
+        duration: z.coerce.number().nullable(),
+        price: z.coerce.number().nullable(),
       })
     ),
     mechanic_entries: z
       .array(z.string().min(1))
       .min(1)
       .nonempty("Please select at least one mechanic."),
+    progress_entries: z.array(
+      z.object({
+        progress_name: z.string(),
+      })
+    ),
   });
+
   const form = useForm<z.infer<typeof orderServiceSchema>>({
     resolver: zodResolver(orderServiceSchema),
     defaultValues: {
@@ -159,11 +165,18 @@ export default function OrderForm({ setDialogOpen }: any) {
       customer_contact_number: 0,
       employee_id: currentUser.id,
       payment_method: "",
+      amount_paid: 0,
+      status: "Pending",
       subtotal: 0,
       total_price: 0,
       discount: "0",
       tax: 0,
       inventory_id: currentUser.branches.id.toString(),
+      progress_entries: [
+        {
+          progress_name: "Service Order Created",
+        },
+      ],
     },
   });
 
@@ -209,8 +222,8 @@ export default function OrderForm({ setDialogOpen }: any) {
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     )
   );
-
   const discountData = form.getValues("discount");
+  const status = form.getValues("status");
 
   useEffect(() => {
     setMinTotalPrice(
@@ -232,12 +245,18 @@ export default function OrderForm({ setDialogOpen }: any) {
         ).toFixed(2)
       )
     );
+    if (status === "Pending") {
+      setMin(0);
+    } else {
+      setMin(minTotalPrice);
+    }
   }, [
     orderCart.productsCart,
     orderCart.partsCart,
     orderServiceCart.servicesCart,
     discountData,
     minTotalPrice,
+    status,
     form,
   ]);
 
@@ -387,13 +406,13 @@ export default function OrderForm({ setDialogOpen }: any) {
                         <div className="w-[75%] flex flex-col ">
                           <FormField
                             control={form.control}
-                            name="inventory_id"
+                            name="mobile_user_id"
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel className="text-xs">
-                                  Branch
+                                  Mobile User
                                 </FormLabel>
-                                <BranchInput data={field} />
+                                <MobileUserInput data={field} />
                                 <FormMessage />
                               </FormItem>
                             )}
@@ -431,18 +450,50 @@ export default function OrderForm({ setDialogOpen }: any) {
                         </div>
                       </div>
                       <div className="w-full flex gap-4">
+                        <div className="w-[75%] flex flex-col ">
+                          <FormField
+                            control={form.control}
+                            name="inventory_id"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-xs">
+                                  Branch
+                                </FormLabel>
+                                <BranchInput data={field} />
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        <div className="w-[75%] flex flex-col ">
+                          <FormField
+                            control={form.control}
+                            name="supervisor_id"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-xs">
+                                  Supervisor
+                                </FormLabel>
+                                <SupervisorInput data={field} />
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
                         <FormField
                           control={form.control}
                           name="mechanic_entries"
                           render={({ field }) => (
                             <FormItem className="w-full">
-                              <FormLabel>Mechanics</FormLabel>
+                              <FormLabel className="text-xs">
+                                Mechanics
+                              </FormLabel>
                               <FormControl>
                                 <MultiSelectFormField
-                                  options={frameworksList}
+                                  options={allMechanics}
                                   defaultValue={field.value}
                                   onValueChange={field.onChange}
-                                  placeholder="Select options"
+                                  placeholder="Select Mechanics"
                                   animation={2}
                                 />
                               </FormControl>
@@ -493,6 +544,11 @@ export default function OrderForm({ setDialogOpen }: any) {
                                       type="number"
                                       placeholder="Amount"
                                       value={field.value || ""}
+                                      disabled={
+                                        form.getValues("status") === "Paid"
+                                          ? false
+                                          : true
+                                      }
                                     />
                                   </FormControl>
                                 </div>

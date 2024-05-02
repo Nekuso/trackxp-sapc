@@ -21,13 +21,20 @@ import {
   setProductsData,
 } from "@/redux/slices/orderCartOptionSlice";
 import { setServicesData } from "@/redux/slices/orderServiceCartOptionSlice";
-import { setEmployeesData } from "@/redux/slices/allEmployeesSlice";
+import {
+  setEmployeesData,
+  setMechanicsData,
+  setSuperVisorsData,
+} from "@/redux/slices/allEmployeesSlice";
+import { useMobileUsers } from "@/hooks/useMobileUsers";
+import { setMobileUsersData } from "@/redux/slices/mobileUsersSlice";
 
 export default function Transactions() {
   const dispatch = useDispatch();
 
   const { getOrders, ordersData } = useOrders();
   const { getEmployees, allEmployeesData } = useEmployees();
+  const { getMobileUsers, allMobileUserData } = useMobileUsers();
   const { getOrderServices, orderServicesData } = useOrderServices();
   const { getBranches, allBranchesData } = useBranches();
   const { getProducts, productsData } = useProducts();
@@ -51,6 +58,10 @@ export default function Transactions() {
   );
 
   dispatch(setEmployeesData(allEmployeesData));
+  dispatch(setMobileUsersData(allMobileUserData));
+  dispatch(setMechanicsData(allEmployeesData));
+  dispatch(setSuperVisorsData(allEmployeesData));
+
   dispatch(setBranchesData(branchesData));
   dispatch(setProductsData({ productsData, productsCart }));
   dispatch(setPartsData({ partsData, partsCart }));
@@ -72,6 +83,7 @@ export default function Transactions() {
     getParts();
     getServices();
     getEmployees();
+    getMobileUsers();
   }, []);
 
   // listen for changes in the database

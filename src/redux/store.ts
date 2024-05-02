@@ -10,6 +10,7 @@ import orderServiceCartOptionSlice from "./slices/orderServiceCartOptionSlice";
 import orderServiceCartSlice from "./slices/orderServiceCartSlice";
 import currentSessionSlice from "./slices/userSessionSlice";
 import allEmployeesSlice from "./slices/allEmployeesSlice";
+import allMobileUsersSlice from "./slices/mobileUsersSlice";
 
 export const store = configureStore({
   reducer: {
@@ -25,6 +26,7 @@ export const store = configureStore({
     orderServiceCart: orderServiceCartSlice,
 
     currentSession: currentSessionSlice,
+    allMobileUser: allMobileUsersSlice,
     allEmployees: allEmployeesSlice,
   },
 });
