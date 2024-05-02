@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 import { Column } from "@tanstack/react-table";
 
@@ -89,7 +89,7 @@ export function DataTableFacetedFilter<TData, TValue>({
       >
         <Command className="bg-darkComponentBg shadow-2xl">
           <CommandInput placeholder={title} className="text-white" />
-          <CommandList className="no-scrollbar">
+          <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
               {options.map((option) => {

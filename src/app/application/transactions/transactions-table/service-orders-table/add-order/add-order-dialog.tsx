@@ -9,27 +9,27 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import PartForm from "./add-part-form";
-import { PiGearSixBold } from "react-icons/pi";
+import OrderForm from "./add-order-form";
+import { BsBoxSeam } from "react-icons/bs";
 
-export default function PartDialog() {
+export default function OrderDialog() {
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
   return (
     <Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
       <DialogTrigger asChild>
         <Button className="text-xs font-bold rounded-md flex gap-2 bg-applicationPrimary hover:bg-applicationPrimary transition-all duration-300">
-          <PiGearSixBold /> New Part
+          <BsBoxSeam /> Purchase Order
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[570px] bg-darkComponentBg border border-lightBorder shadow-2xl">
+      <DialogContent className="max-w-[1170px] 2xl:max-w-[1570px] bg-darkComponentBg border border-lightBorder shadow-2xl">
         <DialogHeader>
-          <DialogTitle>Part</DialogTitle>
+          <DialogTitle>New Order</DialogTitle>
           <DialogDescription>
-            Add a new part to your inventory
+            Add a new regular transaction order
           </DialogDescription>
         </DialogHeader>
-        <PartForm setDialogOpen={setDialogIsOpen} />
+        <OrderForm setDialogOpen={setDialogIsOpen} />
       </DialogContent>
     </Dialog>
   );

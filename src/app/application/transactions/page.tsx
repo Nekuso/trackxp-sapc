@@ -7,24 +7,32 @@ import createSupabaseBrowserClient from "@/lib/supabase/client";
 import { toast as sonner } from "sonner";
 import { toast } from "@/components/ui/use-toast";
 import { useOrders } from "@/hooks/useOrders";
+import { useOrderServices } from "@/hooks/useOrderServices";
 import { useBranches } from "@/hooks/useBranches";
 import { HomeIcon } from "lucide-react";
 import { setBranchesData } from "@/redux/slices/branchesSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useProducts } from "@/hooks/useProducts";
 import { useParts } from "@/hooks/useParts";
+import { useServices } from "@/hooks/useServices";
+import { useEmployees } from "@/hooks/useEmployees";
 import {
   setPartsData,
   setProductsData,
 } from "@/redux/slices/orderCartOptionSlice";
+import { setServicesData } from "@/redux/slices/orderServiceCartOptionSlice";
+import { setEmployeesData } from "@/redux/slices/allEmployeesSlice";
 
 export default function Transactions() {
   const dispatch = useDispatch();
 
   const { getOrders, ordersData } = useOrders();
+  const { getEmployees, allEmployeesData } = useEmployees();
+  const { getOrderServices, orderServicesData } = useOrderServices();
   const { getBranches, allBranchesData } = useBranches();
   const { getProducts, productsData } = useProducts();
   const { getParts, partsData } = useParts();
+  const { getServices, servicesData } = useServices();
 
   const branchesData = allBranchesData.map((branch: any) => ({
     id: branch?.id,
@@ -38,10 +46,15 @@ export default function Transactions() {
   );
   const partsCart = useSelector((state: any) => state.orderCart.partsCart);
 
-  dispatch(setBranchesData(branchesData));
+  const servicesCart = useSelector(
+    (state: any) => state.orderServiceCart.servicesCart
+  );
 
+  dispatch(setEmployeesData(allEmployeesData));
+  dispatch(setBranchesData(branchesData));
   dispatch(setProductsData({ productsData, productsCart }));
   dispatch(setPartsData({ partsData, partsCart }));
+  dispatch(setServicesData({ servicesData, servicesCart }));
 
   // fetch all products
   useEffect(() => {
@@ -57,6 +70,8 @@ export default function Transactions() {
     getBranches();
     getProducts();
     getParts();
+    getServices();
+    getEmployees();
   }, []);
 
   // listen for changes in the database

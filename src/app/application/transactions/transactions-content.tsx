@@ -35,7 +35,7 @@ export default function InventoryContent({
             Purchase Orders
           </TabsTrigger>
           <TabsTrigger
-            value="service_orders"
+            value="order_service"
             className="data-[state=active]:bg-applicationPrimary data-[state=inactive]:hover:bg-applicationPrimary/80
             data-[state=inactive]:hover:text-white/80
             data-[state=active]:text-white rounded-md px-4 py-2 transition-all duration-300 flex gap-2"
@@ -52,7 +52,7 @@ export default function InventoryContent({
           data={dataOrders}
         />
       </TabsContent>
-      <TabsContent value="parts" className="w-full h-full ">
+      <TabsContent value="order_service" className="w-full h-full ">
         {/* Service Order Tab */}
         <OrderServicesDataTable
           columns={initiatePartsState(branchesSlice)}

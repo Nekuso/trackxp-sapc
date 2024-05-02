@@ -10,6 +10,7 @@ import { toast } from "@/components/ui/use-toast";
 import { useParts } from "@/hooks/useParts";
 import { useProducts } from "@/hooks/useProducts";
 import { useServices } from "@/hooks/useServices";
+import { useRewards } from "@/hooks/useRewards";
 import { useBranches } from "@/hooks/useBranches";
 import { useUOMS } from "@/hooks/useUOMS";
 import { HomeIcon } from "lucide-react";
@@ -26,6 +27,7 @@ export default function Inventory() {
   const { getProducts, productsData } = useProducts();
   const { getParts, partsData } = useParts();
   const { getServices, servicesData } = useServices();
+  const { getRewards, allRewardsData } = useRewards();
 
   const { getBranches, allBranchesData } = useBranches();
   const { getUOMS, allUOMSData } = useUOMS();
@@ -95,6 +97,17 @@ export default function Inventory() {
       });
     }
   }, []);
+  useEffect(() => {
+    const { error } = getRewards();
+
+    if (error?.message) {
+      toast({
+        variant: "destructive",
+        title: "⚠️ Error",
+        description: error.message,
+      });
+    }
+  }, []);
 
   // listen for changes in the database
   useEffect(() => {
@@ -129,10 +142,21 @@ export default function Inventory() {
         }
       )
       .subscribe();
+    const subscribedChannel4 = supabase
+      .channel("rewards-follow-up")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "rewards" },
+        (payload: any) => {
+          getRewards();
+        }
+      )
+      .subscribe();
     return () => {
       supabase.removeChannel(subscribedChannel1);
       supabase.removeChannel(subscribedChannel2);
       supabase.removeChannel(subscribedChannel3);
+      supabase.removeChannel(subscribedChannel4);
     };
   }, []);
 
@@ -145,6 +169,7 @@ export default function Inventory() {
           dataProducts={productsData}
           dataParts={partsData}
           dataServices={servicesData}
+          dataRewards={allRewardsData}
         />
       )}
     </div>

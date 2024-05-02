@@ -3,7 +3,6 @@ import { QueryData, createClient } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
 import { useState } from "react";
 
-
 export const useBrands: any = () => {
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -27,10 +26,16 @@ export const useBrands: any = () => {
     return data;
   };
   const getBrands = async () => {
-    const result = await supabase.from("brands").select(`
+    const result = await supabase
+      .from("brands")
+      .select(
+        `
       id,
       brand_name
-    `);
+      
+    `
+      )
+      .order("created_at", { ascending: false });
 
     const { data, error } = result;
     if (error) {

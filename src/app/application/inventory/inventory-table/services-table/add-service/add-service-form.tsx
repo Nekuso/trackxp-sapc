@@ -27,6 +27,7 @@ import { useTransition } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
 import { useServices } from "@/hooks/useServices";
+import { useSelector } from "react-redux";
 
 export const serviceSchema = z.object({
   name: z.string().min(1, {
@@ -55,6 +56,7 @@ export const serviceSchema = z.object({
 });
 
 export default function ServiceForm({ setDialogOpen }: any) {
+  const currentUser = useSelector((state: any) => state.currentSession);
   const [isPending, startTransition] = useTransition();
   const { createService } = useServices();
   const form = useForm<z.infer<typeof serviceSchema>>({
@@ -63,12 +65,13 @@ export default function ServiceForm({ setDialogOpen }: any) {
       duration: 0,
       price: 0.0,
       status: "Available",
+      inventory_id: currentUser?.branches.id.toString(),
     },
   });
 
   async function onSubmit(data: any) {
     startTransition(async () => {
-      const result = await createService(data, 5000);
+      const result = await createService(data, 2000);
 
       const { error } = result;
       if (error?.message) {
@@ -153,6 +156,7 @@ export default function ServiceForm({ setDialogOpen }: any) {
                                 className="w-full text-start bg-transparent border-none rounded-tr-lg rounded-br-lg"
                                 {...field}
                                 type="number"
+                                min="1"
                                 placeholder="0.00"
                               />
                             </FormControl>

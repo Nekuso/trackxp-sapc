@@ -53,6 +53,10 @@ const orderCartOptions = createSlice({
 
       state.partsData = updatedPartsStock;
     },
+    reset(state) {
+      state.productsData = [];
+      state.partsData = [];
+    },
   },
 });
 

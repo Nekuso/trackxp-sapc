@@ -13,8 +13,12 @@ import {
 import { toast as sonner } from "sonner";
 import { useTransition } from "react";
 import { signOut } from "@/lib/actions/index";
+import { useDispatch } from "react-redux";
+import { setCurrentUser } from "@/redux/slices/userSessionSlice";
 
 export default function ProfileButton({ data }: any) {
+  const dispatch = useDispatch();
+  dispatch(setCurrentUser(data));
   const [isPending, startTransition] = useTransition();
   const onSignOut = async () => {
     sonner("Loggin out...", {});
@@ -22,19 +26,18 @@ export default function ProfileButton({ data }: any) {
       await signOut();
     });
   };
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="w-10 h-10 cursor-pointer">
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback className="text-black">NJ</AvatarFallback>
+          <AvatarImage src={data.image_url} />
+          <AvatarFallback className="text-black">{`${data.first_name[0]}${data.last_name[0]}`}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 bg-darkComponentBg border border-lightBorder shadow-2xl text-white px-2 mr-6">
         <DropdownMenuLabel className="py-1 flex flex-col gap-1">
-          {/* <span>{`${data.user.user_metadata.first_name} ${data.user.user_metadata.last_name}`}</span> */}
-          {/* <span className="text-xs text-gray-300">{data.user.email}</span> */}
+          <span>{`${data.first_name} ${data.last_name}`}</span>
+          <span className="text-xs text-gray-300">{data.roles.role}</span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-lightBorder" />
         <DropdownMenuGroup className="py-1">

@@ -28,6 +28,7 @@ import { useTransition } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
 import { useParts } from "@/hooks/useParts";
+import { useSelector } from "react-redux";
 
 export const partSchema = z.object({
   name: z.string().min(1, {
@@ -67,6 +68,7 @@ export const partSchema = z.object({
 });
 
 export default function PartForm({ setDialogOpen }: any) {
+  const currentUser = useSelector((state: any) => state.currentSession);
   const [isPending, startTransition] = useTransition();
   const { createPart } = useParts();
   const form = useForm<z.infer<typeof partSchema>>({
@@ -75,12 +77,13 @@ export default function PartForm({ setDialogOpen }: any) {
       stock_quantity: 0,
       price: 0.0,
       status: "Available",
+      inventory_id: currentUser?.branches.id.toString(),
     },
   });
 
   async function onSubmit(data: any) {
     startTransition(async () => {
-      const result = await createPart(data, 5000);
+      const result = await createPart(data, 2000);
 
       const { error } = result;
       if (error?.message) {
@@ -173,12 +176,18 @@ export default function PartForm({ setDialogOpen }: any) {
                           <FormLabel className="text-xs">Quantity</FormLabel>
                           <div className="w-full flex justify-between place-items-center gap-2">
                             <div
-                              className="bg-lightComponentBg p-3 rounded-lg cursor-pointer hover:bg-applicationPrimary transition-all duration-300 text-center select-none"
+                              className={`bg-lightComponentBg p-3 rounded-lg cursor-pointer hover:bg-applicationPrimary transition-all duration-300 text-center select-none ${
+                                field.value <= 10
+                                  ? "opacity-50 cursor-not-allowed"
+                                  : ""
+                              }`}
                               onClick={() => {
-                                form.setValue(
-                                  "stock_quantity",
-                                  form.getValues("stock_quantity") - 10
-                                );
+                                if (field.value > 10) {
+                                  form.setValue(
+                                    "stock_quantity",
+                                    form.getValues("stock_quantity") - 10
+                                  );
+                                }
                               }}
                             >
                               <FiMinus />

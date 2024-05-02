@@ -134,6 +134,24 @@ export type allServicesDisplay = {
   };
   created_at: string;
 };
+export type allRewardsDisplay = {
+  id: number;
+  name: string;
+  description: string;
+  image_url: string;
+  points_required: number;
+  stock_quantity: number;
+  status: string;
+  inventory: {
+    id: number;
+    branches: {
+      id: number;
+      branch_name: string;
+      branch_location: string;
+    };
+  };
+  created_at: string;
+};
 
 export type allPurchaseOrdersDisplay = {
   id: string;
@@ -165,13 +183,18 @@ export type allPurchaseOrdersDisplay = {
   status: string;
   created_at: string;
 };
-
-export type allPurchaseServicesDisplay = {
-  id: number;
+export type allPurchaseOrderServicesDisplay = {
+  id: string;
   customer_first_name: string;
   customer_last_name: string;
   customer_contact_number: string;
   customer_email: string;
+  mobile_user: {
+    first_name: string;
+    last_name: string;
+    image_url: string;
+  };
+  remarks: string;
   inventory: {
     id: number;
     branches: {
@@ -189,11 +212,16 @@ export type allPurchaseServicesDisplay = {
     email: string;
     roles: { role: string };
   };
+  vehicle_info: {
+    plate_number: string;
+    type: string;
+  };
   purchase_products: {}[];
   purchase_parts: {}[];
   purchase_services: {}[];
-  progress_collection: {}[];
+  progress_entries: {}[];
   total_price: number;
   payment_method: string;
+  status: string;
   created_at: string;
 };

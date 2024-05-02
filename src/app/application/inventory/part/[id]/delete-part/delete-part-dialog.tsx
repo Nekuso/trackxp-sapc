@@ -27,7 +27,7 @@ export default function DeleteParttDialog({ partData }: any) {
 
   async function onSubmit(dataProps?: any) {
     startTransition(async () => {
-      await deletePart(dataProps, 4000);
+      await deletePart(dataProps, 2000);
       // const { error } = JSON.parse(result);
       // if (error?.message) {
       //   toast({

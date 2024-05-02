@@ -1,5 +1,4 @@
-
-import * as React from "react";
+import React from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {

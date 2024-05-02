@@ -17,7 +17,7 @@ export const useOrders: any = () => {
         customer_last_name: props.customer_last_name,
         customer_contact_number: props.customer_contact_number,
         customer_email: props.customer_email,
-        employee_id: "6232cf7a-000f-4026-a583-96be937a0adf",
+        employee_id: props.employee_id,
         inventory_id: props.inventory_id,
         subtotal: props.subtotal,
         total_price: props.total_price,

@@ -26,10 +26,15 @@ export const useUOMS: any = () => {
     return data;
   };
   const getUOMS = async () => {
-    const result = await supabase.from("uoms").select(`
-      id,
-      unit_name
-    `);
+    const result = await supabase
+      .from("uoms")
+      .select(
+        `
+          id,
+          unit_name
+        `
+      )
+      .order("created_at", { ascending: false });
 
     const { data, error } = result;
     if (error) {

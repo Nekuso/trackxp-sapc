@@ -27,7 +27,7 @@ export default function DeleteProductDialog({ productData }: any) {
 
   async function onSubmit(dataProps?: any) {
     startTransition(async () => {
-      await deleteProduct(dataProps, 4000);
+      await deleteProduct(dataProps, 2000);
       // const { error } = JSON.parse(result);
       // if (error?.message) {
       //   toast({

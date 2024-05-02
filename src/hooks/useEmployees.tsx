@@ -10,7 +10,7 @@ export const useEmployees: any = () => {
   );
   const [currentEmployeeData, setCurrentEmployeeData] = useState<any>([]);
 
-  const createEmployee = async (props: any, duration: number = 2000) => {
+  const createEmployee = async (props: any, duration: number = 1000) => {
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!,
@@ -49,7 +49,10 @@ export const useEmployees: any = () => {
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!
     );
-    const result = await supabase.from("employees").select(`
+    const result = await supabase
+      .from("employees")
+      .select(
+        `
       id,
       email,
       first_name,
@@ -66,7 +69,10 @@ export const useEmployees: any = () => {
       roles (id, role),
       status,
       dob
-    `);
+    `
+      )
+      .order("created_at", { ascending: false });
+
     type EmployeesWithJoin = QueryData<typeof result>;
 
     const { data, error } = result;
