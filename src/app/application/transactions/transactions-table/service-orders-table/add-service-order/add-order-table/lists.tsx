@@ -8,6 +8,7 @@ import { initiateColumns as initiateProductsColumns } from "./products-options/c
 import { initiateColumns as initiatePartsColumns } from "./parts-options/columns";
 import { initiateColumns as initiateServicesColumns } from "./services-options/columns";
 import { useSelector, useDispatch } from "react-redux";
+import { FaHandsHelping } from "react-icons/fa";
 
 export default function OrderCartOptions({}: {}) {
   const productsOption = useSelector(
@@ -31,7 +32,7 @@ export default function OrderCartOptions({}: {}) {
 
   return (
     <Tabs
-      defaultValue="products"
+      defaultValue="services"
       className="w-full h-full flex max-w-[1840px] flex-col justify-center place-items-center gap-2"
     >
       <div className="w-full flex justify-between">
@@ -60,7 +61,7 @@ export default function OrderCartOptions({}: {}) {
             data-[state=inactive]:hover:text-white/80
             data-[state=active]:text-white rounded-md px-4 py-2 transition-all duration-300 flex gap-2"
           >
-            <PiGearSixBold />
+            <FaHandsHelping />
             Services
           </TabsTrigger>
         </TabsList>

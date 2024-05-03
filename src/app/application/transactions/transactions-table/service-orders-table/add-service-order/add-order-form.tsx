@@ -30,7 +30,7 @@ import { toast as sonner } from "sonner";
 import { useEffect, useState, useTransition } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
-import { useOrders } from "@/hooks/useOrders";
+import { useOrderServices } from "@/hooks/useOrderServices";
 import { useSelector } from "react-redux";
 import OrderCartOptions from "./add-order-table/lists";
 import { useDispatch } from "react-redux";
@@ -50,19 +50,23 @@ import { resetOrderServiceCart } from "@/redux/slices/orderServiceCartSlice";
 import MultiSelectFormField from "@/components/ui/multi-select";
 import SupervisorInput from "./supervisor-input";
 import MobileUserInput from "./mobile-user-input";
+import VehicleTypeInput from "./vehicle-type-input";
 
 export default function OrderForm({ setDialogOpen }: any) {
-  const currentUser = useSelector((state: any) => state.currentSession);
-  const [isPending, startTransition] = useTransition();
-  const { createOrder } = useOrders();
   const dispatch = useDispatch();
   const router = useRouter();
+  const { createOrderService } = useOrderServices();
+  const [isPending, startTransition] = useTransition();
+  const currentUser = useSelector((state: any) => state.currentSession);
 
   const orderCart = useSelector((state: any) => state.orderCart);
   const orderServiceCart = useSelector((state: any) => state.orderServiceCart);
   const orderCartOptions = useSelector(
     (state: any) => state.orderCartOptionSlice
   );
+  const allMobileUsers = useSelector(
+    (state: any) => state.allMobileUser.allMobileUser
+  ).map((mobileUser: any) => mobileUser);
 
   const allMechanics = useSelector(
     (state: any) => state.allEmployees.allMechanics
@@ -83,15 +87,15 @@ export default function OrderForm({ setDialogOpen }: any) {
 
   const [minTotalPrice, setMinTotalPrice] = useState(0);
   const [min, setMin] = useState(0);
+  const [mobileUserData, setMobileUserData] = useState<any>({});
 
   const orderServiceSchema: any = z.object({
+    // Basic Information
     customer_first_name: z.string().nullable(),
     customer_last_name: z.string().nullable(),
     customer_email: z.string().nullable(),
     customer_contact_number: z.coerce.number().nullable(),
-    payment_method: z
-      .string()
-      .min(1, { message: "Payment method is required" }),
+    payment_method: z.string().nullable(),
     inventory_id: z
       .string()
       .min(1, { message: "Branch is required" })
@@ -102,12 +106,26 @@ export default function OrderForm({ setDialogOpen }: any) {
     discount: z.string().transform((arg) => new Number(arg)),
     tax: z.coerce.number(),
     subtotal: z.coerce.number(),
-    total_price: z.coerce.number(),
+    total_price: z.coerce.number().nullable(),
     status: z.string(),
     amount_paid: z.coerce.number().min(min, {
       message: "Amount paid should be equal or greater than total price",
     }),
+    remarks: z.string().nullable(),
 
+    // Vehicle Information
+    vehicle_entry: z.object({
+      vehicle_type: z.string(),
+      car_model: z.string().nullable(),
+      car_brand: z.string(),
+      plate_number: z.string(),
+      color: z.string().nullable(),
+      engine_number: z.string().nullable(),
+      odo_reading: z.coerce.number().nullable(),
+      chassis_number: z.string().nullable(),
+    }),
+
+    // Collections
     purchase_products: z.array(
       z.object({
         product_id: z.coerce.number().nullable(),
@@ -167,6 +185,7 @@ export default function OrderForm({ setDialogOpen }: any) {
       payment_method: "",
       amount_paid: 0,
       status: "Pending",
+      mobile_user_id: "",
       subtotal: 0,
       total_price: 0,
       discount: "0",
@@ -204,26 +223,38 @@ export default function OrderForm({ setDialogOpen }: any) {
     "total_price",
     Number(
       (
-        orderCart.productsCart.reduce(
-          (acc: any, product: any) => acc + product.price * product.quantity,
+        (orderCart.productsCart.reduce(
+          (acc: any, product: any) =>
+            acc +
+            (isNaN(product.price) || isNaN(product.quantity)
+              ? 0
+              : product.price * product.quantity),
           0
         ) +
-        orderCart.partsCart.reduce(
-          (acc: any, part: any) => acc + part.price * part.quantity,
-          0
-        ) +
-        orderServiceCart.servicesCart.reduce(
-          (acc: any, service: any) => acc + service.price,
-          0
-        ) *
-          ((100 - Number(form.getValues("discount"))) / 100)
-      )
-        .toFixed(2)
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          orderCart.partsCart.reduce(
+            (acc: any, part: any) =>
+              acc +
+              (isNaN(part.price) || isNaN(part.quantity)
+                ? 0
+                : part.price * part.quantity),
+            0
+          ) +
+          orderServiceCart.servicesCart.reduce(
+            (acc: any, service: any) =>
+              acc + (isNaN(service.price) ? 0 : service.price),
+            0
+          )) *
+        ((100 -
+          (isNaN(form.getValues("discount"))
+            ? 0
+            : Number(form.getValues("discount")))) /
+          100)
+      ).toFixed(2)
     )
   );
   const discountData = form.getValues("discount");
   const status = form.getValues("status");
+  const mobileUser = form.getValues("mobile_user_id");
 
   useEffect(() => {
     setMinTotalPrice(
@@ -247,9 +278,15 @@ export default function OrderForm({ setDialogOpen }: any) {
     );
     if (status === "Pending") {
       setMin(0);
+      form.setValue("amount_paid", 0);
     } else {
       setMin(minTotalPrice);
     }
+    // console.log(form.getValues("purchase_services"));
+    if (form.formState.errors) {
+      console.log(form.formState.errors);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     orderCart.productsCart,
     orderCart.partsCart,
@@ -257,22 +294,36 @@ export default function OrderForm({ setDialogOpen }: any) {
     discountData,
     minTotalPrice,
     status,
-    form,
+    mobileUser,
+    mobileUserData,
+    allMobileUsers,
   ]);
+  useEffect(() => {
+    setMobileUserData(
+      allMobileUsers.find((user: any) => user.id === mobileUser)
+    );
+    if (mobileUserData) {
+      form.setValue("customer_first_name", mobileUserData?.first_name);
+      form.setValue("customer_last_name", mobileUserData?.last_name);
+      form.setValue("customer_email", mobileUserData?.email);
+      form.setValue("customer_contact_number", mobileUserData?.contact_number);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allMobileUsers, mobileUser]);
 
   async function onSubmit(data: any) {
     startTransition(async () => {
-      // const result = await createOrder(data, 500);
+      const result = await createOrderService(data, 500);
 
-      // const { error } = result;
-      // if (error?.message) {
-      //   toast({
-      //     variant: "destructive",
-      //     title: "⚠️Error",
-      //     description: error.message,
-      //   });
-      //   return;
-      // }
+      const { error } = result;
+      if (error?.message) {
+        toast({
+          variant: "destructive",
+          title: "⚠️Error",
+          description: error.message,
+        });
+        return;
+      }
 
       setDialogOpen(false);
       sonner("✨Success", {
@@ -322,11 +373,17 @@ export default function OrderForm({ setDialogOpen }: any) {
               <Accordion
                 type="multiple"
                 className="w-full rounded-none relative"
-                defaultValue={["item-1", "item-2", "item-3", "item-4"]}
+                defaultValue={[
+                  "item-1",
+                  "item-2",
+                  "item-3",
+                  "item-4",
+                  "item-5",
+                ]}
               >
                 <AccordionItem value="item-1">
                   <AccordionTrigger className="font-bold bg-darkBg sticky top-0">
-                    Customer
+                    Basic Information
                   </AccordionTrigger>
                   <AccordionContent className="bg-darkComponentBg rounded-xl">
                     <div className="w-full flex flex-col gap-4 px-2">
@@ -347,6 +404,11 @@ export default function OrderForm({ setDialogOpen }: any) {
                                     type="text"
                                     placeholder="Enter First Name"
                                     value={field.value || ""}
+                                    disabled={
+                                      form.getValues("mobile_user_id")
+                                        ? true
+                                        : false
+                                    }
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -370,6 +432,11 @@ export default function OrderForm({ setDialogOpen }: any) {
                                     type="text"
                                     placeholder="Enter Last Name"
                                     value={field.value || ""}
+                                    disabled={
+                                      form.getValues("mobile_user_id")
+                                        ? true
+                                        : false
+                                    }
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -394,6 +461,11 @@ export default function OrderForm({ setDialogOpen }: any) {
                                     type="number"
                                     placeholder="#"
                                     value={field.value || ""}
+                                    disabled={
+                                      form.getValues("mobile_user_id")
+                                        ? true
+                                        : false
+                                    }
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -517,6 +589,11 @@ export default function OrderForm({ setDialogOpen }: any) {
                                     type="text"
                                     placeholder="example@gmail.com"
                                     value={field.value || ""}
+                                    disabled={
+                                      form.getValues("mobile_user_id")
+                                        ? true
+                                        : false
+                                    }
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -578,43 +655,259 @@ export default function OrderForm({ setDialogOpen }: any) {
                 </AccordionItem>
                 <AccordionItem value="item-2">
                   <AccordionTrigger className="font-bold bg-darkBg sticky top-0">
-                    Products Summary
+                    Vehicle Information
                   </AccordionTrigger>
                   <AccordionContent className="bg-darkComponentBg rounded-xl">
-                    <ProductsCart
-                      columns={initiateProductsCartColumns(
-                        dispatch,
-                        orderCartOptions.productsData
-                      )}
-                      data={orderCart.productsCart}
-                    />
+                    <div className="w-full flex flex-col gap-4 px-2">
+                      <div className="w-full flex gap-4">
+                        <div className="w-[75%] flex flex-col">
+                          <FormField
+                            control={form.control}
+                            name="vehicle_entry.car_brand"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-xs">Brand</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    className="rounded-lg bg-lightComponentBg border-slate-600/50"
+                                    {...field}
+                                    type="text"
+                                    placeholder="Toyota"
+                                    value={field.value || ""}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        <div className="w-[75%] flex flex-col">
+                          <FormField
+                            control={form.control}
+                            name="vehicle_entry.car_model"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-xs">Model</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    className="rounded-lg bg-lightComponentBg border-slate-600/50"
+                                    {...field}
+                                    type="text"
+                                    placeholder="Vios"
+                                    value={field.value || ""}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        <div className="w-full flex flex-col">
+                          <FormField
+                            control={form.control}
+                            name="vehicle_entry.vehicle_type"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-xs">
+                                  Vehicle Type
+                                </FormLabel>
+                                <FormControl>
+                                  <VehicleTypeInput data={field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
+                      <div className="w-full flex gap-4">
+                        <div className="w-[75%] flex flex-col">
+                          <FormField
+                            control={form.control}
+                            name="vehicle_entry.plate_number"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-xs">
+                                  Plate Number
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    className="rounded-lg bg-lightComponentBg border-slate-600/50"
+                                    {...field}
+                                    type="text"
+                                    placeholder="ABC 1234"
+                                    value={field.value || ""}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        <div className="w-[75%] flex flex-col">
+                          <FormField
+                            control={form.control}
+                            name="vehicle_entry.color"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-xs">Color</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    className="rounded-lg bg-lightComponentBg border-slate-600/50"
+                                    {...field}
+                                    type="text"
+                                    placeholder="Black"
+                                    value={field.value || ""}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        <div className="w-full flex flex-col">
+                          <FormField
+                            control={form.control}
+                            name="vehicle_entry.engine_number"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-xs">
+                                  Engine Number
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    className="rounded-lg bg-lightComponentBg border-slate-600/50"
+                                    {...field}
+                                    type="text"
+                                    placeholder="123456789"
+                                    value={field.value || ""}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
+                      <div className="w-full flex gap-4">
+                        <div className="w-[75%] flex flex-col">
+                          <FormField
+                            control={form.control}
+                            name="vehicle_entry.odo_reading"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-xs">
+                                  Odometer Reading
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    className="rounded-lg bg-lightComponentBg border-slate-600/50"
+                                    {...field}
+                                    type="number"
+                                    placeholder="123456"
+                                    value={field.value || ""}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        <div className="w-[75%] flex flex-col">
+                          <FormField
+                            control={form.control}
+                            name="vehicle_entry.chassis_number"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-xs">
+                                  Chassis Number
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    className="rounded-lg bg-lightComponentBg border-slate-600/50"
+                                    {...field}
+                                    type="text"
+                                    placeholder="123456789"
+                                    value={field.value || ""}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        <div className="w-full flex flex-col">
+                          <FormField
+                            control={form.control}
+                            name="remarks"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-xs">
+                                  Remarks
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    className="rounded-lg bg-lightComponentBg border-slate-600/50"
+                                    {...field}
+                                    type="text"
+                                    placeholder="Remarks"
+                                    value={field.value || ""}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </AccordionContent>
                 </AccordionItem>
-                <AccordionItem value="item-3">
-                  <AccordionTrigger className="font-bold bg-darkBg sticky top-0">
-                    Parts Summary
-                  </AccordionTrigger>
-                  <AccordionContent className="bg-darkComponentBg rounded-xl">
-                    <PartsCart
-                      columns={initiatePartsCartColumns(
-                        dispatch,
-                        orderCartOptions.partsData
-                      )}
-                      data={orderCart.partsCart}
-                    />
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-4">
-                  <AccordionTrigger className="font-bold bg-darkBg sticky top-0">
-                    Services Summary
-                  </AccordionTrigger>
-                  <AccordionContent className="bg-darkComponentBg rounded-xl">
-                    <ServicesCart
-                      columns={initiateServicesCartColumns(dispatch)}
-                      data={orderServiceCart.servicesCart}
-                    />
-                  </AccordionContent>
-                </AccordionItem>
+                {orderCart.productsCart.length > 0 && (
+                  <AccordionItem value="item-3">
+                    <AccordionTrigger className="font-bold bg-darkBg sticky top-0">
+                      Products Summary
+                    </AccordionTrigger>
+                    <AccordionContent className="bg-darkComponentBg rounded-xl">
+                      <ProductsCart
+                        columns={initiateProductsCartColumns(
+                          dispatch,
+                          orderCartOptions.productsData
+                        )}
+                        data={orderCart.productsCart}
+                      />
+                    </AccordionContent>
+                  </AccordionItem>
+                )}
+                {orderCart.partsCart.length > 0 && (
+                  <AccordionItem value="item-4">
+                    <AccordionTrigger className="font-bold bg-darkBg sticky top-0">
+                      Parts Summary
+                    </AccordionTrigger>
+                    <AccordionContent className="bg-darkComponentBg rounded-xl">
+                      <PartsCart
+                        columns={initiatePartsCartColumns(
+                          dispatch,
+                          orderCartOptions.partsData
+                        )}
+                        data={orderCart.partsCart}
+                      />
+                    </AccordionContent>
+                  </AccordionItem>
+                )}
+                {orderServiceCart.servicesCart.length > 0 && (
+                  <AccordionItem value="item-5">
+                    <AccordionTrigger className="font-bold bg-darkBg sticky top-0">
+                      Services Summary
+                    </AccordionTrigger>
+                    <AccordionContent className="bg-darkComponentBg rounded-xl">
+                      <ServicesCart
+                        columns={initiateServicesCartColumns(dispatch)}
+                        data={orderServiceCart.servicesCart}
+                      />
+                    </AccordionContent>
+                  </AccordionItem>
+                )}
               </Accordion>
               <div className="w-full flex-col relative">
                 <div className="w-full py-2 flex gap-8 position sticky bottom-[-4px] bg-darkBg m-0 text-sm">

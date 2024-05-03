@@ -19,14 +19,14 @@ export default function OrderDialog() {
     <Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
       <DialogTrigger asChild>
         <Button className="text-xs font-bold rounded-md flex gap-2 bg-applicationPrimary hover:bg-applicationPrimary transition-all duration-300">
-          <BsBoxSeam /> Purchase Order
+          <BsBoxSeam /> Purchase Service
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-[1170px] 2xl:max-w-[1570px] bg-darkComponentBg border border-lightBorder shadow-2xl">
         <DialogHeader>
-          <DialogTitle>New Order</DialogTitle>
+          <DialogTitle>New Service Order</DialogTitle>
           <DialogDescription>
-            Add a new regular transaction order
+            Add a new regular transaction service order
           </DialogDescription>
         </DialogHeader>
         <OrderForm setDialogOpen={setDialogIsOpen} />

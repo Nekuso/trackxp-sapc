@@ -28,6 +28,7 @@ import { useTransition } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
 import { useEmployees } from "@/hooks/useEmployees";
+import { useSelector } from "react-redux";
 
 export const employeeSchema = z.object({
   first_name: z.string().min(1, { message: "First name is required" }),
@@ -57,10 +58,14 @@ export const employeeSchema = z.object({
 });
 
 export default function EmployeeForm({ setDialogOpen }: any) {
+  const currentUser = useSelector((state: any) => state.currentSession);
   const [isPending, startTransition] = useTransition();
   const { createEmployee } = useEmployees();
   const form = useForm<z.infer<typeof employeeSchema>>({
     resolver: zodResolver(employeeSchema),
+    defaultValues: {
+      branch: currentUser.branches.id.toString(),
+    },
   });
 
   async function onSubmit(data: any) {

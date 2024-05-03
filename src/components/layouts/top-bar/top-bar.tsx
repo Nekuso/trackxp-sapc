@@ -65,8 +65,8 @@ export default function TopBar({ data }: { data: any }) {
       </h1>
       <div className="w-auto h-full flex just place-items-center gap-5">
         <div className="w-auto flex flex-col place-items-end">
-          <h5 className="text-xs text-white">{getCurrentDate()}</h5>
-          <span className="text-xs text-white">{getTime()}</span>
+          {/* <h5 className="text-xs text-white">{getCurrentDate()}</h5>
+          <span className="text-xs text-white">{getTime()}</span> */}
         </div>
 
         <div className="w-auto min-h-11 flex justify-center place-items-center bg-darkComponentBg rounded-full px-3 gap-4">

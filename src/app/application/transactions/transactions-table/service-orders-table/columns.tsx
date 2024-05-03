@@ -22,7 +22,7 @@ import {
   CaretSortIcon,
 } from "@radix-ui/react-icons";
 import { FaEye } from "react-icons/fa";
-import { allPurchaseOrdersDisplay } from "@/types";
+import { allPurchaseOrderServicesDisplay } from "@/types";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { format } from "date-fns";
@@ -46,7 +46,7 @@ export const statuses = [
 ];
 
 export const initialState = (branches: any) => {
-  const columns: ColumnDef<allPurchaseOrdersDisplay>[] = [
+  const columns: ColumnDef<allPurchaseOrderServicesDisplay>[] = [
     {
       id: "id",
       accessorKey: "id",
@@ -126,21 +126,21 @@ export const initialState = (branches: any) => {
           <div className="flex place-items-center gap-2">
             <Avatar className="w-10 h-10 cursor-pointer z-0 rounded-md">
               <AvatarImage
-                src={row.original.employees.image_url}
-                alt={row.original.employees.first_name}
+                src={row.original.employee.image_url}
+                alt={row.original.employee.first_name}
               />
               <AvatarFallback className="bg-darkBg rounded-md">
-                {row.original.employees.first_name[0]}
+                {row.original.employee.first_name[0]}
               </AvatarFallback>
             </Avatar>
 
             <div className="flex flex-col">
               <p className="max-w-[100px] 2xl:max-w-[220px] truncate font-semibold">
-                {row.original.employees.first_name}{" "}
-                {row.original.employees.last_name}
+                {row.original.employee.first_name}{" "}
+                {row.original.employee.last_name}
               </p>
               <p className="max-w-[181px] truncate text-white/50">
-                {row.original.employees.roles.role}
+                {row.original.employee.roles.role}
               </p>
             </div>
           </div>

@@ -4,7 +4,10 @@ import { DataTable as OrdersDataTable } from "./transactions-table/orders-table/
 import { initialState as initiateOrdersState } from "./transactions-table/orders-table/columns";
 import { initialState as initiatePartsState } from "./transactions-table/service-orders-table/columns";
 
-import { allPurchaseOrdersDisplay } from "@/types";
+import {
+  allPurchaseOrderServicesDisplay,
+  allPurchaseOrdersDisplay,
+} from "@/types";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PiGearSixBold } from "react-icons/pi";
@@ -13,8 +16,10 @@ import { useSelector } from "react-redux";
 
 export default function InventoryContent({
   dataOrders,
+  dataOrderService,
 }: {
   dataOrders: allPurchaseOrdersDisplay[];
+  dataOrderService: allPurchaseOrderServicesDisplay[];
 }) {
   const branchesSlice = useSelector((state: any) => state.branches);
 
@@ -56,7 +61,7 @@ export default function InventoryContent({
         {/* Service Order Tab */}
         <OrderServicesDataTable
           columns={initiatePartsState(branchesSlice)}
-          data={[]}
+          data={dataOrderService}
         />
       </TabsContent>
     </Tabs>

@@ -51,6 +51,7 @@
     "react-to-print": "^2.15.1",
     "recharts": "^2.12.2",
     "sass": "^1.70.0",
+    "short-unique-id": "^5.2.0",
     "sonner": "^1.4.3",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",

@@ -11,9 +11,13 @@ import { useSelector } from "react-redux";
 
 export default function SelectDemo({ data }: { data: any }) {
   const branchesData = useSelector((state: any) => state.branches);
-
+  const currentUser = useSelector((state: any) => state.currentSession);
   return (
-    <Select onValueChange={data.onChange} value={data.value}>
+    <Select
+      onValueChange={data.onChange}
+      value={data.value}
+      disabled={currentUser?.roles.role === "Administrator" ? false : true}
+    >
       <FormControl>
         <SelectTrigger
           id="branch"
