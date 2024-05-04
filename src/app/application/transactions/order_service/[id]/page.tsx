@@ -3,22 +3,19 @@
 
 import { useEffect, useState } from "react";
 import Loading from "./skeleton";
-import PartContent from "./part-content";
+import OrderContent from "./order-content";
 import createSupabaseBrowserClient from "@/lib/supabase/client";
-import { useParts } from "@/hooks/useParts";
-import { useBrands } from "@/hooks/useBrands";
-import PartNotFound from "./not-found";
+import { useOrders } from "@/hooks/useOrders";
+import OrderNotFound from "./not-found";
 
-export default function Part({ params }: { params: any }) {
-  const { getPart, currentPartData } = useParts();
-  const { getBrands, allBrandsData } = useBrands();
+export default function Order({ params }: { params: any }) {
+  const { getOrder, currentOrderData } = useOrders();
   const [error, setError] = useState(false);
 
   useEffect(() => {
     const initialFetch = async () => {
-      const result = await getPart(params.id, 2000);
+      const result = await getOrder(params.id, 500);
       if (result) setError(result);
-      getBrands();
     };
 
     initialFetch();
@@ -28,12 +25,12 @@ export default function Part({ params }: { params: any }) {
     if (!error) {
       const supabase = createSupabaseBrowserClient();
       const subscribedChannel = supabase
-        .channel("part-follow-up")
+        .channel("order-follow-up")
         .on(
           "postgres_changes",
-          { event: "*", schema: "public", table: "parts" },
+          { event: "*", schema: "public", table: "orders" },
           (payload: any) => {
-            getPart(params.id, 0);
+            getOrder(params.id, 0);
           }
         )
         .subscribe();
@@ -47,15 +44,11 @@ export default function Part({ params }: { params: any }) {
   return (
     <div className="w-full flex justify-center place-items-center">
       {error ? (
-        <PartNotFound />
-      ) : currentPartData.length === 0 ? (
+        <OrderNotFound />
+      ) : currentOrderData.length === 0 ? (
         <Loading />
       ) : (
-        <PartContent
-          params={params}
-          part={currentPartData}
-          brands={allBrandsData}
-        />
+        <OrderContent params={params} order={currentOrderData} />
       )}
     </div>
   );
