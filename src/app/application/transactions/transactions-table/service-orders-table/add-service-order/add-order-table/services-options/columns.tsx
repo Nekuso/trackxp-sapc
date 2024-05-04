@@ -58,8 +58,7 @@ export const initiateColumns = (dispatch: any, servicesCart: any) => {
                 </span>
               </p>
               <p className="text-xs text-white/50">
-                Duration:
-                <span>{row.original.duration}</span>
+                {`Duration: ${row.original.duration} mins`}
               </p>
             </div>
           </div>

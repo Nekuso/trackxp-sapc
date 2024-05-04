@@ -26,22 +26,49 @@ import { allPurchaseOrderServicesDisplay } from "@/types";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { format } from "date-fns";
+import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
+import { MdAddToPhotos } from "react-icons/md";
+import { TbProgressBolt } from "react-icons/tb";
+import { PiMagnifyingGlassFill } from "react-icons/pi";
+import { RiUserReceived2Fill } from "react-icons/ri";
+import { MdVerified } from "react-icons/md";
 
-export const statuses = [
+export const progress = [
   {
-    value: "Paid",
-    label: "Paid",
-    icon: QuestionMarkCircledIcon,
+    value: "Created",
+    label: "Created",
+    icon: MdAddToPhotos,
+    bgColor: "bg-[#999999]",
+    textColor: "text-[#999999]",
   },
   {
-    value: "Pending",
-    label: "Pending",
-    icon: CircleIcon,
+    value: "In Progress",
+    label: "In Progress",
+    icon: TbProgressBolt,
+    bgColor: "bg-[#CD8D5E]",
+    textColor: "text-[#CD8D5E]",
   },
   {
-    value: "Archive",
-    label: "Archive ",
-    icon: CircleIcon,
+    value: "Quality Checks",
+    label: "Quality Checks ",
+    icon: PiMagnifyingGlassFill,
+    bgColor: "bg-[#5E8ACD]",
+    textColor: "text-[#5E8ACD]",
+  },
+  {
+    value: "Ready for Pick-up",
+    label: "Ready for Pick-up ",
+    icon: RiUserReceived2Fill,
+    bgColor: "bg-[#B0CD5E]",
+    textColor: "text-[#B0CD5E]",
+  },
+  {
+    value: "Completed",
+    label: "Completed ",
+    icon: MdVerified,
+    bgColor: "bg-[#5ECD8A]",
+    textColor: "text-[#5ECD8A]",
   },
 ];
 
@@ -174,6 +201,7 @@ export const initialState = (branches: any) => {
       cell: ({ row }) => {
         if (
           row.original.purchase_products.length > 0 &&
+          row.original.purchase_products.length > 0 &&
           row.original.purchase_parts.length > 0
         ) {
           return (
@@ -183,26 +211,43 @@ export const initialState = (branches: any) => {
                   "w-fit text-xs flex place-items-center gap-1 truncate text-white bg-applicationPrimary pl-2 pr-1 py-1 rounded-3xl font-semibold"
                 }
               >
-                Products
+                Services
                 <span className="rounded-full bg-white text-black p-1 px-3 text-center flex justify-center place-items-center line-clamp-none">
-                  {row.original.purchase_products.length}
+                  {row.original.purchase_services.length}
                 </span>
               </p>
               <TooltipProvider delayDuration={0} skipDelayDuration={1000}>
                 <Tooltip>
                   <TooltipTrigger>
                     <span className="rounded-full bg-darkGray text-white p-1 px-2 text-center flex justify-center place-items-center line-clamp-none font-semibold">
-                      +1
+                      {row.original.purchase_products.length &&
+                      row.original.purchase_parts.length
+                        ? "+2"
+                        : row.original.purchase_products.length
+                        ? "+1"
+                        : row.original.purchase_parts.length
+                        ? "+1"
+                        : ""}
                     </span>
                   </TooltipTrigger>
-                  <TooltipContent className="bg-transparent border-none shadow-none">
+                  <TooltipContent className="bg-transparent border-none shadow-none flex gap-2 place-items-center">
                     <p
                       className={
-                        "w-fit text-xs flex place-items-center gap-1 truncate text-white bg-darkGray pl-2 pr-1 py-1 rounded-3xl font-semibold"
+                        "w-fit text-xs flex place-items-center gap-1 truncate text-black bg-white pl-2 pr-1 py-1 rounded-3xl font-semibold shadow-2xl"
+                      }
+                    >
+                      Products
+                      <span className="rounded-full bg-black text-white p-1 px-3 text-center flex justify-center place-items-center line-clamp-none">
+                        {row.original.purchase_products.length}
+                      </span>
+                    </p>
+                    <p
+                      className={
+                        "w-fit text-xs flex place-items-center gap-1 truncate text-black bg-white pl-2 pr-1 py-1 rounded-3xl font-semibold shadow-2xl"
                       }
                     >
                       Parts
-                      <span className="rounded-full bg-white text-black p-1 px-3 text-center flex justify-center place-items-center line-clamp-none">
+                      <span className="rounded-full bg-black text-white p-1 px-3 text-center flex justify-center place-items-center line-clamp-none">
                         {row.original.purchase_parts.length}
                       </span>
                     </p>
@@ -251,62 +296,10 @@ export const initialState = (branches: any) => {
       },
     },
     {
-      id: "total_price",
-      accessorKey: "total_price",
-      header: ({ column }) => {
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="-ml-3 h-8 data-[state=open]:bg-applicationPrimary data-[state=open]:text-white hover:bg-slate-50/40 hover:text-white"
-              >
-                <span>Total</span>
-                {column.getIsSorted() === "desc" ? (
-                  <ArrowDownIcon className="ml-2 h-4 w-4" />
-                ) : column.getIsSorted() === "asc" ? (
-                  <ArrowUpIcon className="ml-2 h-4 w-4" />
-                ) : (
-                  <CaretSortIcon className="ml-2 h-4 w-4" />
-                )}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="start"
-              className="bg-darkComponentBg shadow-2xl border-darkGray border-none"
-            >
-              <DropdownMenuItem
-                onClick={() => column.toggleSorting(false)}
-                className="hover:bg-applicationPrimary  text-white group"
-              >
-                <ArrowUpIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70 group-hover:text-white" />
-                Asc
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => column.toggleSorting(true)}
-                className="hover:bg-applicationPrimary text-white group"
-              >
-                <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70 group-hover:text-white" />
-                Desc
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      },
-      cell: ({ row }) => {
-        return (
-          <p className="max-w-[190px] 2xl:max-w-[220px] truncate font-bold">
-            ₱{" "}
-            {row.original.total_price
-              .toFixed(2)
-              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </p>
-        );
-      },
-    },
-    {
-      accessorKey: "status",
+      id: "progress_entries",
+      accessorKey: "progress_entries",
+      accessorFn: (row) =>
+        row.progress_entries[row.progress_entries.length - 1]?.progress_name,
       header: ({ column }) => {
         return (
           <DropdownMenu>
@@ -350,44 +343,71 @@ export const initialState = (branches: any) => {
       },
 
       cell: ({ row }) => {
-        const item = statuses.find(
-          (item) => item.value === row.getValue("status")
+        const item = progress.find(
+          (item) =>
+            item.value ===
+            row.original.progress_entries[
+              row.original.progress_entries.length - 1
+            ].progress_name
         );
 
         if (!item) {
           return null;
         }
-        if (item.value === "Paid") {
-          return (
-            <p
-              className={
-                "w-fit text-xs font-normal flex place-items-center gap-2 truncate text-green-300 bg-green-300 bg-opacity-20 px-6 py-1 rounded-3xl border border-green-600"
-              }
+        return (
+          <div className="w-[180px] 2xl:w-[230px] gap-1 flex flex-col">
+            <span
+              className={cn(
+                `font-bold flex place-items-center gap-1`,
+                item.textColor
+              )}
             >
-              {item.value}
-            </p>
-          );
-        } else if (item.value === "Pending") {
-          return (
-            <p
-              className={
-                "w-fit text-xs font-normal flex place-items-center gap-2 truncate text-yellow-300 bg-yellow-300 bg-opacity-20 px-3 py-1 rounded-3xl border border-yellow-600"
-              }
-            >
-              {item.value}
-            </p>
-          );
-        } else {
-          return (
-            <p
-              className={
-                "w-fit text-xs font-normal flex place-items-center gap-2 truncate text-slate-300 bg-slate-200 bg-opacity-20 px-4 py-1 rounded-3xl "
-              }
-            >
-              {item.value}
-            </p>
-          );
-        }
+              <item.icon className="h-4 w-4" />
+              {item.label}
+            </span>
+            <div className="w-full flex justify-between place-items-center gap-1.5">
+              <Skeleton
+                className={cn(
+                  `py-1 w-full rounded-sm hover:scale-125 transition-all duration-300 hover:shadow-2xl`,
+                  item.bgColor
+                )}
+                loading={item.value === "Created" ? true : false}
+              ></Skeleton>
+              <Skeleton
+                className={cn(
+                  `py-1 w-full rounded-sm hover:scale-125 transition-all duration-300 hover:shadow-2xl`,
+                  item.bgColor,
+                  row.original.progress_entries.length < 2 ? "opacity-10" : ""
+                )}
+                loading={item.value === "In Progress" ? true : false}
+              ></Skeleton>
+              <Skeleton
+                className={cn(
+                  `py-1 w-full rounded-sm hover:scale-125 transition-all duration-300 hover:shadow-2xl`,
+                  item.bgColor,
+                  row.original.progress_entries.length < 3 ? "opacity-10" : ""
+                )}
+                loading={item.value === "Quality Checks" ? true : false}
+              ></Skeleton>
+              <Skeleton
+                className={cn(
+                  `py-1 w-full rounded-sm hover:scale-125 transition-all duration-300 hover:shadow-2xl`,
+                  item.bgColor,
+                  row.original.progress_entries.length < 4 ? "opacity-10" : ""
+                )}
+                loading={item.value === "Ready for Pick-up" ? true : false}
+              ></Skeleton>
+              <Skeleton
+                className={cn(
+                  `py-1 w-full rounded-sm hover:scale-125 transition-all duration-300 hover:shadow-2xl`,
+                  item.bgColor,
+                  row.original.progress_entries.length < 5 ? "opacity-10" : ""
+                )}
+                loading={false}
+              ></Skeleton>
+            </div>
+          </div>
+        );
       },
       filterFn: (row, id, value) => {
         return value.includes(row.getValue(id));

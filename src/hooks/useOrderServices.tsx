@@ -111,6 +111,7 @@ export const useOrderServices: any = () => {
         props.progress_entries.map((progress: any) => ({
           order_service_id: result.data[0].id,
           progress_name: progress.progress_name,
+          description: progress.description,
         }))
       )
       .select();

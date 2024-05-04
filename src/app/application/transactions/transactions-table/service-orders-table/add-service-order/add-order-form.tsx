@@ -170,6 +170,7 @@ export default function OrderForm({ setDialogOpen }: any) {
     progress_entries: z.array(
       z.object({
         progress_name: z.string(),
+        description: z.string(),
       })
     ),
   });
@@ -193,7 +194,9 @@ export default function OrderForm({ setDialogOpen }: any) {
       inventory_id: currentUser.branches.id.toString(),
       progress_entries: [
         {
-          progress_name: "Service Order Created",
+          progress_name: "Created",
+          description:
+            "The repair request is created and logged into the system.",
         },
       ],
     },
@@ -332,19 +335,18 @@ export default function OrderForm({ setDialogOpen }: any) {
           label: "Print",
           onClick: () =>
             router.push(
-              // `/application/transactions/order_service/${result.data[0].id}`
-              `/application/transactions/order_service/`
+              `/application/transactions/order_service/${result.data[0].id}`
             ),
         },
       });
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[1340px] h-[600px] rounded-md bg-slate-950 p-4 overflow-y-scroll">
-            <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-          </pre>
-        ),
-      });
+      // toast({
+      //   title: "You submitted the following values:",
+      //   description: (
+      //     <pre className="mt-2 w-[1340px] h-[600px] rounded-md bg-slate-950 p-4 overflow-y-scroll">
+      //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+      //     </pre>
+      //   ),
+      // });
       new Promise((resolve) => setTimeout(resolve, 500)).then(() => {
         dispatch(resetOrderCart());
         dispatch(resetOrderServiceCart());

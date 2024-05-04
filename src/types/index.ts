@@ -321,6 +321,7 @@ export type allPurchaseOrderServicesDisplay = {
         id: number | any;
         created_at: string | any;
         progress_name: string | any;
+        description: string | any;
         order_service_id: string | any;
       }[]
     | any;
