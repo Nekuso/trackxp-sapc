@@ -7,9 +7,9 @@ import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { statuses } from "./columns";
+import { progress } from "./columns";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
-import AddOrderButton from "./add-order/add-order-dialog";
+import AddOrderButton from "./add-service-order/add-order-dialog";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import DatePickerWithRange from "./date-picker";
@@ -26,8 +26,6 @@ export function DataTableToolbar<TData>({
   const isFiltered = table.getState().columnFilters.length > 0;
 
   const branchesSlice = useSelector((state: any) => state.branches);
-
-  const createdAtColumn = table.getColumn("created_at");
 
   return (
     <div className="flex w-full items-center justify-between">
@@ -48,11 +46,11 @@ export function DataTableToolbar<TData>({
             options={branchesSlice}
           />
         )}
-        {table.getColumn("status") && (
+        {table.getColumn("progress_entries") && (
           <DataTableFacetedFilter
-            column={table.getColumn("status")}
-            title="Status"
-            options={statuses}
+            column={table.getColumn("progress_entries")}
+            title="Progress"
+            options={progress}
           />
         )}
         {isFiltered && (

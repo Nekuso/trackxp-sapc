@@ -21,6 +21,7 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 
+import { ScrollArea } from "@/components/ui/scroll-area";
 const multiSelectVariants = cva(
   "m-1 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300",
   {
@@ -120,7 +121,7 @@ const MultiSelectFormField = React.forwardRef<
             ref={ref}
             {...props}
             onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-            className="flex w-full rounded-md border border-slate-600/50 min-h-9 h-auto items-center justify-between bg-lightComponentBg hover:bg-applicationPrimary hover:text-white group px-2"
+            className="flex w-full rounded-md border border-slate-600/50 min-h-9 h-auto items-center justify-between bg-lightComponentBg hover:bg-lightComponentBg hover:text-white group px-2"
           >
             {selectedValues.length > 0 ? (
               <div className="flex justify-between items-center w-full">
@@ -157,7 +158,7 @@ const MultiSelectFormField = React.forwardRef<
                 </div>
                 <div className="flex items-center justify-between">
                   <XIcon
-                    className="h-3 mx-1 cursor-pointer text-muted-foreground group-hover:text-white"
+                    className="h-3 mx-1 cursor-pointer text-muted-foreground "
                     onClick={(event) => {
                       setSelectedValues([]);
                       selectedValuesSet.current.clear();
@@ -169,15 +170,13 @@ const MultiSelectFormField = React.forwardRef<
                     orientation="vertical"
                     className="flex min-h-5 h-full"
                   />
-                  <ChevronDown className="h-3 mx-2 cursor-pointer text-muted-foreground group-hover:text-white" />
+                  <ChevronDown className="h-3 mx-2 cursor-pointer text-muted-foreground " />
                 </div>
               </div>
             ) : (
               <div className="flex items-center justify-between w-full mx-auto">
-                <span className="text-sm text-muted-foreground group-hover:text-white mx-1">
-                  {placeholder}
-                </span>
-                <ChevronDown className="h-4 cursor-pointer text-muted-foreground mx-1 group-hover:text-white" />
+                <span className="text-sm text-white mx-1">{placeholder}</span>
+                <ChevronDown className="h-4 cursor-pointer text-muted-foreground mx-1 " />
               </div>
             )}
           </Button>
@@ -199,78 +198,80 @@ const MultiSelectFormField = React.forwardRef<
               onKeyDown={handleInputKeyDown}
             />
             <CommandList>
-              <CommandEmpty>No results found.</CommandEmpty>
-              <CommandGroup>
-                {options.map((option) => {
-                  const isSelected = selectedValuesSet.current.has(
-                    option.value
-                  );
-                  return (
-                    <CommandItem
-                      key={option.value}
-                      onSelect={() => toggleOption(option.value)}
-                      style={{
-                        pointerEvents: "auto",
-                        opacity: 1,
-                      }}
-                      className="cursor-pointer"
-                    >
-                      <div
-                        className={cn(
-                          "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
-                          isSelected
-                            ? "bg-primary text-primary-foreground"
-                            : "opacity-50 [&_svg]:invisible"
-                        )}
-                      >
-                        <CheckIcon className="h-4 w-4" />
-                      </div>
-                      {option.icon && (
-                        <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-                      )}
-                      <span className="text-white">{option.label}</span>
-                    </CommandItem>
-                  );
-                })}
-              </CommandGroup>
-              <CommandSeparator className="bg-slate-600/50" />
-              <CommandGroup>
-                <div className="flex items-center justify-between">
-                  {selectedValues.length > 0 && (
-                    <>
+              <ScrollArea className="h-40 2xl:h-72 w-full relative">
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup>
+                  {options.map((option) => {
+                    const isSelected = selectedValuesSet.current.has(
+                      option.value
+                    );
+                    return (
                       <CommandItem
-                        onSelect={() => {
-                          setSelectedValues([]);
-                          selectedValuesSet.current.clear();
-                          onValueChange([]);
-                        }}
+                        key={option.value}
+                        onSelect={() => toggleOption(option.value)}
                         style={{
                           pointerEvents: "auto",
                           opacity: 1,
                         }}
-                        className="flex-1 justify-center cursor-pointer text-white"
+                        className="cursor-pointer"
                       >
-                        Clear
+                        <div
+                          className={cn(
+                            "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                            isSelected
+                              ? "bg-primary text-primary-foreground"
+                              : "opacity-50 [&_svg]:invisible"
+                          )}
+                        >
+                          <CheckIcon className="h-4 w-4" />
+                        </div>
+                        {option.icon && (
+                          <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+                        )}
+                        <span className="text-white">{option.label}</span>
                       </CommandItem>
-                      <Separator
-                        orientation="vertical"
-                        className="flex min-h-6 h-full bg-slate-600/50"
-                      />
-                    </>
-                  )}
-                  <CommandSeparator className="bg-slate-600/50" />
-                  <CommandItem
-                    onSelect={() => setIsPopoverOpen(false)}
-                    style={{
-                      pointerEvents: "auto",
-                      opacity: 1,
-                    }}
-                    className="flex-1 justify-center cursor-pointer text-white"
-                  >
-                    Close
-                  </CommandItem>
-                </div>
-              </CommandGroup>
+                    );
+                  })}
+                </CommandGroup>
+                <CommandSeparator className="bg-slate-600/50" />
+                <CommandGroup className="sticky bottom-0 bg-lightComponentBg">
+                  <div className="flex items-center justify-between">
+                    {selectedValues.length > 0 && (
+                      <>
+                        <CommandItem
+                          onSelect={() => {
+                            setSelectedValues([]);
+                            selectedValuesSet.current.clear();
+                            onValueChange([]);
+                          }}
+                          style={{
+                            pointerEvents: "auto",
+                            opacity: 1,
+                          }}
+                          className="flex-1 justify-center cursor-pointer text-white"
+                        >
+                          Clear
+                        </CommandItem>
+                        <Separator
+                          orientation="vertical"
+                          className="flex min-h-6 h-full bg-slate-600/50"
+                        />
+                      </>
+                    )}
+                    <CommandSeparator className="bg-slate-600/50" />
+                    <CommandItem
+                      onSelect={() => setIsPopoverOpen(false)}
+                      style={{
+                        pointerEvents: "auto",
+                        opacity: 1,
+                      }}
+                      className="flex-1 justify-center cursor-pointer text-white"
+                    >
+                      Close
+                    </CommandItem>
+                  </div>
+                </CommandGroup>
+              </ScrollArea>
             </CommandList>
           </Command>
         </PopoverContent>

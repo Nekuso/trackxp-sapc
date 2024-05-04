@@ -20,8 +20,8 @@ export default function SelectDemo({ data }: { data: any }) {
     >
       <FormControl>
         <SelectTrigger
-          id="branch"
-          name="branch"
+          id="inventory_id"
+          name="inventory_id"
           value={data.value}
           className="w-full bg-lightComponentBg border-slate-600/50 rounded-lg "
         >

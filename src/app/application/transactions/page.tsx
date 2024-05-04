@@ -21,13 +21,20 @@ import {
   setProductsData,
 } from "@/redux/slices/orderCartOptionSlice";
 import { setServicesData } from "@/redux/slices/orderServiceCartOptionSlice";
-import { setEmployeesData } from "@/redux/slices/allEmployeesSlice";
+import {
+  setEmployeesData,
+  setMechanicsData,
+  setSuperVisorsData,
+} from "@/redux/slices/allEmployeesSlice";
+import { useMobileUsers } from "@/hooks/useMobileUsers";
+import { setMobileUsersData } from "@/redux/slices/mobileUsersSlice";
 
 export default function Transactions() {
   const dispatch = useDispatch();
 
   const { getOrders, ordersData } = useOrders();
   const { getEmployees, allEmployeesData } = useEmployees();
+  const { getMobileUsers, allMobileUserData } = useMobileUsers();
   const { getOrderServices, orderServicesData } = useOrderServices();
   const { getBranches, allBranchesData } = useBranches();
   const { getProducts, productsData } = useProducts();
@@ -51,6 +58,10 @@ export default function Transactions() {
   );
 
   dispatch(setEmployeesData(allEmployeesData));
+  dispatch(setMobileUsersData(allMobileUserData));
+  dispatch(setMechanicsData(allEmployeesData));
+  dispatch(setSuperVisorsData(allEmployeesData));
+
   dispatch(setBranchesData(branchesData));
   dispatch(setProductsData({ productsData, productsCart }));
   dispatch(setPartsData({ partsData, partsCart }));
@@ -67,11 +78,14 @@ export default function Transactions() {
         description: error.message,
       });
     }
+
     getBranches();
     getProducts();
     getParts();
     getServices();
     getEmployees();
+    getMobileUsers();
+    getOrderServices();
   }, []);
 
   // listen for changes in the database
@@ -88,6 +102,16 @@ export default function Transactions() {
       )
       .subscribe();
     const subscribedChannel2 = supabase
+      .channel("order-services-follow-up")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "order_services" },
+        (payload: any) => {
+          getOrderServices();
+        }
+      )
+      .subscribe();
+    const subscribedChannel3 = supabase
       .channel("products-follow-up")
       .on(
         "postgres_changes",
@@ -95,10 +119,11 @@ export default function Transactions() {
         (payload: any) => {
           getProducts();
           getOrders();
+          getOrderServices();
         }
       )
       .subscribe();
-    const subscribedChannel3 = supabase
+    const subscribedChannel4 = supabase
       .channel("parts-follow-up")
       .on(
         "postgres_changes",
@@ -106,6 +131,18 @@ export default function Transactions() {
         (payload: any) => {
           getParts();
           getOrders();
+          getOrderServices();
+        }
+      )
+      .subscribe();
+    const subscribedChannel5 = supabase
+      .channel("services-follow-up")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "services" },
+        (payload: any) => {
+          getServices();
+          getOrderServices();
         }
       )
       .subscribe();
@@ -113,6 +150,7 @@ export default function Transactions() {
       supabase.removeChannel(subscribedChannel1);
       supabase.removeChannel(subscribedChannel2);
       supabase.removeChannel(subscribedChannel3);
+      supabase.removeChannel(subscribedChannel4);
     };
   }, []);
 
@@ -121,7 +159,10 @@ export default function Transactions() {
       {ordersData.length === 0 ? (
         <Loading />
       ) : (
-        <TransactionsContent dataOrders={ordersData} />
+        <TransactionsContent
+          dataOrders={ordersData}
+          dataOrderService={orderServicesData}
+        />
       )}
     </div>
   );

@@ -238,7 +238,7 @@ export default function OrderForm({ setDialogOpen }: any) {
               >
                 <AccordionItem value="item-1">
                   <AccordionTrigger className="font-bold bg-darkBg sticky top-0">
-                    Customer
+                    Basic Information
                   </AccordionTrigger>
                   <AccordionContent className="bg-darkComponentBg rounded-xl">
                     <div className="w-full flex flex-col gap-4 px-2">
@@ -430,34 +430,38 @@ export default function OrderForm({ setDialogOpen }: any) {
                     </div>
                   </AccordionContent>
                 </AccordionItem>
-                <AccordionItem value="item-2">
-                  <AccordionTrigger className="font-bold bg-darkBg sticky top-0">
-                    Products Summary
-                  </AccordionTrigger>
-                  <AccordionContent className="bg-darkComponentBg rounded-xl">
-                    <ProductsCart
-                      columns={initiateProductsCartColumns(
-                        dispatch,
-                        orderCartOptions.productsData
-                      )}
-                      data={orderCart.productsCart}
-                    />
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-3">
-                  <AccordionTrigger className="font-bold bg-darkBg sticky top-0">
-                    Parts Summary
-                  </AccordionTrigger>
-                  <AccordionContent className="bg-darkComponentBg rounded-xl">
-                    <PartsCart
-                      columns={initiatePartsCartColumns(
-                        dispatch,
-                        orderCartOptions.partsData
-                      )}
-                      data={orderCart.partsCart}
-                    />
-                  </AccordionContent>
-                </AccordionItem>
+                {orderCart.productsCart.length > 0 && (
+                  <AccordionItem value="item-2">
+                    <AccordionTrigger className="font-bold bg-darkBg sticky top-0">
+                      Products Summary
+                    </AccordionTrigger>
+                    <AccordionContent className="bg-darkComponentBg rounded-xl">
+                      <ProductsCart
+                        columns={initiateProductsCartColumns(
+                          dispatch,
+                          orderCartOptions.productsData
+                        )}
+                        data={orderCart.productsCart}
+                      />
+                    </AccordionContent>
+                  </AccordionItem>
+                )}
+                {orderCart.partsCart.length > 0 && (
+                  <AccordionItem value="item-3">
+                    <AccordionTrigger className="font-bold bg-darkBg sticky top-0">
+                      Parts Summary
+                    </AccordionTrigger>
+                    <AccordionContent className="bg-darkComponentBg rounded-xl">
+                      <PartsCart
+                        columns={initiatePartsCartColumns(
+                          dispatch,
+                          orderCartOptions.partsData
+                        )}
+                        data={orderCart.partsCart}
+                      />
+                    </AccordionContent>
+                  </AccordionItem>
+                )}
               </Accordion>
               <div className="w-full flex-col relative">
                 <div className="w-full py-2 flex gap-8 position sticky bottom-[-4px] bg-darkBg m-0 text-sm">

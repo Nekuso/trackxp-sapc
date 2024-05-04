@@ -184,44 +184,145 @@ export type allPurchaseOrdersDisplay = {
   created_at: string;
 };
 export type allPurchaseOrderServicesDisplay = {
-  id: string;
-  customer_first_name: string;
-  customer_last_name: string;
-  customer_contact_number: string;
-  customer_email: string;
-  mobile_user: {
-    first_name: string;
-    last_name: string;
-    image_url: string;
-  };
-  remarks: string;
-  inventory: {
-    id: number;
-    branches: {
-      id: number;
-      branch_name: string;
-      branch_location: string;
-    };
-  };
-  employees: {
-    id: number;
-    first_name: string;
-    last_name: string;
-    image_url: string;
-    contact_number: string;
-    email: string;
-    roles: { role: string };
-  };
-  vehicle_info: {
-    plate_number: string;
-    type: string;
-  };
-  purchase_products: {}[];
-  purchase_parts: {}[];
-  purchase_services: {}[];
-  progress_entries: {}[];
-  total_price: number;
-  payment_method: string;
-  status: string;
-  created_at: string;
+  id: string | any;
+  customer_first_name: string | any;
+  customer_last_name: string | any;
+  customer_contact_number: string | any;
+  customer_email: string | any;
+  subtotal: number | any;
+  total_price: number | any;
+  amount_paid: number | any;
+  status: string | any;
+  discount: number | any;
+  payment_method: string | any;
+  created_at: string | any;
+  employee:
+    | {
+        id: string | any;
+        email: string | any;
+        roles: { role: string } | any;
+        image_url: string | any;
+        last_name: string | any;
+        first_name: string | any;
+        contact_number: number | any;
+      }
+    | any;
+  supervisor:
+    | {
+        id: string | any;
+        email: string | any;
+        roles: { role: string } | any;
+        image_url: string | any;
+        last_name: string | any;
+        first_name: string | any;
+        contact_number: number | any;
+        created_at: string | any;
+      }
+    | any;
+  inventory:
+    | {
+        id: number | any;
+        branches:
+          | {
+              id: number | any;
+              created_at: string | any;
+              branch_name: string | any;
+              branch_manager: null | any;
+              contact_number: string | any;
+              branch_location: string | any;
+            }
+          | any;
+      }
+    | any;
+  purchase_products:
+    | {
+        id: number | any;
+        name: string | any;
+        price: number | any;
+        barcode: string | any;
+        order_id: null | any;
+        quantity: number | any;
+        uom_name: string | any;
+        image_url: string | any;
+        created_at: string | any;
+        product_id: number | any;
+        description: string | any;
+        inventory_id: number | any;
+        order_service_id: string | any;
+      }[]
+    | any;
+  purchase_parts:
+    | {
+        id: number | any;
+        name: string | any;
+        brand: string | any;
+        price: number | any;
+        barcode: string | any;
+        part_id: number | any;
+        order_id: null | any;
+        quantity: number | any;
+        image_url: string | any;
+        created_at: string | any;
+        description: string | any;
+        inventory_id: number | any;
+        order_service_id: string | any;
+      }[]
+    | any;
+  purchase_services:
+    | {
+        id: number | any;
+        name: string | any;
+        price: number | any;
+        image_url: string | any;
+        created_at: string | any;
+        service_id: number | any;
+        description: string | any;
+        inventory_id: number | any;
+        order_service_id: string | any;
+      }[]
+    | any;
+  mobile_users:
+    | {
+        id: string | any;
+        dob: null | any;
+        email: string | any;
+        gender: string | any;
+        points: number | any;
+        address: string | any;
+        password: string | any;
+        image_url: string | any;
+        last_name: string | any;
+        created_at: string | any;
+        first_name: string | any;
+        contact_number: string | any;
+      }
+    | any;
+  mechanic_entries:
+    | {
+        id: number | any;
+        mechanic:
+          | {
+              id: string | any;
+              email: string | any;
+              roles: { role: string } | any;
+              image_url: string | any;
+              last_name: string | any;
+              first_name: string | any;
+              contact_number: number | any;
+            }
+          | any;
+        created_at: string | any;
+        employee_id: string | any;
+        order_service_id: string | any;
+      }[]
+    | any;
+  progress_entries:
+    | {
+        id: number | any;
+        created_at: string | any;
+        progress_name: string | any;
+        description: string | any;
+        order_service_id: string | any;
+      }[]
+    | any;
 };
