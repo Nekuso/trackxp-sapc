@@ -3,18 +3,18 @@
 
 import { useEffect, useState } from "react";
 import Loading from "./skeleton";
-import OrderContent from "./order-content";
+import OrderServiceContent from "./order-service-content";
 import createSupabaseBrowserClient from "@/lib/supabase/client";
-import { useOrders } from "@/hooks/useOrders";
+import { useOrderServices } from "@/hooks/useOrderServices";
 import OrderNotFound from "./not-found";
 
-export default function Order({ params }: { params: any }) {
-  const { getOrder, currentOrderData } = useOrders();
+export default function OrderService({ params }: { params: any }) {
+  const { getOrderService, currentOrderServiceData } = useOrderServices();
   const [error, setError] = useState(false);
 
   useEffect(() => {
     const initialFetch = async () => {
-      const result = await getOrder(params.id, 500);
+      const result = await getOrderService(params.id, 500);
       if (result) setError(result);
     };
 
@@ -25,12 +25,29 @@ export default function Order({ params }: { params: any }) {
     if (!error) {
       const supabase = createSupabaseBrowserClient();
       const subscribedChannel = supabase
-        .channel("order-follow-up")
+        .channel(`order-service-follow-up-${params.id}`)
         .on(
           "postgres_changes",
-          { event: "*", schema: "public", table: "orders" },
+          {
+            event: "*",
+            schema: "public",
+            table: "order_services",
+            filter: `id=eq.${params.id}`,
+          },
           (payload: any) => {
-            getOrder(params.id, 0);
+            getOrderService(params.id, 0);
+          }
+        )
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "progress_entries",
+            filter: `order_service_id=eq.${params.id}`,
+          },
+          (payload: any) => {
+            getOrderService(params.id, 0);
           }
         )
         .subscribe();
@@ -45,10 +62,13 @@ export default function Order({ params }: { params: any }) {
     <div className="w-full flex justify-center place-items-center">
       {error ? (
         <OrderNotFound />
-      ) : currentOrderData.length === 0 ? (
+      ) : currentOrderServiceData.length === 0 ? (
         <Loading />
       ) : (
-        <OrderContent params={params} order={currentOrderData} />
+        <OrderServiceContent
+          params={params}
+          orderService={currentOrderServiceData}
+        />
       )}
     </div>
   );

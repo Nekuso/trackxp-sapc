@@ -29,9 +29,12 @@ export default function ProfileButton({ data }: any) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="w-10 h-10 cursor-pointer">
-          <AvatarImage src={data.image_url} />
-          <AvatarFallback className="text-black">{`${data.first_name[0]}${data.last_name[0]}`}</AvatarFallback>
+        <Avatar className="w-10 h-10 cursor-pointer rounded-lg shadow-2xl primary-glow transition-all duration-300 border border-transparent hover:border-applicationPrimary">
+          <AvatarImage
+            src={data.image_url}
+            className=" shadow-2xl primary-glow rounded-md transition-all duration-300 border border-transparent hover:border-applicationPrimary"
+          />
+          <AvatarFallback className="text-black shadow-2xl primary-glow rounded-md transition-all duration-300 border border-transparent hover:border-applicationPrimary">{`${data.first_name[0]}${data.last_name[0]}`}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 bg-darkComponentBg border border-lightBorder shadow-2xl text-white px-2 mr-6">

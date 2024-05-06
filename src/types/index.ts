@@ -281,7 +281,7 @@ export type allPurchaseOrderServicesDisplay = {
         order_service_id: string | any;
       }[]
     | any;
-  mobile_users:
+  mobile_user:
     | {
         id: string | any;
         dob: null | any;
@@ -313,6 +313,21 @@ export type allPurchaseOrderServicesDisplay = {
           | any;
         created_at: string | any;
         employee_id: string | any;
+        order_service_id: string | any;
+      }[]
+    | any;
+  vehicle_entries:
+    | {
+        id: number | any;
+        type: string | any;
+        color: string | any;
+        car_brand: string | any;
+        car_model: string | any;
+        created_at: string | any;
+        odo_reading: number | any;
+        plate_number: string | any;
+        engine_number: string | any;
+        chassis_number: string | any;
         order_service_id: string | any;
       }[]
     | any;
