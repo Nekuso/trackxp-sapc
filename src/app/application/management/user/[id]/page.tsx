@@ -34,7 +34,12 @@ export default function User({ params }: { params: any }) {
         .channel("employee-follow-up")
         .on(
           "postgres_changes",
-          { event: "*", schema: "public", table: "employees" },
+          {
+            event: "*",
+            schema: "public",
+            table: "employees",
+            filter: `id=eq.${params.id}`,
+          },
           (payload: any) => {
             getEmployee(params.id, 0);
           }

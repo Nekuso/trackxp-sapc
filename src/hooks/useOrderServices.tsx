@@ -32,7 +32,7 @@ export const useOrderServices: any = () => {
         discount: props.discount,
         amount_paid: props.amount_paid,
         remarks: props.remarks,
-        mobile_user_id: props.mobile_user_id,
+        mobile_user_id: props.mobile_user_id ? props.mobile_user_id : null,
         redeemed: props.mobile_user_id ? true : false,
         redeem_code: props.mobile_user_id ? null : uid.stamp(11),
       })
@@ -95,7 +95,7 @@ export const useOrderServices: any = () => {
       .from("vehicle_entries")
       .insert({
         order_service_id: result.data[0].id,
-        type: props.vehicle_entry.type,
+        type: props.vehicle_entry.vehicle_type,
         car_model: props.vehicle_entry.car_model,
         car_brand: props.vehicle_entry.car_brand,
         plate_number: props.vehicle_entry.plate_number,
@@ -105,7 +105,7 @@ export const useOrderServices: any = () => {
         chassis_number: props.vehicle_entry.chassis_number,
       })
       .select();
-    const progresResult = await supabase
+    const progressResult = await supabase
       .from("progress_entries")
       .insert(
         props.progress_entries.map((progress: any) => ({
@@ -121,6 +121,11 @@ export const useOrderServices: any = () => {
         employee_id: mechanic,
       }))
     );
+    // console.log(result);
+    // console.log(productResult);
+    // console.log(partResult);
+    // console.log(serviceResult);
+    // console.log(progressResult);
 
     await new Promise((resolve) => setTimeout(resolve, duration));
 
@@ -184,6 +189,7 @@ export const useOrderServices: any = () => {
             )
           )
         ),
+        vehicle_entries("*"),
         progress_entries("*"),
         subtotal,
         total_price,
@@ -197,7 +203,6 @@ export const useOrderServices: any = () => {
       .order("created_at", { ascending: false });
 
     const { data, error } = result;
-    console.log(result);
     if (error) {
       return error;
     }
@@ -205,7 +210,7 @@ export const useOrderServices: any = () => {
   };
   const getOrderService = async (id: string, duration?: number) => {
     const { data, error } = await supabase
-      .from("orders")
+      .from("order_services")
       .select(
         `
         id,
@@ -213,7 +218,9 @@ export const useOrderServices: any = () => {
         customer_last_name,
         customer_contact_number,
         customer_email,
-        employees(
+        redeemed,
+        redeem_code,
+        employee:employees!public_order_services_employee_id_fkey(
           id,
           first_name,
           last_name,
@@ -224,37 +231,45 @@ export const useOrderServices: any = () => {
             role
           )
         ),
+        supervisor:employees!order_services_supervisor_id_fkey(
+          id,
+          first_name,
+          last_name,
+          image_url,
+          contact_number,
+          email,
+          roles(
+            role
+          ),
+          created_at
+        ),
         inventory(
           id,
-          branches(
-            id,
-            branch_name,
-            branch_location,
-            contact_number
+          branches("*"
           )
         ),
-        purchase_products(
-          id,
-          product_id,
-          name,
-          description,
-          barcode,
-          image_url,
-          price,
-          quantity,
-          uom_name
+        purchase_products("*"
         ),
-        purchase_parts(
-          id,
-          part_id,
-          name,
-          description,
-          barcode,
-          image_url,
-          price,
-          quantity,
-          brand
+        purchase_parts("*"
         ),
+        purchase_services("*"
+        ),
+        mobile_user:mobile_users("*"),
+        mechanic_entries("*",
+          mechanic:employees!mechanic_entries_employee_id_fkey(
+            id,
+            first_name,
+            last_name,
+            image_url,
+            contact_number,
+            email,
+            roles(
+              role
+            )
+          )
+        ),
+        vehicle_entries("*"),
+        progress_entries("*"),
         subtotal,
         total_price,
         amount_paid,
@@ -262,16 +277,16 @@ export const useOrderServices: any = () => {
         discount,
         payment_method,
         created_at
-    `
+        `
       )
       .eq("id", id);
+    console.log(data);
 
     await new Promise((resolve) => setTimeout(resolve, duration));
     if (data?.length === 0) return true;
     setCurrentOrderServiceData(data);
     return error;
   };
-
   const updateOrderService = async (props: any, duration?: number) => {
     const result = await supabase
       .from("orders")
@@ -290,7 +305,6 @@ export const useOrderServices: any = () => {
     await new Promise((resolve) => setTimeout(resolve, duration));
     return result;
   };
-
   const updateOrderServiceStatus = async (props: any, duration?: number) => {
     const result = await supabase
       .from("orders")
@@ -303,7 +317,6 @@ export const useOrderServices: any = () => {
 
     return JSON.stringify(result);
   };
-
   const deleteOrderService = async (props: any, duration: number = 2000) => {
     const result = await supabase.from("orders").delete().eq("id", props.id);
 

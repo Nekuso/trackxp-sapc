@@ -53,11 +53,11 @@ import MobileUserInput from "./mobile-user-input";
 import VehicleTypeInput from "./vehicle-type-input";
 
 export default function OrderForm({ setDialogOpen }: any) {
+  const currentUser = useSelector((state: any) => state.currentSession);
+  const [isPending, startTransition] = useTransition();
+  const { createOrderService } = useOrderServices();
   const dispatch = useDispatch();
   const router = useRouter();
-  const { createOrderService } = useOrderServices();
-  const [isPending, startTransition] = useTransition();
-  const currentUser = useSelector((state: any) => state.currentSession);
 
   const orderCart = useSelector((state: any) => state.orderCart);
   const orderServiceCart = useSelector((state: any) => state.orderServiceCart);
@@ -91,8 +91,8 @@ export default function OrderForm({ setDialogOpen }: any) {
 
   const orderServiceSchema: any = z.object({
     // Basic Information
-    customer_first_name: z.string().nullable(),
-    customer_last_name: z.string().nullable(),
+    customer_first_name: z.string(),
+    customer_last_name: z.string(),
     customer_email: z.string().nullable(),
     customer_contact_number: z.coerce.number().nullable(),
     payment_method: z.string().nullable(),

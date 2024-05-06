@@ -102,12 +102,14 @@ export default function Transactions() {
       )
       .subscribe();
     const subscribedChannel2 = supabase
-      .channel("order-services-follow-up")
+      .channel("service-orders-follow-up")
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "order_services" },
         (payload: any) => {
-          getOrderServices();
+          setTimeout(() => {
+            getOrderServices();
+          }, 2500);
         }
       )
       .subscribe();
@@ -119,7 +121,6 @@ export default function Transactions() {
         (payload: any) => {
           getProducts();
           getOrders();
-          getOrderServices();
         }
       )
       .subscribe();
@@ -131,7 +132,6 @@ export default function Transactions() {
         (payload: any) => {
           getParts();
           getOrders();
-          getOrderServices();
         }
       )
       .subscribe();
@@ -142,6 +142,15 @@ export default function Transactions() {
         { event: "*", schema: "public", table: "services" },
         (payload: any) => {
           getServices();
+        }
+      )
+      .subscribe();
+    const subscribedChannel6 = supabase
+      .channel("progress-follow-up")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "progress_entries" },
+        (payload: any) => {
           getOrderServices();
         }
       )
@@ -151,12 +160,14 @@ export default function Transactions() {
       supabase.removeChannel(subscribedChannel2);
       supabase.removeChannel(subscribedChannel3);
       supabase.removeChannel(subscribedChannel4);
+      supabase.removeChannel(subscribedChannel5);
+      supabase.removeChannel(subscribedChannel6);
     };
   }, []);
 
   return (
     <div className="w-full flex justify-center py-3.5 no-scrollbar ">
-      {ordersData.length === 0 ? (
+      {ordersData.length === 0 && orderServicesData.length === 0 ? (
         <Loading />
       ) : (
         <TransactionsContent
