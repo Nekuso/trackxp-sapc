@@ -146,7 +146,7 @@ export const initialState = (branches: any) => {
       header: "Customer",
       cell: ({ row }) => {
         return (
-          <p className="max-w-[110px] 2xl:max-w-[220px] truncate">
+          <p className="max-w-[110px] 2xl:max-w-[220px] truncate ">
             {row.original.customer_first_name} {row.original.customer_last_name}
           </p>
         );

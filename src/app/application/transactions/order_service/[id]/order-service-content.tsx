@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 import UpdateProgressButton from "./update-progress/update-order-status-dialog";
 import UndoProgressButton from "./undo-progress/undo-order-status-dialog";
 import { useEffect, useState } from "react";
+import { IoIosBarcode } from "react-icons/io";
 
 export default function OrderContent({ orderService, nextProgress }: any) {
   const data: allPurchaseOrderServicesDisplay = orderService[0];
