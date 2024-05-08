@@ -7,14 +7,11 @@ export const useProgressEntries: any = () => {
   );
 
   const addProgress = async (props: any, duration?: number) => {
-    const result = await supabase
-      .from("progress_entries")
-      .insert({
-        progress_name: props.progress_name,
-        description: props.progress_description,
-        order_service_id: props.order_service_id,
-      })
-      .select();
+    const result = await supabase.from("progress_entries").insert({
+      progress_name: props.progress_name,
+      description: props.progress_description,
+      order_service_id: props.order_service_id,
+    });
 
     await new Promise((resolve) => setTimeout(resolve, duration));
 
@@ -24,12 +21,11 @@ export const useProgressEntries: any = () => {
     const result = await supabase
       .from("progress_entries")
       .delete()
-      .eq("id", props.order_service_id)
-      .select();
+      .eq("id", props.progress_id);
 
     await new Promise((resolve) => setTimeout(resolve, duration));
 
-    return JSON.stringify(result);
+    return result;
   };
 
   return {

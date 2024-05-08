@@ -11,6 +11,31 @@ import OrderNotFound from "./not-found";
 export default function OrderService({ params }: { params: any }) {
   const { getOrderService, currentOrderServiceData } = useOrderServices();
   const [error, setError] = useState(false);
+  const progressCollection: any = {
+    created: {
+      progress_name: "Created",
+      description: "The service request is created and logged into the system.",
+    },
+    in_progress: {
+      progress_name: "In Progress",
+      description: "The services are currently being worked on by mechanics.",
+    },
+    quality_checks: {
+      progress_name: "Quality Checks",
+      description:
+        "A thorough quality check is performed to ensure the services meets standards.",
+    },
+    ready_for_pickup: {
+      progress_name: "Ready for Pick-up",
+      description:
+        "The services has been successfully completed and the vehicle is ready to be for Pick-up.",
+    },
+    completed: {
+      progress_name: "Completed",
+      description:
+        "The services has been successfully completed and the vehicle is returned to the customer.",
+    },
+  };
 
   useEffect(() => {
     const initialFetch = async () => {

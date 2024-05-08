@@ -331,12 +331,16 @@ export const initialState = (branches: any) => {
       },
 
       cell: ({ row }) => {
+        const sortedProgressEntries = row?.original.progress_entries
+          .sort(
+            (a: any, b: any) =>
+              new Date(a.created_at).getTime() -
+              new Date(b.created_at).getTime()
+          )
+          .reverse();
+
         const item = progress.find(
-          (item) =>
-            item.value ===
-            row?.original.progress_entries[
-              row?.original.progress_entries?.length - 1
-            ]?.progress_name
+          (item) => item.value === sortedProgressEntries[0]?.progress_name
         );
 
         if (!item) {
@@ -395,7 +399,7 @@ export const initialState = (branches: any) => {
                 className={cn(
                   `py-1 w-full rounded-sm hover:scale-125 transition-all duration-300 hover:shadow-2xl`,
                   item.bgColor,
-                  row.original.progress_entries.length < 5 ? "opacity-10" : "",
+                  row.original.progress_entries.length < 5 ? "opacity-10" : ""
                 )}
               ></div>
             </div>
