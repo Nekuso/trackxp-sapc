@@ -279,7 +279,8 @@ export const useOrderServices: any = () => {
         created_at
         `
       )
-      .eq("id", id);
+      .eq("id", id)
+      .order("created_at", { ascending: false });
     console.log(data);
 
     await new Promise((resolve) => setTimeout(resolve, duration));

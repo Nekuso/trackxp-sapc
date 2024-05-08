@@ -9,7 +9,6 @@ import { MdOutlineMobileOff } from "react-icons/md";
 import { MdOutlineMobileFriendly } from "react-icons/md";
 import { FaClockRotateLeft } from "react-icons/fa6";
 import { formatDistanceToNow } from "date-fns";
-import { progress } from "@/app/application/transactions/transactions-table/service-orders-table/columns";
 import { MdAddToPhotos } from "react-icons/md";
 import { TbProgressBolt } from "react-icons/tb";
 import { PiMagnifyingGlassFill } from "react-icons/pi";
@@ -17,28 +16,66 @@ import { RiUserReceived2Fill } from "react-icons/ri";
 import { MdVerified } from "react-icons/md";
 import { cn } from "@/lib/utils";
 import UpdateProgressButton from "./update-progress/update-order-status-dialog";
+import UndoProgressButton from "./undo-progress/undo-order-status-dialog";
+import { useEffect, useState } from "react";
+import { IoIosBarcode } from "react-icons/io";
 
-export default function OrderContent({ orderService }: any) {
+export default function OrderContent({ orderService, nextProgress }: any) {
   const data: allPurchaseOrderServicesDisplay = orderService[0];
 
-  const progress_entries = data.progress_entries
-    .map((progress: any) => ({
-      value: progress.progress_name,
-      created_at: progress.created_at,
-      icon:
-        progress.progress_name === "Created"
-          ? MdAddToPhotos
-          : progress.progress_name === "In Progress"
-          ? TbProgressBolt
-          : progress.progress_name === "Completed"
-          ? MdVerified
-          : progress.progress_name === "Quality Checks"
-          ? PiMagnifyingGlassFill
-          : RiUserReceived2Fill,
-      description: progress.description,
-      order_service_id: progress.order_service_id,
-    }))
-    .reverse();
+  const [progress_entries_data, setProgressEntriesData] = useState<any>(
+    data.progress_entries
+      .map((progress: any) => ({
+        id: progress.id,
+        value: progress.progress_name,
+        created_at: progress.created_at,
+        icon:
+          progress.progress_name === "Created"
+            ? MdAddToPhotos
+            : progress.progress_name === "In Progress"
+            ? TbProgressBolt
+            : progress.progress_name === "Completed"
+            ? MdVerified
+            : progress.progress_name === "Quality Checks"
+            ? PiMagnifyingGlassFill
+            : RiUserReceived2Fill,
+        description: progress.description,
+        order_service_id: progress.order_service_id,
+      }))
+      .sort(
+        (a: any, b: any) =>
+          new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      )
+      .reverse()
+  );
+
+  useEffect(() => {
+    setProgressEntriesData(
+      data.progress_entries
+        .map((progress: any) => ({
+          id: progress.id,
+          value: progress.progress_name,
+          created_at: progress.created_at,
+          icon:
+            progress.progress_name === "Created"
+              ? MdAddToPhotos
+              : progress.progress_name === "In Progress"
+              ? TbProgressBolt
+              : progress.progress_name === "Completed"
+              ? MdVerified
+              : progress.progress_name === "Quality Checks"
+              ? PiMagnifyingGlassFill
+              : RiUserReceived2Fill,
+          description: progress.description,
+          order_service_id: progress.order_service_id,
+        }))
+        .sort(
+          (a: any, b: any) =>
+            new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+        )
+        .reverse()
+    );
+  }, [data.progress_entries]);
 
   return (
     <div className="w-full h-[788px] 2xl:h-[868px] flex max-w-[1840px] justify-center place-items-start gap-4">
@@ -88,24 +125,35 @@ export default function OrderContent({ orderService }: any) {
                 <h3 className="w-full text-sm font-semibold text-slate-200 ">
                   Order Timeline
                 </h3>
-                {progress_entries.length < 5 ? (
-                  <UpdateProgressButton progress_entries={progress_entries} />
-                ) : null}
+                <div className="w-fit flex place-items-center gap-3">
+                  {progress_entries_data.length !== 1 &&
+                  progress_entries_data.length !== 5 ? (
+                    <UndoProgressButton
+                      progress_entries={progress_entries_data}
+                    />
+                  ) : null}
+                  {progress_entries_data.length < 5 ? (
+                    <UpdateProgressButton
+                      progress_entries={progress_entries_data}
+                      nextProgress={nextProgress}
+                    />
+                  ) : null}
+                </div>
               </div>
               <div
                 className={cn(
                   "w-full h-full flex-col flex place-items-center",
-                  data.progress_entries.length > 4
+                  data.progress_entries?.length > 4
                     ? "justify-center"
                     : "justify-start"
                 )}
               >
                 <div className="w-full h-fit">
-                  {progress_entries.map((progress: any, i: number) => (
+                  {progress_entries_data.map((progress: any, i: number) => (
                     <div
                       className={cn(
                         "relative pl-8 sm:pl-16 py-4 2xl:py-5 group",
-                        progress.value === progress_entries[0].value
+                        progress.value === progress_entries_data[0].value
                           ? ""
                           : "opacity-30"
                       )}
@@ -118,7 +166,7 @@ export default function OrderContent({ orderService }: any) {
                         <div
                           className={cn(
                             "absolute left-2 sm:left-0 w-11 h-11 border-2 bg-applicationPrimary box-content rounded-full sm:ml-[1.5rem] -translate-x-1/2 -translate-y-2 flex justify-center place-items-center text-center transition-all duration-300",
-                            progress.value === progress_entries[0].value
+                            progress.value === progress_entries_data[0].value
                               ? "animate-pulse-on-ping hover:scale-125"
                               : ""
                           )}

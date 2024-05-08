@@ -18,6 +18,7 @@ export default function OrderCartOptions({}: {}) {
   const productsCart = useSelector(
     (state: any) => state.orderCart.productsCart
   );
+  
   const partsCart = useSelector((state: any) => state.orderCart.partsCart);
   const dispatch = useDispatch();
 
