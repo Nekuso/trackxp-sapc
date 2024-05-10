@@ -7,35 +7,47 @@ import OrderServiceContent from "./order-service-content";
 import createSupabaseBrowserClient from "@/lib/supabase/client";
 import { useOrderServices } from "@/hooks/useOrderServices";
 import OrderNotFound from "./not-found";
+import { toast as sonner } from "sonner";
+import { useEmployees } from "@/hooks/useEmployees";
+import { useBranches } from "@/hooks/useBranches";
+import { useProducts } from "@/hooks/useProducts";
+import { useParts } from "@/hooks/useParts";
+import { useDispatch, useSelector } from "react-redux";
+import { HomeIcon } from "lucide-react";
+import { setEmployeesData } from "@/redux/slices/allEmployeesSlice";
+import { setBranchesData } from "@/redux/slices/branchesSlice";
+import {
+  setProductsData,
+  setPartsData,
+} from "@/redux/slices/orderCartOptionSlice";
 
 export default function OrderService({ params }: { params: any }) {
+  const dispatch = useDispatch();
   const { getOrderService, currentOrderServiceData } = useOrderServices();
   const [error, setError] = useState(false);
-  const progressCollection: any = {
-    created: {
-      progress_name: "Created",
-      description: "The service request is created and logged into the system.",
-    },
-    in_progress: {
-      progress_name: "In Progress",
-      description: "The services are currently being worked on by mechanics.",
-    },
-    quality_checks: {
-      progress_name: "Quality Checks",
-      description:
-        "A thorough quality check is performed to ensure the services meets standards.",
-    },
-    ready_for_pickup: {
-      progress_name: "Ready for Pick-up",
-      description:
-        "The services has been successfully completed and the vehicle is ready to be for Pick-up.",
-    },
-    completed: {
-      progress_name: "Completed",
-      description:
-        "The services has been successfully completed and the vehicle is returned to the customer.",
-    },
-  };
+
+  const { getEmployees, allEmployeesData } = useEmployees();
+  const { getBranches, allBranchesData } = useBranches();
+  const { getProducts, productsData } = useProducts();
+  const { getParts, partsData } = useParts();
+
+  const branchesData = allBranchesData.map((branch: any) => ({
+    id: branch?.id,
+    value: branch?.branch_name,
+    label: branch?.branch_name,
+    icon: HomeIcon,
+  }));
+
+  const productsCart = useSelector(
+    (state: any) => state.viewOrderCart.productsCart
+  );
+  const partsCart = useSelector((state: any) => state.viewOrderCart.partsCart);
+
+  dispatch(setEmployeesData(allEmployeesData));
+
+  dispatch(setBranchesData(branchesData));
+  dispatch(setProductsData({ productsData, productsCart }));
+  dispatch(setPartsData({ partsData, partsCart }));
 
   useEffect(() => {
     const initialFetch = async () => {
@@ -44,6 +56,10 @@ export default function OrderService({ params }: { params: any }) {
     };
 
     initialFetch();
+    getEmployees();
+    getBranches();
+    getProducts();
+    getParts();
   }, []);
 
   useEffect(() => {
@@ -72,6 +88,68 @@ export default function OrderService({ params }: { params: any }) {
             filter: `order_service_id=eq.${params.id}`,
           },
           (payload: any) => {
+            getOrderService(params.id, 0);
+            sonner("📣 Notfication", {
+              description: `Order has been updated!`,
+            });
+          }
+        )
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "products" },
+          (payload: any) => {
+            getProducts();
+          }
+        )
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "parts" },
+          (payload: any) => {
+            getParts();
+          }
+        )
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "purchase_products",
+            filter: `order_service_id=eq.${params.id}`,
+          },
+          (payload: any) => {
+            sonner("📣 Notfication", {
+              description: `Order has been updated!`,
+            });
+            getOrderService(params.id, 0);
+          }
+        )
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "purchase_parts",
+            filter: `order_service_id=eq.${params.id}`,
+          },
+          (payload: any) => {
+            sonner("📣 Notfication", {
+              description: `Order has been updated!`,
+            });
+            getOrderService(params.id, 0);
+          }
+        )
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "purchase_services",
+            filter: `order_service_id=eq.${params.id}`,
+          },
+          (payload: any) => {
+            sonner("📣 Notfication", {
+              description: `Order has been updated!`,
+            });
             getOrderService(params.id, 0);
           }
         )

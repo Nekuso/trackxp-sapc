@@ -220,6 +220,7 @@ export const useOrderServices: any = () => {
         customer_email,
         redeemed,
         redeem_code,
+        remarks,
         employee:employees!public_order_services_employee_id_fkey(
           id,
           first_name,
@@ -290,33 +291,98 @@ export const useOrderServices: any = () => {
   };
   const updateOrderService = async (props: any, duration?: number) => {
     const result = await supabase
-      .from("orders")
+      .from("order_services")
       .update({
-        name: props.name,
-        description: props.description,
-        image_url: props.image_url,
-        barcode: props.barcode,
-        uom_id: props.uom_id,
-        stock_quantity: props.stock_quantity,
-        price: props.price,
-        status: props.status,
+        subtotal: props.subtotal,
+        total_price: props.total_price,
       })
       .eq("id", props.id);
+
+    const productResult = await supabase
+      .from("purchase_products")
+      .insert(
+        props.purchase_products.map((product: any) => ({
+          order_service_id: props.id,
+          product_id: product.product_id,
+          name: product.name,
+          description: product.description,
+          inventory_id: product.inventory_id,
+          image_url: product.image,
+          barcode: product.barcode,
+          price: product.price,
+          quantity: product.quantity,
+          uom_name: product.uom_name,
+        }))
+      )
+      .select();
+
+    const partResult = await supabase
+      .from("purchase_parts")
+      .insert(
+        props.purchase_parts.map((part: any) => ({
+          order_service_id: props.id,
+          part_id: part.part_id,
+          name: part.name,
+          description: part.description,
+          inventory_id: part.inventory_id,
+          image_url: part.image,
+          barcode: part.barcode,
+          price: part.price,
+          quantity: part.quantity,
+          brand: part.brand_name,
+        }))
+      )
+      .select();
 
     await new Promise((resolve) => setTimeout(resolve, duration));
     return result;
   };
-  const updateOrderServiceStatus = async (props: any, duration?: number) => {
+  const updateOrderServicePrice = async (props: any, duration?: number) => {
     const result = await supabase
-      .from("orders")
+      .from("order_services")
       .update({
-        status: props.status,
+        subtotal: props.subtotal,
+        total_price: props.total_price,
+      })
+      .eq("id", props.id);
+
+    const serviceResult = await supabase
+      .from("purchase_services")
+      .update({
+        price: props.price,
+      })
+      .eq("id", props.service_id);
+
+    await new Promise((resolve) => setTimeout(resolve, duration));
+
+    return JSON.stringify(result);
+  };
+  const updateOrderServicePayment = async (props: any, duration?: number) => {
+    const result = await supabase
+      .from("order_services")
+      .update({
+        amount_paid: props.amount_paid,
+        payment_method: props.payment_method,
+        status: "Paid",
       })
       .eq("id", props.id);
 
     await new Promise((resolve) => setTimeout(resolve, duration));
 
-    return JSON.stringify(result);
+    return result;
+  };
+
+  const updateOrderServiceRemarks = async (props: any, duration?: number) => {
+    const result = await supabase
+      .from("order_services")
+      .update({
+        remarks: props.remarks,
+      })
+      .eq("id", props.id);
+
+    await new Promise((resolve) => setTimeout(resolve, duration));
+
+    return result;
   };
   const deleteOrderService = async (props: any, duration: number = 2000) => {
     const result = await supabase.from("orders").delete().eq("id", props.id);
@@ -335,7 +401,9 @@ export const useOrderServices: any = () => {
     getOrderService,
     getOrderServices,
     updateOrderService,
-    updateOrderServiceStatus,
+    updateOrderServicePrice,
+    updateOrderServicePayment,
+    updateOrderServiceRemarks,
     deleteOrderService,
   };
 };

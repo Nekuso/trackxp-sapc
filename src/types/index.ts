@@ -196,6 +196,9 @@ export type allPurchaseOrderServicesDisplay = {
   discount: number | any;
   payment_method: string | any;
   created_at: string | any;
+  redeemed: boolean | any;
+  redeem_code: string | any;
+  remarks: string | any;
   employee:
     | {
         id: string | any;
