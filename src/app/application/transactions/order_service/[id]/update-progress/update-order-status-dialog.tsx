@@ -22,7 +22,6 @@ import { useForm } from "react-hook-form";
 
 import { Form } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
-import { toast as sonner } from "sonner";
 import { useProgressEntries } from "@/hooks/useProgressEntries";
 
 type progressEntriesType =
@@ -116,9 +115,6 @@ export default function UpdateOrderStatusDialog({
       form.setValue("progress_name", nextProgress.progress_name);
       form.setValue("progress_description", nextProgress.description);
       form.setValue("order_service_id", progress_entries[0].order_service_id);
-      sonner("✨ Success", {
-        description: `Progress updated!`,
-      });
       setDialogIsOpen(false);
     });
   }
