@@ -72,11 +72,13 @@ export const useOrders: any = () => {
 
     return result;
   };
-  const getOrders = async () => {
-    const result = await supabase
-      .from("orders")
-      .select(
-        `
+  const getOrders = async (props?: any) => {
+    const result =
+      props?.roles?.role === "Administrator"
+        ? await supabase
+            .from("orders")
+            .select(
+              `
         id,
         customer_first_name,
         customer_last_name,
@@ -131,8 +133,69 @@ export const useOrders: any = () => {
         payment_method,
         created_at
     `
-      )
-      .order("created_at", { ascending: false });
+            )
+            .order("created_at", { ascending: false })
+        : await supabase
+            .from("orders")
+            .select(
+              `
+        id,
+        customer_first_name,
+        customer_last_name,
+        customer_contact_number,
+        customer_email,
+        employees(
+          id,
+          first_name,
+          last_name,
+          image_url,
+          contact_number,
+          email,
+          roles(
+            role
+          )
+        ),
+        inventory(
+          id,
+          branches(
+            id,
+            branch_name,
+            branch_location
+          )
+        ),
+        purchase_products(
+          id,
+          product_id,
+          name,
+          description,
+          image_url,
+          barcode,
+          price,
+          quantity,
+          uom_name
+        ),
+        purchase_parts(
+          id,
+          part_id,
+          name,
+          description,
+          image_url,
+          barcode,
+          price,
+          quantity,
+          brand
+        ),
+        subtotal,
+        total_price,
+        amount_paid,
+        status,
+        discount,
+        payment_method,
+        created_at
+    `
+            )
+            .eq("inventory_id", props?.branches?.id)
+            .order("created_at", { ascending: false });
 
     const { data, error } = result;
     if (error) {

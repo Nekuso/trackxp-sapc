@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useEffect } from "react";
@@ -28,8 +29,23 @@ import {
 } from "@/redux/slices/allEmployeesSlice";
 import { useMobileUsers } from "@/hooks/useMobileUsers";
 import { setMobileUsersData } from "@/redux/slices/mobileUsersSlice";
+import { useRouter } from "next/navigation";
+import { ROLES } from "@/lib/actions/roles";
+import { useAuthMiddleware } from "@/lib/actions/useMiddleware";
 
 export default function Transactions() {
+  const router = useRouter();
+  const { ADMINISTRATOR, MANAGER, CASHIER, STAFF } = ROLES;
+  const currentSession = useSelector((state: any) => state.currentSession);
+  const access = useAuthMiddleware(
+    [ADMINISTRATOR, MANAGER, CASHIER, STAFF],
+    currentSession
+  );
+  if (!access.allowed) {
+    router.push(access.defaultRoute);
+    return null;
+  }
+
   const dispatch = useDispatch();
 
   const { getOrders, ordersData } = useOrders();
@@ -69,7 +85,7 @@ export default function Transactions() {
 
   // fetch all products
   useEffect(() => {
-    const { error } = getOrders();
+    const { error } = getOrders(currentSession);
 
     if (error?.message) {
       toast({
@@ -80,12 +96,12 @@ export default function Transactions() {
     }
 
     getBranches();
-    getProducts();
-    getParts();
-    getServices();
-    getEmployees();
+    getProducts(currentSession);
+    getParts(currentSession);
+    getServices(currentSession);
+    getEmployees(currentSession);
     getMobileUsers();
-    getOrderServices();
+    getOrderServices(currentSession);
   }, []);
 
   // listen for changes in the database

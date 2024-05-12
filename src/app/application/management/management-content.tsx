@@ -39,11 +39,11 @@ export default function ManagementContent({
           data={dataEmployees}
         />
       </TabsContent>
-      <TabsContent
-        value="mobile"
-        className="w-full h-[725px] 2xl:h-[800px] bg-red-300"
-      >
-        {/* <DataTable columns={columns} data={data} /> */}
+      <TabsContent value="mobile" className="w-full h-[725px] 2xl:h-[800px]">
+        <DataTable
+          columns={initateColumns(branchesSlice, rolesSlice)}
+          data={[]}
+        />
       </TabsContent>
     </Tabs>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useEffect } from "react";
@@ -11,11 +12,23 @@ import { useBranches } from "@/hooks/useBranches";
 import { useRoles } from "@/hooks/useRoles";
 import { HomeIcon } from "lucide-react";
 import { setBranchesData } from "@/redux/slices/branchesSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setRolesData } from "@/redux/slices/rolesSlice";
 import { FaRegUser } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import { ROLES } from "@/lib/actions/roles";
+import { useAuthMiddleware } from "@/lib/actions/useMiddleware";
 
 export default function Management() {
+  const router = useRouter();
+  const { ADMINISTRATOR, MANAGER } = ROLES;
+  const currentSession = useSelector((state: any) => state.currentSession);
+  const access = useAuthMiddleware([ADMINISTRATOR, MANAGER], currentSession);
+  if (!access.allowed) {
+    router.push(access.defaultRoute);
+    return null;
+  }
+
   const dispatch = useDispatch();
   const { getEmployees, allEmployeesData } = useEmployees();
   const { getBranches, allBranchesData } = useBranches();
@@ -37,7 +50,7 @@ export default function Management() {
   dispatch(setRolesData(rolesData));
 
   useEffect(() => {
-    const { error } = getEmployees();
+    const { error } = getEmployees(currentSession);
     if (error?.message) {
       toast({
         variant: "destructive",

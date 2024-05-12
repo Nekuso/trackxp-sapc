@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
@@ -8,8 +9,21 @@ import createSupabaseBrowserClient from "@/lib/supabase/client";
 import { useParts } from "@/hooks/useParts";
 import { useBrands } from "@/hooks/useBrands";
 import PartNotFound from "./not-found";
+import { useRouter } from "next/navigation";
+import { ROLES } from "@/lib/actions/roles";
+import { useAuthMiddleware } from "@/lib/actions/useMiddleware";
+import { useSelector } from "react-redux";
 
 export default function Part({ params }: { params: any }) {
+  const router = useRouter();
+  const { ADMINISTRATOR, MANAGER } = ROLES;
+  const currentSession = useSelector((state: any) => state.currentSession);
+  const access = useAuthMiddleware([ADMINISTRATOR, MANAGER], currentSession);
+  if (!access.allowed) {
+    router.push(access.defaultRoute);
+    return null;
+  }
+
   const { getPart, currentPartData } = useParts();
   const { getBrands, allBrandsData } = useBrands();
   const [error, setError] = useState(false);

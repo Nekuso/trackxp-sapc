@@ -24,11 +24,13 @@ export const useServices: any = () => {
 
     return result;
   };
-  const getServices = async () => {
-    const result = await supabase
-      .from("services")
-      .select(
-        `
+  const getServices = async (props?: any) => {
+    const result =
+      props?.roles?.role === "Administrator"
+        ? await supabase
+            .from("services")
+            .select(
+              `
         id,
         name,
         description,
@@ -46,8 +48,32 @@ export const useServices: any = () => {
         ),
         created_at
     `
-      )
-      .order("created_at", { ascending: false });
+            )
+            .order("created_at", { ascending: false })
+        : await supabase
+            .from("services")
+            .select(
+              `
+        id,
+        name,
+        description,
+        image_url,
+        price,
+        duration,
+        status,
+        inventory(
+            id,
+            branches(
+                id,
+                branch_name,
+                branch_location
+            )
+        ),
+        created_at
+    `
+            )
+            .eq("inventory_id", props?.branches?.id)
+            .order("created_at", { ascending: false });
 
     const { data, error } = result;
     if (error) {

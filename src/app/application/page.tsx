@@ -1,8 +1,8 @@
+"use client";
 import { CiBadgeDollar } from "react-icons/ci";
 import { FaBoxes } from "react-icons/fa";
 import { BiPulse } from "react-icons/bi";
 import { MdOutlineVerified } from "react-icons/md";
-
 import SmallVehicle from "@/images/vehicle-small.png";
 import MediumVechile from "@/images/vehicle-medium.png";
 import LargeVechile from "@/images/vehicle-large.png";
@@ -13,6 +13,10 @@ import ActivityLogs from "@/components/dashboard/activity-logs-widget/activity-l
 import EmployeesWidget from "@/components/dashboard/employees-widget/employees-widget";
 import ActivityLogsDialog from "@/components/dashboard/activity-logs-dialog/activity-logs-dialog";
 import EmployeesDialog from "@/components/dashboard/employees-dialog/employees-dialog";
+import { useSelector } from "react-redux";
+import { ROLES } from "@/lib/actions/roles";
+import { useAuthMiddleware } from "@/lib/actions/useMiddleware";
+import { useRouter } from "next/navigation";
 
 const mostVehciles = [
   {
@@ -63,6 +67,15 @@ const widgets = [
 ];
 
 export default function Dashboard() {
+  const router = useRouter();
+  const { ADMINISTRATOR, MANAGER } = ROLES;
+  const currentSession = useSelector((state: any) => state.currentSession);
+  const access = useAuthMiddleware([ADMINISTRATOR, MANAGER], currentSession);
+  if (!access.allowed) {
+    router.push(access.defaultRoute);
+    return null;
+  }
+
   return (
     <div className="w-full h-[805px] 2xl:h-[882px] flex justify-center place-items-center py-4">
       <div className="w-full h-full max-w-[1840px] flex justify-between gap-6">

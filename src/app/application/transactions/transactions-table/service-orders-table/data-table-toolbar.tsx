@@ -7,7 +7,7 @@ import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { progress } from "./columns";
+import { progress, status } from "./columns";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import AddOrderButton from "./add-service-order/add-order-dialog";
 import { toast } from "sonner";
@@ -24,8 +24,8 @@ export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
-
   const branchesSlice = useSelector((state: any) => state.branches);
+  const currentSession = useSelector((state: any) => state.currentSession);
 
   return (
     <div className="flex w-full items-center justify-between">
@@ -39,18 +39,26 @@ export function DataTableToolbar<TData>({
           }
         />
 
-        {table.getColumn("branch") && (
+        {table.getColumn("branch") &&
+        currentSession.roles?.role === "Administrator" ? (
           <DataTableFacetedFilter
             column={table.getColumn("branch")}
             title="Branch"
             options={branchesSlice}
           />
-        )}
+        ) : null}
         {table.getColumn("progress_entries") && (
           <DataTableFacetedFilter
             column={table.getColumn("progress_entries")}
             title="Progress"
             options={progress}
+          />
+        )}
+        {table.getColumn("status") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("status")}
+            title="Payment"
+            options={status}
           />
         )}
         {isFiltered && (
