@@ -83,6 +83,23 @@ export const initiateColumns = () => {
         );
       },
     },
+    {
+      id: "total",
+      header: () => {
+        return <div className="w-full text-end">Price</div>;
+      },
+      cell: ({ row }) => {
+        return (
+          <div className="w-full flex gap-4 justify-end place-items-center">
+            <p className="text-sm max-w-[170px] 2xl:max-w-[180px] truncate text-white font-regular">
+              {`₱ ${(row.original.price * row.original.quantity)
+                .toFixed(2)
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`}
+            </p>
+          </div>
+        );
+      },
+    },
   ];
   return columns;
 };

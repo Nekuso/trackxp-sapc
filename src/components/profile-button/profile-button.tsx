@@ -15,16 +15,24 @@ import { useTransition } from "react";
 import { signOut } from "@/lib/actions/index";
 import { useDispatch } from "react-redux";
 import { setCurrentUser } from "@/redux/slices/userSessionSlice";
+import { useRouter } from "next/navigation";
 
 export default function ProfileButton({ data }: any) {
+  const router = useRouter();
   const dispatch = useDispatch();
   dispatch(setCurrentUser(data));
+
   const [isPending, startTransition] = useTransition();
+
   const onSignOut = async () => {
     sonner("Loggin out...", {});
     startTransition(async () => {
       await signOut();
     });
+  };
+
+  const viewProfile = () => {
+    router.push(`/application/profile/${data.id}`);
   };
   return (
     <DropdownMenu>
@@ -44,7 +52,12 @@ export default function ProfileButton({ data }: any) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-lightBorder" />
         <DropdownMenuGroup className="py-1">
-          <DropdownMenuItem className="rounded-lg cursor-pointer hover:bg-applicationPrimary">
+          <DropdownMenuItem
+            className="rounded-lg cursor-pointer hover:bg-applicationPrimary"
+            onClick={() => {
+              viewProfile();
+            }}
+          >
             <User className="mr-2 h-7 w-4" />
             <span>Profile</span>
             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>

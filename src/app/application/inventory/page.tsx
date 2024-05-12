@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useEffect } from "react";
@@ -17,11 +18,23 @@ import { HomeIcon } from "lucide-react";
 import { PiRulerBold } from "react-icons/pi";
 import { setBranchesData } from "@/redux/slices/branchesSlice";
 import { setUOMSData } from "@/redux/slices/uomsSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useBrands } from "@/hooks/useBrands";
 import { setBrandsData } from "@/redux/slices/brandsSlice";
+import { useRouter } from "next/navigation";
+import { ROLES } from "@/lib/actions/roles";
+import { useAuthMiddleware } from "@/lib/actions/useMiddleware";
 
 export default function Inventory() {
+  const router = useRouter();
+  const { ADMINISTRATOR, MANAGER } = ROLES;
+  const currentSession = useSelector((state: any) => state.currentSession);
+  const access = useAuthMiddleware([ADMINISTRATOR, MANAGER], currentSession);
+  if (!access.allowed) {
+    router.push(access.defaultRoute);
+    return null;
+  }
+
   const dispatch = useDispatch();
 
   const { getProducts, productsData } = useProducts();
@@ -58,7 +71,7 @@ export default function Inventory() {
 
   // fetch all products
   useEffect(() => {
-    const { error } = getProducts();
+    const { error } = getProducts(currentSession);
 
     if (error?.message) {
       toast({
@@ -73,7 +86,7 @@ export default function Inventory() {
 
   // fetch all parts
   useEffect(() => {
-    const { error } = getParts();
+    const { error } = getParts(currentSession);
 
     if (error?.message) {
       toast({
@@ -87,7 +100,7 @@ export default function Inventory() {
 
   // fetch all services
   useEffect(() => {
-    const { error } = getServices();
+    const { error } = getServices(currentSession);
 
     if (error?.message) {
       toast({

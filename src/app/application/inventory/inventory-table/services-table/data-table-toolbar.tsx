@@ -20,8 +20,8 @@ export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
-
   const branchesSlice = useSelector((state: any) => state.branches);
+  const currentSession = useSelector((state: any) => state.currentSession);
 
   return (
     <div className="flex w-full items-center justify-between">
@@ -34,13 +34,14 @@ export function DataTableToolbar<TData>({
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
         />
-        {table.getColumn("branch") && (
+        {table.getColumn("branch") &&
+        currentSession.roles?.role === "Administrator" ? (
           <DataTableFacetedFilter
             column={table.getColumn("branch")}
             title="Branch"
             options={branchesSlice}
           />
-        )}
+        ) : null}
         {table.getColumn("status") && (
           <DataTableFacetedFilter
             column={table.getColumn("status")}
@@ -63,8 +64,8 @@ export function DataTableToolbar<TData>({
         <Button
           className="text-xs text-black font-bold rounded-md flex gap-2 bg-white/90 hover:bg-white transition-all duration-300"
           onClick={() =>
-            toast("🔔 Notification", {
-              description: "Employee data exporting",
+            toast("📣 Notification", {
+              description: "Exporting Data",
             })
           }
         >

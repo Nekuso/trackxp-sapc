@@ -13,7 +13,7 @@ export default function MostVehicle({
 }) {
   return (
     <div className="w-fit h-fit">
-      <Image src={img} alt="SmallVehicle" />
+      <Image src={img} alt="SmallVehicle" className="rounded-2xl" />
       <div className="w-full flex place-items-center justify-between">
         <h3 className="text-2xl font-bold flex place-items-center gap-2">
           {count}{" "}

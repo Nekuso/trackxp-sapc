@@ -131,11 +131,13 @@ export const useOrderServices: any = () => {
 
     return result;
   };
-  const getOrderServices = async () => {
-    const result = await supabase
-      .from("order_services")
-      .select(
-        `
+  const getOrderServices = async (props?: any) => {
+    const result =
+      props?.roles?.role === "Administrator"
+        ? await supabase
+            .from("order_services")
+            .select(
+              `
         id,
         customer_first_name,
         customer_last_name,
@@ -199,9 +201,78 @@ export const useOrderServices: any = () => {
         payment_method,
         created_at
     `
-      )
-      .order("created_at", { ascending: false });
-
+            )
+            .order("created_at", { ascending: false })
+        : await supabase
+            .from("order_services")
+            .select(
+              `
+        id,
+        customer_first_name,
+        customer_last_name,
+        customer_contact_number,
+        customer_email,
+        employee:employees!public_order_services_employee_id_fkey(
+          id,
+          first_name,
+          last_name,
+          image_url,
+          contact_number,
+          email,
+          roles(
+            role
+          )
+        ),
+        supervisor:employees!order_services_supervisor_id_fkey(
+          id,
+          first_name,
+          last_name,
+          image_url,
+          contact_number,
+          email,
+          roles(
+            role
+          ),
+          created_at
+        ),
+        inventory(
+          id,
+          branches("*"
+          )
+        ),
+        purchase_products("*"
+        ),
+        purchase_parts("*"
+        ),
+        purchase_services("*"
+        ),
+        mobile_users("*"),
+        mechanic_entries("*",
+          mechanic:employees!mechanic_entries_employee_id_fkey(
+            id,
+            first_name,
+            last_name,
+            image_url,
+            contact_number,
+            email,
+            roles(
+              role
+            )
+          )
+        ),
+        vehicle_entries("*"),
+        progress_entries("*"),
+        subtotal,
+        total_price,
+        amount_paid,
+        status,
+        discount,
+        payment_method,
+        created_at
+    `
+            )
+            .eq("inventory_id", props?.branches?.id)
+            .order("created_at", { ascending: false });
     const { data, error } = result;
     if (error) {
       return error;
@@ -371,7 +442,6 @@ export const useOrderServices: any = () => {
 
     return result;
   };
-
   const updateOrderServiceRemarks = async (props: any, duration?: number) => {
     const result = await supabase
       .from("order_services")

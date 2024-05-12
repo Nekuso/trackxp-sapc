@@ -124,7 +124,7 @@ export function DataTable<TData, TValue>({
             </TableBody>
             <TableFooter className="bg-transparent border-white/10 border-dashed">
               <TableRow>
-                <TableCell colSpan={2} className="h-24 font-bold">
+                <TableCell colSpan={3} className="h-24 font-bold">
                   Total
                 </TableCell>
                 <TableCell colSpan={1} className="h-24">

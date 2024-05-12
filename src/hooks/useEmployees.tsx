@@ -44,34 +44,61 @@ export const useEmployees: any = () => {
 
     return JSON.stringify(result);
   };
-  const getEmployees = async () => {
+  const getEmployees = async (props?: any) => {
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!
     );
-    const result = await supabase
-      .from("employees")
-      .select(
-        `
-      id,
-      email,
-      first_name,
-      last_name,
-      image_url,
-      branches (
+
+    const result =
+      props?.roles?.role === "Administrator"
+        ? await supabase
+            .from("employees")
+            .select(
+              `
         id,
-        branch_name,
-        branch_location
-      ),
-      address,
-      contact_number,
-      gender,
-      roles (id, role),
-      status,
-      dob
-    `
-      )
-      .order("created_at", { ascending: false });
+        email,
+        first_name,
+        last_name,
+        image_url,
+        branches (
+          id,
+          branch_name,
+          branch_location
+        ),
+        address,
+        contact_number,
+        gender,
+        roles (id, role),
+        status,
+        dob
+      `
+            )
+            .order("created_at", { ascending: false })
+        : await supabase
+            .from("employees")
+            .select(
+              `
+        id,
+        email,
+        first_name,
+        last_name,
+        image_url,
+        branches (
+          id,
+          branch_name,
+          branch_location
+        ),
+        address,
+        contact_number,
+        gender,
+        roles (id, role),
+        status,
+        dob
+      `
+            )
+            .eq("branch", props?.branches?.id)
+            .order("created_at", { ascending: false });
 
     type EmployeesWithJoin = QueryData<typeof result>;
 

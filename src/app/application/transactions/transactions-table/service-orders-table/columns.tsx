@@ -79,6 +79,19 @@ export const progress = [
   },
 ];
 
+export const status = [
+  {
+    value: "Pending",
+    label: "Pending",
+    icon: CircleIcon,
+  },
+  {
+    value: "Paid",
+    label: "Paid",
+    icon: CircleIcon,
+  },
+];
+
 export const initialState = (branches: any) => {
   const columns: ColumnDef<allPurchaseOrderServicesDisplay>[] = [
     {
@@ -427,8 +440,12 @@ export const initialState = (branches: any) => {
       },
     },
     {
-      id: "barcode",
-      accessorKey: "barcode",
+      id: "status",
+      accessorKey: "status",
+      accessorFn: (row) => row.status,
+      filterFn: (row, id, value) => {
+        return value.includes(row.getValue(id));
+      },
     },
     {
       id: "created_at",

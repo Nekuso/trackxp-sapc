@@ -22,48 +22,74 @@ export default function InventoryContent({
   dataOrderService: allPurchaseOrderServicesDisplay[];
 }) {
   const branchesSlice = useSelector((state: any) => state.branches);
+  const currentSession = useSelector((state: any) => state.currentSession);
 
   return (
     <Tabs
-      defaultValue="orders"
+      defaultValue={
+        currentSession.roles.role === "Administrator" ||
+        currentSession.roles.role === "Manager" ||
+        currentSession.roles.role === "Cashier"
+          ? "orders"
+          : "order_service"
+      }
       className="w-full flex max-w-[1840px] flex-col justify-center place-items-center gap-4"
     >
       <div className="w-full flex justify-between">
         <TabsList className="h-fit bg-darkComponentBg border border-lightBorder rounded-lg gap-2">
-          <TabsTrigger
-            value="orders"
-            className="data-[state=active]:bg-applicationPrimary data-[state=inactive]:hover:bg-applicationPrimary/80
+          {currentSession.roles.role === "Administrator" ||
+          currentSession.roles.role === "Manager" ||
+          currentSession.roles.role === "Cashier" ? (
+            <TabsTrigger
+              value="orders"
+              className="data-[state=active]:bg-applicationPrimary data-[state=inactive]:hover:bg-applicationPrimary/80
             data-[state=inactive]:hover:text-white/60
             data-[state=active]:text-white rounded-md px-4 py-2 transition-all duration-300 flex gap-2"
-          >
-            <BsBoxSeam />
-            Purchase Orders
-          </TabsTrigger>
-          <TabsTrigger
-            value="order_service"
-            className="data-[state=active]:bg-applicationPrimary data-[state=inactive]:hover:bg-applicationPrimary/80
+            >
+              <BsBoxSeam />
+              Purchase Orders
+            </TabsTrigger>
+          ) : null}
+          {currentSession.roles.role === "Administrator" ||
+          currentSession.roles.role === "Manager" ||
+          currentSession.roles.role === "Staff" ||
+          currentSession.roles.role === "Supervisor" ? (
+            <TabsTrigger
+              value="order_service"
+              className="data-[state=active]:bg-applicationPrimary data-[state=inactive]:hover:bg-applicationPrimary/80
             data-[state=inactive]:hover:text-white/80
             data-[state=active]:text-white rounded-md px-4 py-2 transition-all duration-300 flex gap-2"
-          >
-            <PiGearSixBold />
-            Purchase Services
-          </TabsTrigger>
+            >
+              <PiGearSixBold />
+              Purchase Services
+            </TabsTrigger>
+          ) : null}
         </TabsList>
       </div>
-      <TabsContent value="orders" className="w-full h-full ">
-        {/* Regular Orders Tab */}
-        <OrdersDataTable
-          columns={initiateOrdersState(branchesSlice)}
-          data={dataOrders}
-        />
-      </TabsContent>
-      <TabsContent value="order_service" className="w-full h-full ">
-        {/* Service Order Tab */}
-        <OrderServicesDataTable
-          columns={initiatePartsState(branchesSlice)}
-          data={dataOrderService}
-        />
-      </TabsContent>
+
+      {currentSession.roles.role === "Administrator" ||
+      currentSession.roles.role === "Manager" ||
+      currentSession.roles.role === "Cashier" ? (
+        <TabsContent value="orders" className="w-full h-full ">
+          {/* Regular Orders Tab */}
+          <OrdersDataTable
+            columns={initiateOrdersState(branchesSlice)}
+            data={dataOrders}
+          />
+        </TabsContent>
+      ) : null}
+      {currentSession.roles.role === "Administrator" ||
+      currentSession.roles.role === "Manager" ||
+      currentSession.roles.role === "Staff" ||
+      currentSession.roles.role === "Supervisor" ? (
+        <TabsContent value="order_service" className="w-full h-full ">
+          {/* Service Order Tab */}
+          <OrderServicesDataTable
+            columns={initiatePartsState(branchesSlice)}
+            data={dataOrderService}
+          />
+        </TabsContent>
+      ) : null}
     </Tabs>
   );
 }

@@ -38,7 +38,7 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    barcode: false,
+    status: false,
     created_at: false,
   });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);

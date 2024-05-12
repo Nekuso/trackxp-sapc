@@ -71,7 +71,7 @@ export function DataTableToolbar<TData>({
         <Button
           className="text-xs text-black font-bold rounded-md flex gap-2 bg-white/90 hover:bg-white transition-all duration-300"
           onClick={() =>
-            toast("🔔 Notification", {
+            toast("📣 Notification", {
               description: "Employee data exporting",
             })
           }

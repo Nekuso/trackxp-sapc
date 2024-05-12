@@ -30,7 +30,7 @@ export default function OrderContent({ order }: any) {
   const handlePrint = useReactToPrint({
     documentTitle: "Print This Document",
     onBeforePrint: () => {
-      toast("🔔 Notification", {
+      toast("📣 Notification", {
         description: "Printing...",
       });
     },

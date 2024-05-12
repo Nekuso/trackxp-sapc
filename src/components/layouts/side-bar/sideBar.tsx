@@ -15,7 +15,12 @@ import { useTransition } from "react";
 import { toast } from "@/components/ui/use-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
+import { useSelector } from "react-redux";
+import { useAllowedLinks } from "@/lib/actions/useAllowedLinks";
 export default function SideBar() {
+  const currentSession = useSelector((state: any) => state.currentSession);
+  const allowedLinks = useAllowedLinks(currentSession?.roles?.role);
+
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
 
@@ -28,7 +33,6 @@ export default function SideBar() {
       await signOut();
     });
   };
-
   return (
     <div className="h-full py-4 sticky top-0 z-10">
       <div className="flex flex-col place-items-center justify-start w-auto h-full py-8 px-3 bg-darkComponentBg border border-lightBorder gap-20 rounded-xl">
@@ -38,7 +42,7 @@ export default function SideBar() {
 
         <div className="w-auto h-full flex flex-col justify-between">
           <div className="w-auto flex flex-col gap-2">
-            {sideLinks.map((link, i) => {
+            {allowedLinks.map((link, i) => {
               const { title, href, icon } = link;
               return (
                 <Link

@@ -57,9 +57,9 @@ import { FaHandsHelping } from "react-icons/fa";
 import { BsBoxSeam } from "react-icons/bs";
 import Image from "next/image";
 
-import smallVehicle from "@/images/vehicle-small.png";
-import mediumVehicle from "@/images/vehicle-medium.png";
-import largeVehicle from "@/images/vehicle-large.png";
+import smallVehicle from "@/images/vehicle-small-hd.png";
+import mediumVehicle from "@/images/vehicle-medium-hd.png";
+import largeVehicle from "@/images/vehicle-large-hd.png";
 
 import UpdateOrderButton from "./updated-order-service/update-order-dialog";
 import UpdatePayment from "./update-payment/payment-dialog";
@@ -77,7 +77,7 @@ export default function OrderContent({ orderService, nextProgress }: any) {
   const handlePrint = useReactToPrint({
     documentTitle: "Print This Document",
     onBeforePrint: () => {
-      toast("🔔 Notification", {
+      toast("📣 Notification", {
         description: "Printing...",
       });
     },
@@ -161,6 +161,7 @@ export default function OrderContent({ orderService, nextProgress }: any) {
             <div className="w-full flex flex-col gap-3">
               <h3 className="w-full flex justify-between place-items-center text-sm font-semibold text-slate-200 ">
                 Head Mechanic
+                <span>{data.inventory.branches.branch_name}</span>
               </h3>
               <div className="w-full flex gap-3">
                 <Avatar className="w-20 h-20 cursor-pointer rounded-lg shadow-2xl primary-glow transition-all duration-300 border-2 border-applicationPrimary hover:border-applicationPrimary">
@@ -508,7 +509,7 @@ export default function OrderContent({ orderService, nextProgress }: any) {
                     <span className="flex place-items-center gap-3 font-regular">
                       <FaHandsHelping />
                       Services
-                      <span className="text-xs bg-applicationPrimary border-2 px-3 rounded-full">
+                      <span className="text-xs bg-applicationPrimary px-3 rounded-full">
                         {data.purchase_services.length}
                       </span>
                     </span>
@@ -525,7 +526,7 @@ export default function OrderContent({ orderService, nextProgress }: any) {
                     <span className="flex place-items-center gap-3 font-regular">
                       <BsBoxSeam />
                       Products
-                      <span className="text-xs bg-applicationPrimary border-2 px-3 rounded-full">
+                      <span className="text-xs bg-applicationPrimary px-3 rounded-full">
                         {data.purchase_products.length}
                       </span>
                     </span>
@@ -542,7 +543,7 @@ export default function OrderContent({ orderService, nextProgress }: any) {
                     <span className="flex place-items-center gap-3 font-regular">
                       <PiGearSixBold />
                       Parts
-                      <span className="text-xs bg-applicationPrimary border-2 px-3 rounded-full">
+                      <span className="text-xs bg-applicationPrimary px-3 rounded-full">
                         {data.purchase_parts.length}
                       </span>
                     </span>
@@ -555,7 +556,14 @@ export default function OrderContent({ orderService, nextProgress }: any) {
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
-              <div className="w-full flex-col relative px-2 mb-[80px]">
+              <div
+                className={cn(
+                  "w-full flex-col relative px-2 ",
+                  data.amount_paid > 0
+                    ? "mb-[170px] 2xl:mb-[170px]"
+                    : "mb-[80px]"
+                )}
+              >
                 <div className="w-full py-2 flex gap-8 position sticky bottom-[-4px] m-0 text-sm">
                   <span className="w-full text-end text-slate-400">
                     Subtotal
@@ -618,26 +626,52 @@ export default function OrderContent({ orderService, nextProgress }: any) {
               </div>
             </div>
 
-            <div className="w-full py-6 px-8 flex justify-between absolute bottom-[-4px] bg-darkGray">
-              <span className="w-full text-left text-lg font-bold">Total</span>
-              <span className="w-full text-right text-lg font-bold">{`₱ ${(
-                (data.purchase_products.reduce(
-                  (acc: any, product: any) =>
-                    acc + product.price * product.quantity,
-                  0
-                ) +
-                  data.purchase_parts.reduce(
-                    (acc: any, part: any) => acc + part.price * part.quantity,
+            <div className="w-full py-6 px-8 flex flex-col gap-2 justify-between absolute bottom-[-4px] bg-darkGray">
+              <div className="w-full flex gap-8 justify-between">
+                <span className="w-full text-end text-lg font-bold">Total</span>
+                <span className="w-[20%] text-end text-lg font-bold">{`₱ ${(
+                  (data.purchase_products.reduce(
+                    (acc: any, product: any) =>
+                      acc + product.price * product.quantity,
                     0
                   ) +
-                  data.purchase_services.reduce(
-                    (acc: any, service: any) => acc + service.price,
-                    0
-                  )) *
-                ((100 - data.discount) / 100)
-              )
-                .toFixed(2)
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`}</span>
+                    data.purchase_parts.reduce(
+                      (acc: any, part: any) => acc + part.price * part.quantity,
+                      0
+                    ) +
+                    data.purchase_services.reduce(
+                      (acc: any, service: any) => acc + service.price,
+                      0
+                    )) *
+                  ((100 - data.discount) / 100)
+                )
+                  .toFixed(2)
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`}</span>
+              </div>
+              {data.amount_paid > 0 && (
+                <div className="w-full flex flex-col gap-2 justify-between">
+                  <div className="w-full flex gap-8 justify-between">
+                    <span className="w-full text-end text-slate-400">
+                      Amount Paid
+                    </span>
+                    <span className="w-[20%] text-end">{`₱ -${
+                      data.amount_paid
+                        .toFixed(2)
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",") || 0
+                    }`}</span>
+                  </div>
+                  <div className="w-full flex gap-8 justify-between">
+                    <span className="w-full text-end text-slate-400 py-2">
+                      Change
+                    </span>
+                    <span className="w-[20%] text-end border-t py-2 border-lightBorder">{`₱ ${
+                      (data.amount_paid - data.total_price)
+                        .toFixed(2)
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",") || 0
+                    }`}</span>
+                  </div>
+                </div>
+              )}
             </div>
           </ScrollArea>
         </div>

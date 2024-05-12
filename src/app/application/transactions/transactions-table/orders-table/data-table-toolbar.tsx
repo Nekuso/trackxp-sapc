@@ -24,10 +24,8 @@ export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
-
   const branchesSlice = useSelector((state: any) => state.branches);
-
-  const createdAtColumn = table.getColumn("created_at");
+  const currentSession = useSelector((state: any) => state.currentSession);
 
   return (
     <div className="flex w-full items-center justify-between">
@@ -41,13 +39,15 @@ export function DataTableToolbar<TData>({
           }
         />
 
-        {table.getColumn("branch") && (
+        {table.getColumn("branch") &&
+        currentSession.roles?.role === "Administrator" ? (
           <DataTableFacetedFilter
             column={table.getColumn("branch")}
             title="Branch"
             options={branchesSlice}
           />
-        )}
+        ) : null}
+        
         {table.getColumn("status") && (
           <DataTableFacetedFilter
             column={table.getColumn("status")}

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
@@ -20,8 +21,23 @@ import {
   setProductsData,
   setPartsData,
 } from "@/redux/slices/orderCartOptionSlice";
+import { useRouter } from "next/navigation";
+import { ROLES } from "@/lib/actions/roles";
+import { useAuthMiddleware } from "@/lib/actions/useMiddleware";
 
 export default function OrderService({ params }: { params: any }) {
+  const router = useRouter();
+  const { ADMINISTRATOR, SUPERVISOR, MANAGER, STAFF } = ROLES;
+  const currentSession = useSelector((state: any) => state.currentSession);
+  const access = useAuthMiddleware(
+    [ADMINISTRATOR, SUPERVISOR, MANAGER, STAFF],
+    currentSession
+  );
+  if (!access.allowed) {
+    router.push(access.defaultRoute);
+    return null;
+  }
+
   const dispatch = useDispatch();
   const { getOrderService, currentOrderServiceData } = useOrderServices();
   const [error, setError] = useState(false);

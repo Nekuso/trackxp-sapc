@@ -11,7 +11,7 @@ export default function TransactionSkeleton() {
         className="w-full h-full flex max-w-[1840px] max-h-[900px] flex-col justify-center place-items-center gap-4"
       >
         <div className="w-full">
-          <Skeleton className="w-[327px] h-[46px]  bg-lightBorder rounded-lg gap-4 border border-lightBorder"></Skeleton>
+          <Skeleton className="w-[370px] h-[46px]  bg-lightBorder rounded-lg gap-4 border border-lightBorder"></Skeleton>
         </div>
         <TabsContent value="system" className="w-full h-full ">
           <Skeleton className="w-full min-h-[715px] 2xl:min-h-[792px] flex flex-col justify-between gap-3 bg-darkComponentBg border border-lightBorder rounded-2xl" />
