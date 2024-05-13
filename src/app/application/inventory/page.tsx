@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useEffect } from "react";
@@ -30,10 +29,12 @@ export default function Inventory() {
   const { ADMINISTRATOR, MANAGER } = ROLES;
   const currentSession = useSelector((state: any) => state.currentSession);
   const access = useAuthMiddleware([ADMINISTRATOR, MANAGER], currentSession);
-  if (!access.allowed) {
-    router.push(access.defaultRoute);
-    return null;
-  }
+
+  useEffect(() => {
+    if (!access.allowed) {
+      router.push(access.defaultRoute);
+    }
+  }, [access.allowed]);
 
   const dispatch = useDispatch();
 
@@ -131,7 +132,7 @@ export default function Inventory() {
         "postgres_changes",
         { event: "*", schema: "public", table: "products" },
         (payload: any) => {
-          getProducts();
+          getProducts(currentSession);
         }
       )
       .subscribe();
@@ -141,7 +142,7 @@ export default function Inventory() {
         "postgres_changes",
         { event: "*", schema: "public", table: "parts" },
         (payload: any) => {
-          getParts();
+          getParts(currentSession);
         }
       )
       .subscribe();
@@ -151,7 +152,7 @@ export default function Inventory() {
         "postgres_changes",
         { event: "*", schema: "public", table: "services" },
         (payload: any) => {
-          getServices();
+          getServices(currentSession);
         }
       )
       .subscribe();
@@ -173,7 +174,13 @@ export default function Inventory() {
     };
   }, []);
 
-  return (
+  return !access.allowed ? (
+    <div className="w-full h-full flex justify-center place-items-center">
+      <h1 className="text-xl font-semibold text-slate-200 text-center">
+        Unauthorized
+      </h1>
+    </div>
+  ) : (
     <div className="w-full flex justify-center py-3.5 no-scrollbar ">
       {productsData.length === 0 ? (
         <Loading />

@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
@@ -15,13 +14,17 @@ import { useAuthMiddleware } from "@/lib/actions/useMiddleware";
 
 export default function Order({ params }: { params: any }) {
   const router = useRouter();
-  const { ADMINISTRATOR, MANAGER } = ROLES;
+  const { ADMINISTRATOR, MANAGER, CASHIER } = ROLES;
   const currentSession = useSelector((state: any) => state.currentSession);
-  const access = useAuthMiddleware([ADMINISTRATOR, MANAGER], currentSession);
-  if (!access.allowed) {
-    router.push(access.defaultRoute);
-    return null;
-  }
+  const access = useAuthMiddleware(
+    [ADMINISTRATOR, MANAGER, CASHIER],
+    currentSession
+  );
+  useEffect(() => {
+    if (!access.allowed) {
+      router.push(access.defaultRoute);
+    }
+  }, [access.allowed]);
 
   const { getOrder, currentOrderData } = useOrders();
   const [error, setError] = useState(false);
@@ -55,7 +58,13 @@ export default function Order({ params }: { params: any }) {
     }
   }, []);
 
-  return (
+  return !access.allowed ? (
+    <div className="w-full h-full flex justify-center place-items-center">
+      <h1 className="text-xl font-semibold text-slate-200 text-center">
+        Unauthorized
+      </h1>
+    </div>
+  ) : (
     <div className="w-full flex justify-center place-items-center">
       {error ? (
         <OrderNotFound />

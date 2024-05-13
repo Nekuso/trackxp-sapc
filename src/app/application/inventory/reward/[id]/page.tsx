@@ -20,7 +20,13 @@ export default function Reward({ params }: { params: any }) {
   const access = useAuthMiddleware([ADMINISTRATOR, MANAGER], currentSession);
   if (!access.allowed) {
     router.push(access.defaultRoute);
-    return null;
+    return (
+      <div className="w-full h-full flex justify-center place-items-center">
+        <h1 className="text-xl font-semibold text-slate-200 text-center">
+          Unauthorized
+        </h1>
+      </div>
+    );
   }
 
   const { getReward, currentRewardData } = useRewards();

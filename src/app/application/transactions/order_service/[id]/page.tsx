@@ -74,8 +74,8 @@ export default function OrderService({ params }: { params: any }) {
     initialFetch();
     getEmployees();
     getBranches();
-    getProducts();
-    getParts();
+    getProducts(currentSession);
+    getParts(currentSession);
   }, []);
 
   useEffect(() => {
@@ -114,14 +114,14 @@ export default function OrderService({ params }: { params: any }) {
           "postgres_changes",
           { event: "*", schema: "public", table: "products" },
           (payload: any) => {
-            getProducts();
+            getProducts(currentSession);
           }
         )
         .on(
           "postgres_changes",
           { event: "*", schema: "public", table: "parts" },
           (payload: any) => {
-            getParts();
+            getParts(currentSession);
           }
         )
         .on(

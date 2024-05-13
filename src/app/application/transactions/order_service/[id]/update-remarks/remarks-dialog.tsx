@@ -13,7 +13,7 @@ import {
 
 import RemarksForm from "./remarks-form";
 
-export default function PaymentDialog({ props }: any) {
+export default function RemarkDialog({ data }: any) {
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
   return (
@@ -28,7 +28,7 @@ export default function PaymentDialog({ props }: any) {
           <DialogTitle>Remarks</DialogTitle>
           <DialogDescription>Remarks for the order service</DialogDescription>
         </DialogHeader>
-        <RemarksForm props={props} setDialogIsOpen={setDialogIsOpen} />
+        <RemarksForm props={data} setDialogIsOpen={setDialogIsOpen} />
       </DialogContent>
     </Dialog>
   );

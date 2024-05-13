@@ -7,8 +7,48 @@ import Object1 from "@/images/home-object-1.png";
 import Object2 from "@/images/home-object-2.png";
 import Object3 from "@/images/home-object-3.png";
 import VideoImage from "@/images/video-image.png";
+import { useEffect, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { cn } from "@/lib/utils";
+import { BiSearchAlt } from "react-icons/bi";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { toast } from "@/components/ui/use-toast";
 
 export default function LandingPage() {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [trackingId, setTrackingId] = useState("");
+
+  const trackingSchema: any = z.object({
+    trackingId: z.string().min(1),
+  });
+  const form = useForm<z.infer<typeof trackingSchema>>({
+    resolver: zodResolver(trackingSchema),
+  });
+
+  async function onSubmit(data: any) {
+    startTransition(async () => {
+      if (data.trackingId.length < 10) {
+        toast({
+          title: "ERROR",
+          variant: "destructive",
+          description: "Please enter a valid tracking ID",
+        });
+        return;
+      }
+
+      router.push(`/tracking/order_service/${data.trackingId}`);
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      setTrackingId("");
+      form.setValue("trackingId", "");
+    });
+  }
+
   return (
     <div className="w-full min-h-screen flex flex-col justify-start place-items-center gap-[15vw] md:gap-28 overflow-hidden">
       <div className="w-full h-auto flex justify-center sticky top-0 z-50 shadow-[0 4px 30px rgba(0, 0, 0, 0.1)] bg-[rgba(0, 0, 0, 0.61)] backdrop-blur-sm">
@@ -45,21 +85,45 @@ export default function LandingPage() {
         </h5>
 
         <div className="w-full flex justify-center place-items-center gap-2">
-          <div className="w-72 flex justify-center place-items-center border border-lightGray rounded-full px-1 py-1">
-            <input
-              type="text"
-              placeholder="Tracking ID"
-              className="w-full h-full bg-transparent outline-none px-4 text-sm"
-            />
-            <button className="bg-homePrimary p-3 rounded-full shadow-homePrimary">
-              <Image
-                src={SearchIcon}
-                alt="search icon"
-                className="w-full h-full"
-              ></Image>
-            </button>
-          </div>
-          <button className="flex w-fit h-autp px-7 py-3 bg-white border border-white text-black rounded-full text-xs font-bold justify-center place-items-center gap-2">
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="w-72 flex justify-between place-items-center border border-lightGray rounded-full px-1 py-1"
+            >
+              <FormField
+                control={form.control}
+                name="trackingId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <input
+                        className="w-full h-full bg-transparent border-transparent px-4 text-sm 
+                        text-white focus:outline-none"
+                        {...field}
+                        type="text"
+                        placeholder="Tracking ID"
+                        value={field.value || ""}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <Button
+                className="text-xs font-bold rounded-full flex justify-center place-items-center gap-2 bg-applicationPrimary/90 hover:bg-applicationPrimary primary-glow transition-all duration-300"
+                type="submit"
+              >
+                <BiSearchAlt
+                  className={cn("scale-150", { hidden: isPending })}
+                />
+                <AiOutlineLoading3Quarters
+                  className={cn("animate-spin", {
+                    hidden: !isPending,
+                  })}
+                />
+              </Button>
+            </form>
+          </Form>
+          <button className="flex w-fit h-autp px-7 py-3 bg-white border border-white text-black rounded-full text-xs font-bold justify-center place-items-center gap-2 hover:scale-105 transition-all duration-300">
             <Image
               src={AndroidIcon}
               alt="android icon"

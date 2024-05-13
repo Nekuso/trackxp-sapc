@@ -1,7 +1,9 @@
 import { createClient } from "@supabase/supabase-js";
 import { useState } from "react";
+import ShortUniqueId from "short-unique-id";
 
 export const useOrders: any = () => {
+  const uid = new ShortUniqueId({ length: 10 });
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!
@@ -25,6 +27,7 @@ export const useOrders: any = () => {
         discount: props.discount,
         payment_method: props.payment_method,
         amount_paid: props.amount_paid,
+        tracking_id: `TX${uid.stamp(11).toUpperCase()}`,
       })
       .select();
 
@@ -130,6 +133,7 @@ export const useOrders: any = () => {
         amount_paid,
         status,
         discount,
+        tracking_id,
         payment_method,
         created_at
     `
@@ -190,6 +194,8 @@ export const useOrders: any = () => {
         amount_paid,
         status,
         discount,
+        tracking_id,
+        rating,
         payment_method,
         created_at
     `
@@ -260,6 +266,8 @@ export const useOrders: any = () => {
         amount_paid,
         status,
         discount,
+        tracking_id,
+        rating,
         payment_method,
         created_at
     `

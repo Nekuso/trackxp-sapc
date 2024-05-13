@@ -13,6 +13,8 @@ export const useOrderServices: any = () => {
   const [currentOrderServiceData, setCurrentOrderServiceData] = useState<any>(
     []
   );
+  const [currentOrderServiceDataTracking, setCurrentOrderServiceDataTracking] =
+    useState<any>([]);
 
   const createOrderService = async (props: any, duration?: any) => {
     const result: any = await supabase
@@ -35,6 +37,7 @@ export const useOrderServices: any = () => {
         mobile_user_id: props.mobile_user_id ? props.mobile_user_id : null,
         redeemed: props.mobile_user_id ? true : false,
         redeem_code: props.mobile_user_id ? null : uid.stamp(11),
+        tracking_id: `TX${uid.stamp(11).toUpperCase()}`,
       })
       .select();
 
@@ -112,6 +115,7 @@ export const useOrderServices: any = () => {
           order_service_id: result.data[0].id,
           progress_name: progress.progress_name,
           description: progress.description,
+          tracking_id: result.data[0].tracking_id,
         }))
       )
       .select();
@@ -198,6 +202,8 @@ export const useOrderServices: any = () => {
         amount_paid,
         status,
         discount,
+        tracking_id,
+        rating,
         payment_method,
         created_at
     `
@@ -267,6 +273,8 @@ export const useOrderServices: any = () => {
         amount_paid,
         status,
         discount,
+        tracking_id,
+        rating,
         payment_method,
         created_at
     `
@@ -347,17 +355,100 @@ export const useOrderServices: any = () => {
         amount_paid,
         status,
         discount,
+        tracking_id,
+        rating,
         payment_method,
         created_at
         `
       )
       .eq("id", id)
       .order("created_at", { ascending: false });
-    console.log(data);
 
     await new Promise((resolve) => setTimeout(resolve, duration));
     if (data?.length === 0) return true;
     setCurrentOrderServiceData(data);
+    return error;
+  };
+  const getOrderServiceTracking = async (id: string, duration?: number) => {
+    const { data, error } = await supabase
+      .from("order_services")
+      .select(
+        `
+        id,
+        customer_first_name,
+        customer_last_name,
+        customer_contact_number,
+        customer_email,
+        redeemed,
+        redeem_code,
+        remarks,
+        employee:employees!public_order_services_employee_id_fkey(
+          id,
+          first_name,
+          last_name,
+          image_url,
+          contact_number,
+          email,
+          roles(
+            role
+          )
+        ),
+        supervisor:employees!order_services_supervisor_id_fkey(
+          id,
+          first_name,
+          last_name,
+          image_url,
+          contact_number,
+          email,
+          roles(
+            role
+          ),
+          created_at
+        ),
+        inventory(
+          id,
+          branches("*"
+          )
+        ),
+        purchase_products("*"
+        ),
+        purchase_parts("*"
+        ),
+        purchase_services("*"
+        ),
+        mobile_user:mobile_users("*"),
+        mechanic_entries("*",
+          mechanic:employees!mechanic_entries_employee_id_fkey(
+            id,
+            first_name,
+            last_name,
+            image_url,
+            contact_number,
+            email,
+            roles(
+              role
+            )
+          )
+        ),
+        vehicle_entries("*"),
+        progress_entries("*"),
+        subtotal,
+        total_price,
+        amount_paid,
+        status,
+        discount,
+        tracking_id,
+        rating,
+        payment_method,
+        created_at
+        `
+      )
+      .eq("tracking_id", id)
+      .order("created_at", { ascending: false });
+
+    await new Promise((resolve) => setTimeout(resolve, duration));
+    if (data?.length === 0) return true;
+    setCurrentOrderServiceDataTracking(data);
     return error;
   };
   const updateOrderService = async (props: any, duration?: number) => {
@@ -465,10 +556,12 @@ export const useOrderServices: any = () => {
     // states
     orderServicesData,
     currentOrderServiceData,
+    currentOrderServiceDataTracking,
 
     // methods
     createOrderService,
     getOrderService,
+    getOrderServiceTracking,
     getOrderServices,
     updateOrderService,
     updateOrderServicePrice,

@@ -96,7 +96,7 @@ export const initialState = (branches: any) => {
   const columns: ColumnDef<allPurchaseOrderServicesDisplay>[] = [
     {
       id: "id",
-      accessorKey: "id",
+      accessorKey: "tracking_id",
       header: ({ column }) => {
         return (
           <DropdownMenu>
@@ -143,7 +143,7 @@ export const initialState = (branches: any) => {
           <div className="flex place-items-center gap-2">
             <div className="flex flex-col">
               <p className="max-w-[190px] 2xl:max-w-[220px] truncate font-semibold">
-                {row.original.id}
+                {row.original.tracking_id}
               </p>
               <p className="max-w-[181px] truncate text-white/50">
                 {format(row.original.created_at, "PPPP")}

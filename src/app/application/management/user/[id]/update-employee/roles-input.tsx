@@ -9,8 +9,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { FormControl } from "@/components/ui/form";
+import { useSelector } from "react-redux";
 
 export default function SelectDemo({ data, rolesData }: any) {
+  const userSession = useSelector((state: any) => state.currentSession);
   function findRoleById(idString: any) {
     const id = parseInt(idString);
 
@@ -23,6 +25,9 @@ export default function SelectDemo({ data, rolesData }: any) {
     }
   }
 
+  const roles = rolesData.filter(
+    (role: any) => role.role !== "Manager" && role.role !== "Administrator"
+  );
   return (
     <Select onValueChange={data.onChange}>
       <FormControl>
@@ -41,11 +46,17 @@ export default function SelectDemo({ data, rolesData }: any) {
       </FormControl>
       <SelectContent className="rounded-lg bg-lightComponentBg border-slate-600/50 text-white">
         <SelectGroup>
-          {rolesData.map((role: any) => (
-            <SelectItem key={role.id} value={role.id.toString()}>
-              {role.role}
-            </SelectItem>
-          ))}
+          {userSession.roles.role === "Administrator"
+            ? rolesData.map((role: any) => (
+                <SelectItem key={role.id} value={role.id.toString()}>
+                  {role.role}
+                </SelectItem>
+              ))
+            : roles.map((role: any) => (
+                <SelectItem key={role.id} value={role.id.toString()}>
+                  {role.role}
+                </SelectItem>
+              ))}
         </SelectGroup>
       </SelectContent>
     </Select>
