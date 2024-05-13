@@ -11,6 +11,7 @@ export const useProgressEntries: any = () => {
       progress_name: props.progress_name,
       description: props.progress_description,
       order_service_id: props.order_service_id,
+      tracking_id: props.tracking_id,
     });
 
     await new Promise((resolve) => setTimeout(resolve, duration));

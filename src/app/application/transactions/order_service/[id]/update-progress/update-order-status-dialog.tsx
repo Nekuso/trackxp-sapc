@@ -75,6 +75,7 @@ export default function UpdateOrderStatusDialog({
     progress_name: z.string(),
     progress_description: z.string(),
     order_service_id: z.string(),
+    tracking_id: z.string(),
   });
 
   const form = useForm<z.infer<typeof updateProgressSchema>>({
@@ -83,16 +84,19 @@ export default function UpdateOrderStatusDialog({
       progress_name: nextProgress.progress_name,
       progress_description: nextProgress.description,
       order_service_id: progress_entries[0].order_service_id,
+      tracking_id: progress_entries[0].tracking_id,
     },
   });
   form.setValue("progress_name", nextProgress.progress_name);
   form.setValue("progress_description", nextProgress.description);
   form.setValue("order_service_id", progress_entries[0].order_service_id);
+  form.setValue("tracking_id", progress_entries[0].tracking_id);
 
   useEffect(() => {
     form.setValue("progress_name", nextProgress.progress_name);
     form.setValue("progress_description", nextProgress.description);
     form.setValue("order_service_id", progress_entries[0].order_service_id);
+    form.setValue("tracking_id", progress_entries[0].tracking_id);
   }, [
     progress_entries,
     form,

@@ -181,6 +181,8 @@ export type allPurchaseOrdersDisplay = {
   total_price: number;
   payment_method: string;
   status: string;
+  tracking_id: string;
+  rating: number;
   created_at: string;
 };
 export type allPurchaseOrderServicesDisplay = {
@@ -194,11 +196,13 @@ export type allPurchaseOrderServicesDisplay = {
   amount_paid: number | any;
   status: string | any;
   discount: number | any;
+  tracking_id: string | any;
   payment_method: string | any;
   created_at: string | any;
   redeemed: boolean | any;
   redeem_code: string | any;
   remarks: string | any;
+  rating: number | any;
   employee:
     | {
         id: string | any;
@@ -341,6 +345,7 @@ export type allPurchaseOrderServicesDisplay = {
         progress_name: string | any;
         description: string | any;
         order_service_id: string | any;
+        tracking_id: string | any;
       }[]
     | any;
 };

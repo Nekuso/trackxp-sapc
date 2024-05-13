@@ -70,6 +70,8 @@ import { setProgressEntries } from "@/redux/slices/progressEntriesSlice";
 import { setCurrentOrderService } from "@/redux/slices/currentOrderServiceSlice";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { Rating as ReactRating, Star } from "@smastrom/react-rating";
+import { QRCodeSVG } from "qrcode.react";
 
 export default function OrderContent({ orderService, nextProgress }: any) {
   const dispatch = useDispatch();
@@ -117,6 +119,7 @@ export default function OrderContent({ orderService, nextProgress }: any) {
             : RiUserReceived2Fill,
         description: progress.description,
         order_service_id: progress.order_service_id,
+        tracking_id: progress.tracking_id,
       }))
       .sort(
         (a: any, b: any) =>
@@ -144,6 +147,7 @@ export default function OrderContent({ orderService, nextProgress }: any) {
               : RiUserReceived2Fill,
           description: progress.description,
           order_service_id: progress.order_service_id,
+          tracking_id: progress.tracking_id,
         }))
         .sort(
           (a: any, b: any) =>
@@ -157,7 +161,7 @@ export default function OrderContent({ orderService, nextProgress }: any) {
     <div className="w-full h-[788px] 2xl:h-[868px] flex max-w-[1840px] justify-center place-items-start gap-4">
       <div className="w-full h-full flex gap-8">
         <div className="w-[40%] 2xl:w-[30%] flex flex-col gap-8">
-          <div className="w-full h-full flex flex-col gap-4 bg-darkComponentBg rounded-xl border border-lightBorder p-4">
+          <div className="w-full h-full flex flex-col gap-4 bg-darkComponentBg rounded-xl border shadow-2xl border-lightBorder p-4">
             <div className="w-full flex flex-col gap-3">
               <h3 className="w-full flex justify-between place-items-center text-sm font-semibold text-slate-200 ">
                 Head Mechanic
@@ -310,7 +314,7 @@ export default function OrderContent({ orderService, nextProgress }: any) {
 
         <div className="w-full h-full flex flex-col gap-8">
           <div className="w-full h-full flex gap-8">
-            <div className="w-[55%] 2xl:w-[40%] h-full bg-darkComponentBg rounded-xl border border-lightBorder p-4 flex flex-col justify-around gap-3 ">
+            <div className="w-[55%] 2xl:w-[40%] h-full bg-darkComponentBg rounded-xl border shadow-2xl border-lightBorder p-4 flex flex-col justify-around gap-3 ">
               <div className="flex flex-col gap-1">
                 <h3 className="w-full flex justify-between place-items-center text-sm font-semibold text-slate-200 ">
                   Customer Information
@@ -397,7 +401,7 @@ export default function OrderContent({ orderService, nextProgress }: any) {
                 </div>
               </div>
             </div>
-            <div className="w-full h-full flex-col bg-darkComponentBg rounded-xl border border-lightBorder p-2 2xl:p-1 relative overflow-hidden group">
+            <div className="w-full h-full flex-col bg-darkComponentBg rounded-xl border shadow-2xl border-lightBorder p-2 2xl:p-1 relative overflow-hidden group">
               <Image
                 src={
                   data.vehicle_entries[0].type === "small"
@@ -474,9 +478,14 @@ export default function OrderContent({ orderService, nextProgress }: any) {
               </div>
             </div>
           </div>
-          <ScrollArea className="w-full flex flex-col h-[1800px] bg-darkComponentBg rounded-xl border border-lightBorder gap-0 relative">
+          <ScrollArea className="w-full flex flex-col h-[1800px] bg-darkComponentBg rounded-xl border shadow-2xl border-lightBorder gap-0 relative">
             <div className="w-full flex place-items-center justify-between gap-3 py-6 px-6 border-b border-b-lightBorder">
-              <span className="font-bold">Purchase Summary</span>
+              <div className="font-bold flex flex-col">
+                <span> Purchase Summary</span>
+                <span className="text-xs text-slate-400">
+                  TRACKING ID: {data.tracking_id}
+                </span>
+              </div>
               <div className="w-fit flex gap-5">
                 {data.status === "Pending" &&
                 data.progress_entries.length >= 4 ? (
@@ -512,6 +521,24 @@ export default function OrderContent({ orderService, nextProgress }: any) {
                       <span className="text-xs bg-applicationPrimary px-3 rounded-full">
                         {data.purchase_services.length}
                       </span>
+                      {data.rating && (
+                        <span className="flex place-items-center gap-3">
+                          <ReactRating
+                            className="max-w-[100px]"
+                            itemStyles={{
+                              itemShapes: Star,
+                              // activeFillColor: "#f59e0b",
+                              activeFillColor: "#605ECD",
+                              inactiveFillColor: "#464646 ",
+                            }}
+                            value={data.rating}
+                            readOnly
+                          />
+                          <span className="text-xs  ">
+                            {data.rating.toFixed(1)} / 5.0
+                          </span>
+                        </span>
+                      )}
                     </span>
                   </AccordionTrigger>
                   <AccordionContent className="rounded-xl">
@@ -676,6 +703,7 @@ export default function OrderContent({ orderService, nextProgress }: any) {
           </ScrollArea>
         </div>
       </div>
+
       <div style={{ display: "none" }}>
         <div
           className="w-full min-h-[600px] 2xl:min-h-[680px] flex flex-col place-items-center"
@@ -981,28 +1009,23 @@ export default function OrderContent({ orderService, nextProgress }: any) {
                   - ₱ {data.amount_paid.toFixed(2)}
                 </p>
               </div>
-              <div className="flex justify-between">
-                <p className="text-[10px] font-semibold text-black space-mono-regular tracking-tighter">
-                  Change
-                </p>
-                <p className="text-[10px] font-semibold text-black space-mono-regular tracking-tighter">
-                  ₱ {(data.amount_paid - data.total_price).toFixed(2)}
-                </p>
-              </div>
+              {data.amount_paid > 0 ? (
+                <div className="flex justify-between">
+                  <p className="text-[10px] font-semibold text-black space-mono-regular tracking-tighter">
+                    Change
+                  </p>
+                  <p className="text-[10px] font-semibold text-black space-mono-regular tracking-tighter">
+                    ₱ {(data.amount_paid - data.total_price).toFixed(2)}
+                  </p>
+                </div>
+              ) : null}
             </div>
-            <div className="w-full max-w-full flex flex-col place-items-center gap-4">
-              <Barcode
-                value={data.id ? data.id : "No Barcode"}
-                displayValue={false}
-                background="transparent"
-                lineColor="black"
-                width={1}
-                height={80}
-                margin={0}
-                renderer="img"
+            <div className="w-full max-w-full flex flex-col place-items-center gap-4 mt-3">
+              <QRCodeSVG
+                value={`https://trackxp-sapsc.vercel.app/tracking/order_service/${data.tracking_id}`}
               />
             </div>
-            <p className="w-full text-center text-[8px] font-semibold text-black space-mono-regular tracking-tighter">
+            <p className="w-full text-center text-[8px] font-semibold text-black space-mono-regular tracking-tighter mb-5">
               Visit us at
               <br />{" "}
               <span className="underline">

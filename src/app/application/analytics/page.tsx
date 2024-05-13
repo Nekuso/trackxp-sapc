@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import UnderConstruction from "@/components/cards/under-construction";
 import { ROLES } from "@/lib/actions/roles";
 import { useAuthMiddleware } from "@/lib/actions/useMiddleware";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 export default function Analytics() {
@@ -9,11 +11,18 @@ export default function Analytics() {
   const { ADMINISTRATOR, MANAGER } = ROLES;
   const currentSession = useSelector((state: any) => state.currentSession);
   const access = useAuthMiddleware([ADMINISTRATOR, MANAGER], currentSession);
-  if (!access.allowed) {
-    router.push(access.defaultRoute);
-    return null;
-  }
-  return (
+  useEffect(() => {
+    if (!access.allowed) {
+      router.push(access.defaultRoute);
+    }
+  }, [access.allowed]);
+  return !access.allowed ? (
+    <div className="w-full h-full flex justify-center place-items-center">
+      <h1 className="text-xl font-semibold text-slate-200 text-center">
+        Unauthorized
+      </h1>
+    </div>
+  ) : (
     <div className="w-full h-full flex justify-center place-items-center">
       <UnderConstruction />
     </div>

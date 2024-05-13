@@ -24,7 +24,13 @@ export default function User({ params }: { params: any }) {
   const access = useAuthMiddleware([ADMINISTRATOR, MANAGER], currentSession);
   if (params.id !== currentSession?.id) {
     router.push(access.defaultRoute);
-    return null;
+    return (
+      <div className="w-full h-full flex justify-center place-items-center">
+        <h1 className="text-xl font-semibold text-slate-200 text-center">
+          Unauthorized
+        </h1>
+      </div>
+    );
   }
 
   const [error, setError] = useState(null);

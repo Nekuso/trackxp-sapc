@@ -73,6 +73,7 @@ export default function RemarksForm({ props, setDialogIsOpen }: any) {
             <FormItem className="w-full">
               <FormControl>
                 <Textarea
+                  disabled={currentOrderService.progress_entries.length === 5}
                   placeholder="Notes about this vehicle..."
                   className="resize-none bg-lightBorder border border-lightBorder text-sm text-white rounded-lg p-2 w-full h-32"
                   {...field}
@@ -83,24 +84,31 @@ export default function RemarksForm({ props, setDialogIsOpen }: any) {
             </FormItem>
           )}
         />
-        <DialogFooter>
-          <Button
-            className="text-xs font-bold rounded-lg min-w-[105px] flex justify-center place-items-center gap-2 text-red-500 bg-transparent hover:bg-transparent"
-            type="button"
-            onClick={() => setDialogIsOpen(false)}
-          >
-            Cancel
-          </Button>
-          <Button
-            className="text-xs font-bold rounded-lg min-w-[105px] flex justify-center place-items-center gap-2 bg-applicationPrimary/90 hover:bg-applicationPrimary primary-glow transition-all duration-300"
-            type="submit"
-          >
-            <span className={cn({ hidden: isPending })}>Submit</span>
-            <AiOutlineLoading3Quarters
-              className={cn(" animate-spin", { hidden: !isPending })}
-            />
-          </Button>
-        </DialogFooter>
+        {currentOrderService.progress_entries.length === 5 && (
+          <FormMessage className="text-red-500">
+            Cannot update remarks anymore.
+          </FormMessage>
+        )}
+        {currentOrderService.progress_entries.length !== 5 && (
+          <DialogFooter>
+            <Button
+              className="text-xs font-bold rounded-lg min-w-[105px] flex justify-center place-items-center gap-2 text-red-500 bg-transparent hover:bg-transparent"
+              type="button"
+              onClick={() => setDialogIsOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              className="text-xs font-bold rounded-lg min-w-[105px] flex justify-center place-items-center gap-2 bg-applicationPrimary/90 hover:bg-applicationPrimary primary-glow transition-all duration-300"
+              type="submit"
+            >
+              <span className={cn({ hidden: isPending })}>Submit</span>
+              <AiOutlineLoading3Quarters
+                className={cn(" animate-spin", { hidden: !isPending })}
+              />
+            </Button>
+          </DialogFooter>
+        )}
       </form>
     </Form>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { CiBadgeDollar } from "react-icons/ci";
 import { FaBoxes } from "react-icons/fa";
@@ -17,6 +18,7 @@ import { useSelector } from "react-redux";
 import { ROLES } from "@/lib/actions/roles";
 import { useAuthMiddleware } from "@/lib/actions/useMiddleware";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const mostVehciles = [
   {
@@ -71,12 +73,19 @@ export default function Dashboard() {
   const { ADMINISTRATOR, MANAGER } = ROLES;
   const currentSession = useSelector((state: any) => state.currentSession);
   const access = useAuthMiddleware([ADMINISTRATOR, MANAGER], currentSession);
-  if (!access.allowed) {
-    router.push(access.defaultRoute);
-    return null;
-  }
+  useEffect(() => {
+    if (!access.allowed) {
+      router.push(access.defaultRoute);
+    }
+  }, [access.allowed]);
 
-  return (
+  return !access.allowed ? (
+    <div className="w-full h-full flex justify-center place-items-center">
+      <h1 className="text-xl font-semibold text-slate-200 text-center">
+        Unauthorized
+      </h1>
+    </div>
+  ) : (
     <div className="w-full h-[805px] 2xl:h-[882px] flex justify-center place-items-center py-4">
       <div className="w-full h-full max-w-[1840px] flex justify-between gap-6">
         <div className="w-full h-full flex flex-col justify-between gap-6">

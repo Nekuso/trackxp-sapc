@@ -49,7 +49,7 @@ export const initialState = (branches: any) => {
   const columns: ColumnDef<allPurchaseOrdersDisplay>[] = [
     {
       id: "id",
-      accessorKey: "id",
+      accessorKey: "tracking_id",
       header: ({ column }) => {
         return (
           <DropdownMenu>
@@ -59,7 +59,7 @@ export const initialState = (branches: any) => {
                 size="sm"
                 className="-ml-3 h-8 data-[state=open]:bg-applicationPrimary data-[state=open]:text-white hover:bg-slate-50/40 hover:text-white"
               >
-                <span>Order ID</span>
+                <span>Tracking ID</span>
                 {column.getIsSorted() === "desc" ? (
                   <ArrowDownIcon className="ml-2 h-4 w-4" />
                 ) : column.getIsSorted() === "asc" ? (
@@ -96,7 +96,7 @@ export const initialState = (branches: any) => {
           <div className="flex place-items-center gap-2">
             <div className="flex flex-col">
               <p className="max-w-[190px] 2xl:max-w-[220px] truncate font-semibold">
-                {row.original.id}
+                {row.original.tracking_id}
               </p>
               <p className="max-w-[181px] truncate text-white/50">
                 {format(row.original.created_at, "PPPP")}
@@ -410,16 +410,16 @@ export const initialState = (branches: any) => {
       },
     },
     {
-      id: "barcode",
-      accessorKey: "barcode",
-    },
-    {
       id: "created_at",
       accessorKey: "created_at",
       accessorFn: (row) => format(new Date(row.created_at), "PPP"),
       filterFn: (row, id, value) => {
         return value.includes(row.getValue(id));
       },
+    },
+    {
+      id: "tracking_id",
+      accessorKey: "tracking_id",
     },
   ];
   return columns;

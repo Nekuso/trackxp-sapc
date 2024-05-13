@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useEffect } from "react";
@@ -24,10 +23,11 @@ export default function Management() {
   const { ADMINISTRATOR, MANAGER } = ROLES;
   const currentSession = useSelector((state: any) => state.currentSession);
   const access = useAuthMiddleware([ADMINISTRATOR, MANAGER], currentSession);
-  if (!access.allowed) {
-    router.push(access.defaultRoute);
-    return null;
-  }
+  useEffect(() => {
+    if (!access.allowed) {
+      router.push(access.defaultRoute);
+    }
+  }, [access.allowed]);
 
   const dispatch = useDispatch();
   const { getEmployees, allEmployeesData } = useEmployees();
@@ -81,7 +81,13 @@ export default function Management() {
     };
   }, []);
 
-  return (
+  return !access.allowed ? (
+    <div className="w-full h-full flex justify-center place-items-center">
+      <h1 className="text-xl font-semibold text-slate-200 text-center">
+        Unauthorized
+      </h1>
+    </div>
+  ) : (
     <div className="w-full flex justify-center py-3.5 no-scrollbar ">
       {allEmployeesData.length === 0 ? (
         <Loading />

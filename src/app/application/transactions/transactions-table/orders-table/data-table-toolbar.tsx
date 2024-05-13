@@ -32,7 +32,7 @@ export function DataTableToolbar<TData>({
       <div className="flex flex-1 items-center space-x-2 flex-wrap gap-y-2">
         <Input
           className="w-[200px] 2xl:w-[250px] h-10 border-none bg-lightComponentBg rounded-lg text-white placeholder:text-white/40"
-          placeholder="Find an Order ID"
+          placeholder="Tracking ID"
           value={(table.getColumn("id")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("id")?.setFilterValue(event.target.value)
@@ -47,7 +47,7 @@ export function DataTableToolbar<TData>({
             options={branchesSlice}
           />
         ) : null}
-        
+
         {table.getColumn("status") && (
           <DataTableFacetedFilter
             column={table.getColumn("status")}
