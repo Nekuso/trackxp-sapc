@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+"use client";
 import UnderConstruction from "@/components/cards/under-construction";
 import { ROLES } from "@/lib/actions/roles";
 import { useAuthMiddleware } from "@/lib/actions/useMiddleware";
