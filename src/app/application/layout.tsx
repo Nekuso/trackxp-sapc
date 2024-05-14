@@ -9,7 +9,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import Providers from "@/redux/Provider";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { createClient } from "@supabase/supabase-js";
+import createSupabaseBrowserClient from "@/lib/supabase/client";
 
 const montserrat = Montserrat({
   subsets: ["cyrillic-ext"],
@@ -27,10 +27,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const supabase = await createSupabaseServerClient();
-  const supabase2 = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!
-  );
+  const supabase2 = createSupabaseBrowserClient();
   const { data, error } = await supabase.auth.getUser();
   const result: any = !error
     ? await supabase2

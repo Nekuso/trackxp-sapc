@@ -53,6 +53,7 @@ export default function InventoryContent({
           {currentSession.roles.role === "Administrator" ||
           currentSession.roles.role === "Manager" ||
           currentSession.roles.role === "Staff" ||
+          currentSession.roles.role === "Cashier" ||
           currentSession.roles.role === "Supervisor" ? (
             <TabsTrigger
               value="order_service"
@@ -81,6 +82,7 @@ export default function InventoryContent({
       {currentSession.roles.role === "Administrator" ||
       currentSession.roles.role === "Manager" ||
       currentSession.roles.role === "Staff" ||
+      currentSession.roles.role === "Cashier" ||
       currentSession.roles.role === "Supervisor" ? (
         <TabsContent value="order_service" className="w-full h-full ">
           {/* Service Order Tab */}
