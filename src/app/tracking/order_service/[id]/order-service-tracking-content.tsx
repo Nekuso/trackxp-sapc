@@ -20,9 +20,10 @@ import largeVehicle from "@/images/vehicle-large-hd.png";
 import recieptLogo from "@/images/receipt-logo-white.svg";
 import CountUp from "react-countup";
 import Rating from "./add-rating/rating-dialog";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function OrderContent({ orderServiceDataTracking }: any) {
+  const router = useRouter();
   const data: allPurchaseOrderServicesDisplay = orderServiceDataTracking[0];
 
   const [progress_entries_data, setProgressEntriesData] = useState<any>(
@@ -82,13 +83,13 @@ export default function OrderContent({ orderServiceDataTracking }: any) {
   return (
     <div className="w-full min-h-[90%] flex flex-col max-w-[1840px] justify-start place-items-center gap-5">
       <div className="w-full md:w-[400px] h-fit flex flex-col gap-4 bg-darkComponentBg p-6 md:p-6 rounded-2xl border border-lightBorder">
-        <Link href={"https://trackxp-sapsc.vercel.app/"}>
-          <Image
-            src={recieptLogo}
-            alt="Receipt Logo"
-            className="w-[60%] mx-auto mb-2"
-          />
-        </Link>
+        <Image
+          src={recieptLogo}
+          alt="Receipt Logo"
+          className="w-[60%] mx-auto mb-2 cursor-pointer"
+          onClick={() => router.push("https://trackxp-sapsc.vercel.app/")}
+        />
+
         <div className="w-full flex justify-between place-items-center">
           <h3 className="w-full text-xs font-semibold text-slate-200 ">
             Tracking ID: {data.tracking_id}

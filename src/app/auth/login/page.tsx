@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -28,6 +28,7 @@ const loginSchema = z.object({
     .min(8, { message: "Password must be at least 8 characters" }),
 });
 export default function Login() {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -58,9 +59,11 @@ export default function Login() {
   return (
     <div className="w-full min-h-screen flex flex-col justify-center place-items-center overflow-hidden">
       <div className="flex flex-col gap-10 p-6 place-items-center md:min-w-[400px] h-auto bg-darkGray rounded-2xl shadow-lg border border-lightBorder">
-        <Link href="/">
-          <Image src={Logo} alt="Sentro Auto Parts & Service Center" />
-        </Link>
+        <Image
+          src={Logo}
+          alt="Sentro Auto Parts & Service Center"
+          onClick={() => router.push("https://trackxp-sapsc.vercel.app/")}
+        />
         <Form {...form}>
           <form
             className="flex flex-col w-full gap-6"
