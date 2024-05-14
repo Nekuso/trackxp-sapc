@@ -545,6 +545,18 @@ export const useOrderServices: any = () => {
 
     return result;
   };
+  const updateOrderServiceRating = async (props: any, duration?: number) => {
+    const result = await supabase
+      .from("order_services")
+      .update({
+        rating: props.rating,
+      })
+      .eq("id", props.id);
+
+    await new Promise((resolve) => setTimeout(resolve, duration));
+
+    return result;
+  };
   const deleteOrderService = async (props: any, duration: number = 2000) => {
     const result = await supabase.from("orders").delete().eq("id", props.id);
 
@@ -567,6 +579,7 @@ export const useOrderServices: any = () => {
     updateOrderServicePrice,
     updateOrderServicePayment,
     updateOrderServiceRemarks,
+    updateOrderServiceRating,
     deleteOrderService,
   };
 };

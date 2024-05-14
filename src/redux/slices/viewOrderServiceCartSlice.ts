@@ -10,7 +10,6 @@ const viewOrderServiceCart = createSlice({
   reducers: {
     setServiceCart: (state, action: PayloadAction<any>) => {
       state.servicesCart = action.payload;
-      console.log(state.servicesCart);
     },
     addServiceToCart: (state, action: PayloadAction<any>) => {
       state.servicesCart.push(action.payload);

@@ -133,7 +133,6 @@ export const useServices: any = () => {
         status: props.status,
       })
       .eq("id", props.id);
-    console.log(result);
 
     await new Promise((resolve) => setTimeout(resolve, duration));
 

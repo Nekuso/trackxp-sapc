@@ -18,8 +18,9 @@ import smallVehicle from "@/images/vehicle-small-hd.png";
 import mediumVehicle from "@/images/vehicle-medium-hd.png";
 import largeVehicle from "@/images/vehicle-large-hd.png";
 import recieptLogo from "@/images/receipt-logo-white.svg";
-
-import { Rating as ReactRating, Star } from "@smastrom/react-rating";
+import CountUp from "react-countup";
+import Rating from "./add-rating/rating-dialog";
+import Link from "next/link";
 
 export default function OrderContent({ orderServiceDataTracking }: any) {
   const data: allPurchaseOrderServicesDisplay = orderServiceDataTracking[0];
@@ -80,12 +81,14 @@ export default function OrderContent({ orderServiceDataTracking }: any) {
 
   return (
     <div className="w-full min-h-[90%] flex flex-col max-w-[1840px] justify-start place-items-center gap-5">
-      <div className="w-full md:w-[400px] h-fit flex flex-col gap-4 bg-lightComponentBg p-6 md:p-6 rounded-lg">
-        <Image
-          src={recieptLogo}
-          alt="Receipt Logo"
-          className="w-[60%] mx-auto mb-2"
-        />
+      <div className="w-full md:w-[400px] h-fit flex flex-col gap-4 bg-darkComponentBg p-6 md:p-6 rounded-2xl border border-lightBorder">
+        <Link href={"https://trackxp-sapsc.vercel.app/"}>
+          <Image
+            src={recieptLogo}
+            alt="Receipt Logo"
+            className="w-[60%] mx-auto mb-2"
+          />
+        </Link>
         <div className="w-full flex justify-between place-items-center">
           <h3 className="w-full text-xs font-semibold text-slate-200 ">
             Tracking ID: {data.tracking_id}
@@ -93,10 +96,25 @@ export default function OrderContent({ orderServiceDataTracking }: any) {
         </div>
         <div className="flex justify-between place-items-center gap-2 w-full">
           <div className="h-full flex flex-col justify-center">
-            <h2 className="w-full text-center text-4xl font-extrabold">
-              {Math.round((progress_entries_data.length / 5) * 100).toString()}%
+            <h2
+              className={cn(
+                "w-full text-center text-4xl font-extrabold",
+                progress_entries_data.length > 4 ? "text-green-300" : ""
+              )}
+            >
+              <CountUp
+                start={0}
+                end={Math.round((progress_entries_data.length / 5) * 100)}
+                duration={5}
+              />
+              %
             </h2>
-            <span className="w-full text-center text-xs text-slate-300">
+            <span
+              className={cn(
+                "w-full text-center text-xs text-slate-300",
+                progress_entries_data.length > 4 ? "text-green-300" : ""
+              )}
+            >
               Completion
             </span>
           </div>
@@ -117,25 +135,18 @@ export default function OrderContent({ orderServiceDataTracking }: any) {
             <div className="w-full flex justify-between gap-3">
               <div className="w-full flex flex-col gap-1">
                 <h3 className="flex place-items-center gap-1 text-xs font-semibold text-slate-200 ">
-                  Vehicle Type
+                  Customer
                 </h3>
-                <h3 className="text-xs font-semibold text-slate-400">
-                  {data.vehicle_entries[0].type.toUpperCase()}
+                <h3 className={cn("text-lg text-slate-100 font-bold")}>
+                  {data.customer_first_name} {data.customer_last_name}
                 </h3>
               </div>
               <div className="w-full flex flex-col gap-1">
                 <h3 className="flex place-items-center gap-1 text-xs font-semibold text-slate-200 ">
-                  Payment Status
+                  Vehicle Type
                 </h3>
-                <h3
-                  className={cn(
-                    "text-xs text-slate-400 font-bold",
-                    data.status === "Pending"
-                      ? "text-red-500"
-                      : "text-green-500"
-                  )}
-                >
-                  {data.status}
+                <h3 className="text-xs font-semibold text-slate-400">
+                  {data.vehicle_entries[0].type.toUpperCase()}
                 </h3>
               </div>
             </div>
@@ -171,7 +182,7 @@ export default function OrderContent({ orderServiceDataTracking }: any) {
         </div>
       </div>
 
-      <div className="w-full md:w-[400px] h-fit flex flex-col gap-1 bg-lightComponentBg p-6 md:p-6 rounded-lg">
+      <div className="w-full md:w-[400px] h-fit flex flex-col gap-1 bg-darkComponentBg p-6 md:p-6 rounded-2xl border border-lightBorder">
         <div className="w-full flex justify-between place-items-center">
           <h3 className="w-full text-sm font-semibold text-slate-200 ">
             Progress Timeline
@@ -228,6 +239,8 @@ export default function OrderContent({ orderServiceDataTracking }: any) {
           </div>
         </div>
       </div>
+
+      <Rating data={data} progress_entries={progress_entries_data} />
     </div>
   );
 }

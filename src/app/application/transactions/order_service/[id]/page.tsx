@@ -105,7 +105,7 @@ export default function OrderService({ params }: { params: any }) {
           },
           (payload: any) => {
             getOrderService(params.id, 0);
-            sonner("📣 Notfication", {
+            sonner("📣 Notification", {
               description: `Order has been updated!`,
             });
           }
@@ -133,7 +133,7 @@ export default function OrderService({ params }: { params: any }) {
             filter: `order_service_id=eq.${params.id}`,
           },
           (payload: any) => {
-            sonner("📣 Notfication", {
+            sonner("📣 Notification", {
               description: `Order has been updated!`,
             });
             getOrderService(params.id, 0);
@@ -148,7 +148,7 @@ export default function OrderService({ params }: { params: any }) {
             filter: `order_service_id=eq.${params.id}`,
           },
           (payload: any) => {
-            sonner("📣 Notfication", {
+            sonner("📣 Notification", {
               description: `Order has been updated!`,
             });
             getOrderService(params.id, 0);
@@ -163,7 +163,7 @@ export default function OrderService({ params }: { params: any }) {
             filter: `order_service_id=eq.${params.id}`,
           },
           (payload: any) => {
-            sonner("📣 Notfication", {
+            sonner("📣 Notification", {
               description: `Order has been updated!`,
             });
             getOrderService(params.id, 0);
