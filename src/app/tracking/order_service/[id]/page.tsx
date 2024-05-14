@@ -38,7 +38,6 @@ export default function TrackingService({ params }: { params: any }) {
             filter: `tracking_id=eq.${params.id}`,
           },
           (payload: any) => {
-            console.log(payload);
             getOrderServiceTracking(params.id, 0);
           }
         )
