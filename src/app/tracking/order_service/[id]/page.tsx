@@ -3,12 +3,14 @@
 import createSupabaseBrowserClient from "@/lib/supabase/client";
 import { useOrderServices } from "@/hooks/useOrderServices";
 import { useEffect, useState } from "react";
-import { toast as sonner } from "sonner";
+import { useToast } from "@/components/ui/use-toast";
 import OrderNotFound from "./not-found";
 import Loading from "./skeleton";
 import OrderServiceTrackingContent from "./order-service-tracking-content";
+import { cn } from "@/lib/utils";
 
 export default function TrackingService({ params }: { params: any }) {
+  const { toast } = useToast();
   const [error, setError] = useState(false);
   const { getOrderServiceTracking, currentOrderServiceDataTracking } =
     useOrderServices();
@@ -50,7 +52,11 @@ export default function TrackingService({ params }: { params: any }) {
           },
           (payload: any) => {
             getOrderServiceTracking(params.id, 0);
-            sonner("📣 Notfication", {
+            toast({
+              className: cn(
+                "top-0 left-0 right-0 mx-auto max-w-[350px] rounded-full py-3 px-7 flex fixed top-3 md:top-4 bg-applicationPrimary text-white shadow-xl border-transparent font-medium"
+              ),
+              title: "📣 Notification",
               description: `Order has been updated!`,
             });
           }
@@ -63,7 +69,7 @@ export default function TrackingService({ params }: { params: any }) {
   }, []);
 
   return (
-    <div className="w-full min-h-screen flex flex-col justify-center place-items-center bg-darkBg p-3">
+    <div className="w-full min-h-screen flex flex-col justify-start place-items-center bg-darkBg p-4 md:p-8">
       {error ? (
         <OrderNotFound />
       ) : currentOrderServiceDataTracking.length === 0 ? (
