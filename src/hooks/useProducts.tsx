@@ -1,11 +1,8 @@
-import { createClient } from "@supabase/supabase-js";
 import { useState } from "react";
+import createSupabaseBrowserClient from "@/lib/supabase/client";
 
 export const useProducts: any = () => {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!
-  );
+  const supabase = createSupabaseBrowserClient();
   const [productsData, setProductsData] = useState<any>([]);
   const [currentProductData, setCurrentProductData] = useState<any>([]);
 

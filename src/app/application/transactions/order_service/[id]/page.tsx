@@ -27,10 +27,10 @@ import { useAuthMiddleware } from "@/lib/actions/useMiddleware";
 
 export default function OrderService({ params }: { params: any }) {
   const router = useRouter();
-  const { ADMINISTRATOR, SUPERVISOR, MANAGER, STAFF } = ROLES;
+  const { ADMINISTRATOR, SUPERVISOR, MANAGER, STAFF, CASHIER } = ROLES;
   const currentSession = useSelector((state: any) => state.currentSession);
   const access = useAuthMiddleware(
-    [ADMINISTRATOR, SUPERVISOR, MANAGER, STAFF],
+    [ADMINISTRATOR, SUPERVISOR, MANAGER, STAFF, CASHIER],
     currentSession
   );
   if (!access.allowed) {

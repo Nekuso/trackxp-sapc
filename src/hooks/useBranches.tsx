@@ -1,14 +1,8 @@
-import { EmployeeDisplay } from "@/types";
-import { QueryData, createClient } from "@supabase/supabase-js";
-import { redirect } from "next/navigation";
 import { useState } from "react";
-
+import createSupabaseBrowserClient from "@/lib/supabase/client";
 
 export const useBranches: any = () => {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!
-  );
+  const supabase = createSupabaseBrowserClient();
   const [allBranchesData, setAllbranchesData] = useState<any>([]);
   const [currentBranchData, setCurrentBranchData] = useState<any>([]);
 
@@ -40,7 +34,7 @@ export const useBranches: any = () => {
       created_at
     `
       )
-      .order("created_at", { ascending: false });;
+      .order("created_at", { ascending: false });
 
     const { data, error } = result;
     if (error) {

@@ -1,17 +1,17 @@
-import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { EmployeeDisplay } from "@/types";
 import { QueryData, createClient } from "@supabase/supabase-js";
-import { redirect } from "next/navigation";
 import { useState } from "react";
+import createSupabaseBrowserClient from "@/lib/supabase/client";
 
 export const useEmployees: any = () => {
+  const supabase = createSupabaseBrowserClient();
   const [allEmployeesData, setAllEmployeesData] = useState<EmployeeDisplay[]>(
     []
   );
   const [currentEmployeeData, setCurrentEmployeeData] = useState<any>([]);
 
   const createEmployee = async (props: any, duration: number = 1000) => {
-    const supabase = createClient(
+    const supabaseAuth = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!,
       {
@@ -21,7 +21,7 @@ export const useEmployees: any = () => {
       }
     );
 
-    const result = await supabase.auth.signUp({
+    const result = await supabaseAuth.auth.signUp({
       email: props.email,
       password: props.password,
       options: {
@@ -45,11 +45,6 @@ export const useEmployees: any = () => {
     return JSON.stringify(result);
   };
   const getEmployees = async (props?: any) => {
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!
-    );
-
     const result =
       props?.roles?.role === "Administrator"
         ? await supabase
@@ -111,10 +106,6 @@ export const useEmployees: any = () => {
     return setAllEmployeesData(data as EmployeesWithJoin);
   };
   const getEmployee = async (id: string, duration?: number) => {
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!
-    );
     const { data, error } = await supabase
       .from("employees")
       .select(
@@ -146,7 +137,7 @@ export const useEmployees: any = () => {
     return setCurrentEmployeeData(data);
   };
   const updateEmployee = async (props: any, duration?: number) => {
-    const supabase = createClient(
+    const supabaseAuth = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!,
       {
@@ -155,7 +146,7 @@ export const useEmployees: any = () => {
         },
       }
     );
-    const result = await supabase.auth.admin.updateUserById(props.id, {
+    const result = await supabaseAuth.auth.admin.updateUserById(props.id, {
       email: props.email,
       password: props.password,
       user_metadata: {
@@ -179,7 +170,7 @@ export const useEmployees: any = () => {
     return JSON.stringify(result);
   };
   const updateEmployeeStatus = async (props: any, duration?: number) => {
-    const supabase = createClient(
+    const supabaseAuth = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!,
       {
@@ -188,7 +179,7 @@ export const useEmployees: any = () => {
         },
       }
     );
-    const result = await supabase.auth.admin.updateUserById(props.id, {
+    const result = await supabaseAuth.auth.admin.updateUserById(props.id, {
       user_metadata: {
         status: props.status,
       },

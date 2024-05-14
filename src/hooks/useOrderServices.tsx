@@ -1,13 +1,10 @@
-import { createClient } from "@supabase/supabase-js";
+import createSupabaseBrowserClient from "@/lib/supabase/client"
 import { useState } from "react";
 import ShortUniqueId from "short-unique-id";
 
 export const useOrderServices: any = () => {
   const uid = new ShortUniqueId({ length: 10 });
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!
-  );
+  const supabase = createSupabaseBrowserClient();
 
   const [orderServicesData, setOrderServicesData] = useState<any>([]);
   const [currentOrderServiceData, setCurrentOrderServiceData] = useState<any>(

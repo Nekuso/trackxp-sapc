@@ -546,7 +546,7 @@ export default function OrderForm({ setDialogOpen }: any) {
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel className="text-xs">
-                                  Supervisor
+                                  Head Mechanic
                                 </FormLabel>
                                 <SupervisorInput data={field} />
                                 <FormMessage />

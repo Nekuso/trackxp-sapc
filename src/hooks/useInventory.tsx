@@ -1,13 +1,8 @@
-import { EmployeeDisplay } from "@/types";
-import { QueryData, createClient } from "@supabase/supabase-js";
-import { redirect } from "next/navigation";
+import createSupabaseBrowserClient from "../lib/supabase/client";
 import { useState } from "react";
 
 export const useInventory: any = () => {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!
-  );
+  const supabase = createSupabaseBrowserClient();
   const [allInventoryData, setAllInventoryData] = useState<any>([]);
   const [currentInventoryData, setCurrentInventoryData] = useState<any>([]);
 

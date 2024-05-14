@@ -81,18 +81,22 @@ export default function Management() {
     };
   }, []);
 
-  return !access.allowed ? (
-    <div className="w-full h-full flex justify-center place-items-center">
-      <h1 className="text-xl font-semibold text-slate-200 text-center">
-        Unauthorized
-      </h1>
-    </div>
-  ) : (
-    <div className="w-full flex justify-center py-3.5 no-scrollbar ">
-      {allEmployeesData.length === 0 ? (
-        <Loading />
+  return (
+    <div className="w-full h-full">
+      {!access.allowed ? (
+        <div className="w-full h-full flex justify-center place-items-center">
+          <h1 className="text-xl font-semibold text-slate-200 text-center">
+            Unauthorized
+          </h1>
+        </div>
       ) : (
-        <ManagementContent dataEmployees={allEmployeesData} />
+        <div className="w-full flex justify-center py-3.5 no-scrollbar ">
+          {allEmployeesData.length === 0 ? (
+            <Loading />
+          ) : (
+            <ManagementContent dataEmployees={allEmployeesData} />
+          )}
+        </div>
       )}
     </div>
   );

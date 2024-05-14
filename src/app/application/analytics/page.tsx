@@ -17,15 +17,19 @@ export default function Analytics() {
       router.push(access.defaultRoute);
     }
   }, [access.allowed]);
-  return !access.allowed ? (
-    <div className="w-full h-full flex justify-center place-items-center">
-      <h1 className="text-xl font-semibold text-slate-200 text-center">
-        Unauthorized
-      </h1>
-    </div>
-  ) : (
-    <div className="w-full h-full flex justify-center place-items-center">
-      <UnderConstruction />
+  return (
+    <div className="w-full h-full">
+      {!access.allowed ? (
+        <div className="w-full h-full flex justify-center place-items-center">
+          <h1 className="text-xl font-semibold text-slate-200 text-center">
+            Unauthorized
+          </h1>
+        </div>
+      ) : (
+        <div className="w-full h-full flex justify-center place-items-center">
+          <UnderConstruction />
+        </div>
+      )}
     </div>
   );
 }

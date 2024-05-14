@@ -781,7 +781,7 @@ export default function OrderContent({ orderService, nextProgress }: any) {
               </div>
               <div className="flex justify-between">
                 <p className="text-[10px] font-semibold text-black space-mono-regular tracking-tighter">
-                  Cashier
+                  Staff
                 </p>
                 <p className="text-[10px] font-semibold text-black space-mono-regular tracking-tighter">
                   {data.employee.first_name}

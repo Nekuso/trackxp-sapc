@@ -174,23 +174,27 @@ export default function Inventory() {
     };
   }, []);
 
-  return !access.allowed ? (
-    <div className="w-full h-full flex justify-center place-items-center">
-      <h1 className="text-xl font-semibold text-slate-200 text-center">
-        Unauthorized
-      </h1>
-    </div>
-  ) : (
-    <div className="w-full flex justify-center py-3.5 no-scrollbar ">
-      {productsData.length === 0 ? (
-        <Loading />
+  return (
+    <div className="w-full h-full">
+      {!access.allowed ? (
+        <div className="w-full h-full flex justify-center place-items-center">
+          <h1 className="text-xl font-semibold text-slate-200 text-center">
+            Unauthorized
+          </h1>
+        </div>
       ) : (
-        <InventoryContent
-          dataProducts={productsData}
-          dataParts={partsData}
-          dataServices={servicesData}
-          dataRewards={allRewardsData}
-        />
+        <div className="w-full flex justify-center py-3.5 no-scrollbar ">
+          {productsData.length === 0 ? (
+            <Loading />
+          ) : (
+            <InventoryContent
+              dataProducts={productsData}
+              dataParts={partsData}
+              dataServices={servicesData}
+              dataRewards={allRewardsData}
+            />
+          )}
+        </div>
       )}
     </div>
   );
