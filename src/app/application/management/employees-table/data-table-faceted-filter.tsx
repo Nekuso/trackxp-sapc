@@ -49,7 +49,7 @@ export function DataTableFacetedFilter<TData, TValue>({
           <PlusCircledIcon className="mr-2 h-4 w-4" />
           {title}
           {selectedValues?.size > 0 && (
-            <>
+            <div>
               <Separator orientation="vertical" className="mx-2 h-4" />
               <Badge
                 variant="secondary"
@@ -79,7 +79,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                     ))
                 )}
               </div>
-            </>
+            </div>
           )}
         </Button>
       </PopoverTrigger>
@@ -134,7 +134,7 @@ export function DataTableFacetedFilter<TData, TValue>({
               })}
             </CommandGroup>
             {selectedValues.size > 0 && (
-              <>
+              <div>
                 <CommandGroup>
                   <CommandItem
                     onSelect={() => column?.setFilterValue(undefined)}
@@ -143,7 +143,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                     Clear filters
                   </CommandItem>
                 </CommandGroup>
-              </>
+              </div>
             )}
           </CommandList>
         </Command>

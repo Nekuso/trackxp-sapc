@@ -237,7 +237,7 @@ const MultiSelectFormField = React.forwardRef<
                 <CommandGroup className="sticky bottom-0 bg-lightComponentBg">
                   <div className="flex items-center justify-between">
                     {selectedValues.length > 0 && (
-                      <>
+                      <div>
                         <CommandItem
                           onSelect={() => {
                             setSelectedValues([]);
@@ -256,7 +256,7 @@ const MultiSelectFormField = React.forwardRef<
                           orientation="vertical"
                           className="flex min-h-6 h-full bg-slate-600/50"
                         />
-                      </>
+                      </div>
                     )}
                     <CommandSeparator className="bg-slate-600/50" />
                     <CommandItem

@@ -15,11 +15,9 @@ import { useTransition } from "react";
 import { toast } from "@/components/ui/use-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { cn } from "@/lib/utils";
-import { useSelector } from "react-redux";
 import { useAllowedLinks } from "@/lib/actions/useAllowedLinks";
-export default function SideBar() {
-  const currentSession = useSelector((state: any) => state.currentSession);
-  const allowedLinks = useAllowedLinks(currentSession?.roles?.role);
+export default function SideBar({ data }: { data: any }) {
+  const allowedLinks = useAllowedLinks(data.roles.role);
 
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
