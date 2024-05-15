@@ -72,7 +72,7 @@ export default async function RootLayout({
             </h1>
           </div>
           <div className="relative flex place-items-start justify-center w-full min-h-screen h-screen bg-darkBg px-8 gap-10 max-lg:hidden overflow-y-scroll overflow-x-hidden no-scrollbar">
-            <SideBar />
+            <SideBar data={currentUser} />
             <div className="flex flex-col justify-start place-items-start w-full min-h-full h-full relative">
               <TopBar data={currentUser} />
               {children}
