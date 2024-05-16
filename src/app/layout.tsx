@@ -3,8 +3,8 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import "@smastrom/react-rating/style.css";
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
+// import { Toaster } from "@/components/ui/toaster";
+// import { Toaster as Sonner } from "@/components/ui/sonner";
 const montserrat = Montserrat({
   subsets: ["cyrillic"],
   variable: "--font-montserrat",
@@ -24,8 +24,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn("font-montserrat", montserrat.variable)}>
         {children}
-        <Sonner />
-        <Toaster />
+        {/* <Sonner />
+        <Toaster /> */}
       </body>
     </html>
   );
