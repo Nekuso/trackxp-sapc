@@ -18,6 +18,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
 
 export default function LandingPage() {
   const router = useRouter();
@@ -161,6 +163,8 @@ export default function LandingPage() {
           ></Image>
         </div>
       </section>
+      <Sonner />
+      <Toaster />
     </div>
   );
 }
