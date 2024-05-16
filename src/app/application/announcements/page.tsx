@@ -1,3 +1,5 @@
+"use client"
+
 import UnderConstruction from "@/components/cards/under-construction";
 
 export default function Announcements() {
