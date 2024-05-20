@@ -16,7 +16,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { cn } from "@/lib/utils";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { MdModeEditOutline } from "react-icons/md";
-import { updateServicePriceFromCart } from "@/redux/slices/orderServiceCartSlice";
+import { updateServicePriceFromCart } from "@/redux/slices/viewUpdateOrderServiceCart";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { Input } from "@/components/ui/input";
