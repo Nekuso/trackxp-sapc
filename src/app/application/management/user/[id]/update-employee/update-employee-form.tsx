@@ -288,7 +288,7 @@ export default function EmployeeForm({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-xs">Branch</FormLabel>
-                      <BranchInput data={field} branchesData={branches} />
+                      <BranchInput data={field} />
                       <FormMessage />
                     </FormItem>
                   )}
