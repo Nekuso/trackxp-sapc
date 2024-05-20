@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaMinus } from "react-icons/fa";
-import { removeServiceFromCart } from "@/redux/slices/orderServiceCartSlice";
+import { removeServiceFromCart } from "@/redux/slices/viewUpdateOrderServiceCart";
 import { Input } from "@/components/ui/input";
 import PriceDialog from "./price-dialog";
 

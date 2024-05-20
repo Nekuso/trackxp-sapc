@@ -9,7 +9,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import Providers from "@/redux/Provider";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { createClient } from "@supabase/supabase-js";
+  import { createClient } from "@supabase/supabase-js";
 
 const montserrat = Montserrat({
   subsets: ["cyrillic-ext"],

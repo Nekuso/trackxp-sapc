@@ -13,6 +13,7 @@ import allEmployeesSlice from "./slices/allEmployeesSlice";
 import allMobileUsersSlice from "./slices/mobileUsersSlice";
 import viewOrderCartSlice from "./slices/viewOrderCartSlice";
 import viewOrderServiceCartSlice from "./slices/viewOrderServiceCartSlice";
+import viewUpdateOrderServiceCartSlice from "./slices/viewUpdateOrderServiceCart";
 import progressEntriesSlice from "./slices/progressEntriesSlice";
 import currentOrderServiceSlice from "./slices/currentOrderServiceSlice";
 
@@ -33,6 +34,7 @@ export const store = configureStore({
     currentOrderService: currentOrderServiceSlice,
     viewOrderCart: viewOrderCartSlice,
     viewOrderServiceCart: viewOrderServiceCartSlice,
+    viewUpdateOrderServiceCart: viewUpdateOrderServiceCartSlice,
     progressEntries: progressEntriesSlice,
 
     currentSession: currentSessionSlice,

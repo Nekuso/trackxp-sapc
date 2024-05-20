@@ -24,6 +24,8 @@ import {
 import { useRouter } from "next/navigation";
 import { ROLES } from "@/lib/actions/roles";
 import { useAuthMiddleware } from "@/lib/actions/useMiddleware";
+import { useServices } from "@/hooks/useServices";
+import { setServicesData } from "@/redux/slices/orderServiceCartOptionSlice";
 
 export default function OrderService({ params }: { params: any }) {
   const router = useRouter();
@@ -46,6 +48,7 @@ export default function OrderService({ params }: { params: any }) {
   const { getBranches, allBranchesData } = useBranches();
   const { getProducts, productsData } = useProducts();
   const { getParts, partsData } = useParts();
+  const { getServices, servicesData } = useServices();
 
   const branchesData = allBranchesData.map((branch: any) => ({
     id: branch?.id,
@@ -64,6 +67,7 @@ export default function OrderService({ params }: { params: any }) {
   dispatch(setBranchesData(branchesData));
   dispatch(setProductsData({ productsData, productsCart }));
   dispatch(setPartsData({ partsData, partsCart }));
+  dispatch(setServicesData({ servicesData }));
 
   useEffect(() => {
     const initialFetch = async () => {
@@ -76,6 +80,7 @@ export default function OrderService({ params }: { params: any }) {
     getBranches();
     getProducts(currentSession);
     getParts(currentSession);
+    getServices(currentSession);
   }, []);
 
   useEffect(() => {

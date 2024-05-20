@@ -332,7 +332,7 @@ export default function OrderForm({ setDialogOpen }: any) {
       sonner("✨Success", {
         description: `Service Order Successful!`,
         action: {
-          label: "Print",
+          label: "View",
           onClick: () =>
             router.push(
               `/application/transactions/order_service/${result.data[0].id}`

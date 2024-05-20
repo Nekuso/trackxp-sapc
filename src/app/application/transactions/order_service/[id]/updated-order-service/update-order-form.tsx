@@ -7,9 +7,11 @@ import { useForm } from "react-hook-form";
 
 import { DataTable as ProductsCart } from "./update-order-cart/products-cart/data-table";
 import { DataTable as PartsCart } from "./update-order-cart/parts-cart/data-table";
+import { DataTable as ServicesCart } from "./update-order-cart/services-cart/data-table";
 
 import { initiateColumns as initiateProductsCartColumns } from "./update-order-cart/products-cart/columns";
 import { initiateColumns as initiatePartsCartColumns } from "./update-order-cart/parts-cart/columns";
+import { initiateColumns as initiateServicesCartColumns } from "./update-order-cart/services-cart/columns";
 
 import { Form } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
@@ -21,6 +23,7 @@ import { useSelector } from "react-redux";
 import OrderCartOptions from "./update-order-table/lists";
 import { useDispatch } from "react-redux";
 import { resetOrderCart } from "@/redux/slices/viewOrderCartSlice";
+import { resetOrderServiceCart } from "@/redux/slices/viewUpdateOrderServiceCart";
 import {
   Accordion,
   AccordionContent,
@@ -36,7 +39,7 @@ export default function OrderForm({ setDialogOpen, data }: any) {
 
   const orderCart = useSelector((state: any) => state.viewOrderCart);
   const orderServiceCart = useSelector(
-    (state: any) => state.viewOrderServiceCart
+    (state: any) => state.viewUpdateOrderServiceCart
   );
 
   const orderCartOptions = useSelector(
@@ -48,7 +51,17 @@ export default function OrderForm({ setDialogOpen, data }: any) {
     discount: z.coerce.number().nullable(),
     subtotal: z.coerce.number(),
     total_price: z.coerce.number().nullable(),
-
+    purchase_services: z.array(
+      z.object({
+        id: z.coerce.number().nullable(),
+        inventory_id: z.coerce.number().nullable(),
+        name: z.string().nullable(),
+        description: z.string().nullable(),
+        image: z.string().nullable(),
+        duration: z.coerce.number().nullable(),
+        price: z.coerce.number().nullable(),
+      })
+    ),
     // Collections
     purchase_products: z.array(
       z.object({
@@ -188,12 +201,14 @@ export default function OrderForm({ setDialogOpen, data }: any) {
       setDialogOpen(false);
       new Promise((resolve) => setTimeout(resolve, 500)).then(() => {
         dispatch(resetOrderCart());
+        dispatch(resetOrderServiceCart());
       });
     });
   }
 
   function onCancel() {
     dispatch(resetOrderCart());
+    dispatch(resetOrderServiceCart());
     setDialogOpen(false);
   }
 
@@ -214,6 +229,19 @@ export default function OrderForm({ setDialogOpen, data }: any) {
                 className="w-full rounded-none relative"
                 defaultValue={["item-1", "item-2"]}
               >
+                {orderServiceCart.servicesCart.length > 0 && (
+                  <AccordionItem value="item-1">
+                    <AccordionTrigger className="font-bold bg-darkBg sticky top-0">
+                      Services Summary
+                    </AccordionTrigger>
+                    <AccordionContent className="bg-darkComponentBg rounded-xl">
+                      <ServicesCart
+                        columns={initiateServicesCartColumns(dispatch)}
+                        data={orderServiceCart.servicesCart}
+                      />
+                    </AccordionContent>
+                  </AccordionItem>
+                )}
                 {orderCart.productsCart.length > 0 && (
                   <AccordionItem value="item-1">
                     <AccordionTrigger className="font-bold bg-darkBg sticky top-0">
@@ -253,6 +281,10 @@ export default function OrderForm({ setDialogOpen, data }: any) {
                     Subtotal
                   </span>
                   <span className="w-[20%] text-end">{`₱ ${(
+                    orderServiceCart.servicesCart.reduce(
+                      (acc: any, service: any) => acc + service.price,
+                      0
+                    ) +
                     orderCart.productsCart.reduce(
                       (acc: any, product: any) =>
                         acc + product.price * product.quantity,
@@ -281,11 +313,15 @@ export default function OrderForm({ setDialogOpen, data }: any) {
                 <div className="w-full py-6 flex gap-8 position sticky bottom-[-4px] bg-darkBg m-0 text-lg font-bold">
                   <span className="w-full text-end">Total</span>
                   <span className="w-[20%] text-end">{`₱ ${(
-                    (orderCart.productsCart.reduce(
-                      (acc: any, product: any) =>
-                        acc + product.price * product.quantity,
+                    (orderServiceCart.servicesCart.reduce(
+                      (acc: any, service: any) => acc + service.price,
                       0
                     ) +
+                      orderCart.productsCart.reduce(
+                        (acc: any, product: any) =>
+                          acc + product.price * product.quantity,
+                        0
+                      ) +
                       orderCart.partsCart.reduce(
                         (acc: any, part: any) =>
                           acc + part.price * part.quantity,

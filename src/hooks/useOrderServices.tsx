@@ -1,4 +1,4 @@
-import createSupabaseBrowserClient from "@/lib/supabase/client"
+import createSupabaseBrowserClient from "@/lib/supabase/client";
 import { useState } from "react";
 import ShortUniqueId from "short-unique-id";
 
@@ -489,6 +489,20 @@ export const useOrderServices: any = () => {
           price: part.price,
           quantity: part.quantity,
           brand: part.brand_name,
+        }))
+      )
+      .select();
+    const serviceResult = await supabase
+      .from("purchase_services")
+      .insert(
+        props.purchase_services.map((service: any) => ({
+          order_service_id: props.id,
+          service_id: service.id,
+          name: service.name,
+          description: service.description,
+          inventory_id: service.inventory_id,
+          price: service.price,
+          image_url: service.image,
         }))
       )
       .select();
