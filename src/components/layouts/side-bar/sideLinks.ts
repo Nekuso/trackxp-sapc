@@ -29,16 +29,16 @@ export const sideLinks = [
     href: "/application/management",
     icon: managementIcon,
   },
-  {
-    title: "Announcements",
-    href: "/application/announcements",
-    icon: announcementIcon,
-  },
-  {
-    title: "Analytics",
-    href: "/application/analytics",
-    icon: analyticsIcon,
-  },
+  // {
+  //   title: "Announcements",
+  //   href: "/application/announcements",
+  //   icon: announcementIcon,
+  // },
+  // {
+  //   title: "Analytics",
+  //   href: "/application/analytics",
+  //   icon: analyticsIcon,
+  // },
   {
     title: "Reports",
     href: "/application/reports",

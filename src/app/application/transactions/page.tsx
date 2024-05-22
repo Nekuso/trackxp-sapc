@@ -34,10 +34,10 @@ import { useAuthMiddleware } from "@/lib/actions/useMiddleware";
 
 export default function Transactions() {
   const router = useRouter();
-  const { ADMINISTRATOR, MANAGER, CASHIER, STAFF } = ROLES;
+  const { ADMINISTRATOR, MANAGER, CASHIER, STAFF, SUPERVISOR } = ROLES;
   const currentSession = useSelector((state: any) => state.currentSession);
   const access = useAuthMiddleware(
-    [ADMINISTRATOR, MANAGER, CASHIER, STAFF],
+    [ADMINISTRATOR, MANAGER, CASHIER, STAFF, SUPERVISOR],
     currentSession
   );
 
