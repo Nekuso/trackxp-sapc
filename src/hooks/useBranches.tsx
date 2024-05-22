@@ -7,18 +7,28 @@ export const useBranches: any = () => {
   const [currentBranchData, setCurrentBranchData] = useState<any>([]);
 
   const createBranch = async (props: any, duration?: any) => {
-    const result = await supabase.from("branches").insert({
-      branch_name: props.branch_name,
-      branch_location: props.branch_location,
-      branch_manager: props.branch_manager,
-    });
+    const result = await supabase
+      .from("branches")
+      .insert({
+        branch_name: props.branch_name,
+        branch_location: props.branch_location,
+        contact_number: props.contact_number,
+      })
+      .select();
+
+    const inventoryResult = await supabase
+      .from("inventory")
+      .insert({
+        branch_id: result?.data?.[0]?.id,
+      })
+      .select();
 
     const { data, error } = result;
     if (error) {
       return error;
     }
 
-    await new Promise((resolve) => setTimeout(resolve, duration));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     return data;
   };
@@ -31,6 +41,7 @@ export const useBranches: any = () => {
       branch_name,
       branch_location,
       branch_manager,
+      contact_number,
       created_at
     `
       )
@@ -42,7 +53,7 @@ export const useBranches: any = () => {
     }
     return setAllbranchesData(data);
   };
-  const getRole = async (id: string, duration?: number) => {
+  const getBranch = async (id: string, duration?: number) => {
     const { data, error } = await supabase
       .from("branches")
       .select(
@@ -51,6 +62,7 @@ export const useBranches: any = () => {
       branch_name,
       branch_location,
       branch_manager,
+      contact_number,
       created_at
     `
       )
@@ -66,20 +78,20 @@ export const useBranches: any = () => {
       .update({
         branch_name: props.branch_name,
         branch_location: props.branch_location,
-        branch_manager: props.branch_manager,
+        contact_number: props.contact_number,
       })
       .eq("id", props.id);
 
-    await new Promise((resolve) => setTimeout(resolve, duration));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    return JSON.stringify(result);
+    return result;
   };
   const deleteBranch = async (props: any, duration?: number) => {
     const result = await supabase.from("branches").delete().eq("id", props.id);
 
     await new Promise((resolve) => setTimeout(resolve, duration));
 
-    return JSON.stringify(result);
+    return result;
   };
 
   return {
@@ -90,7 +102,7 @@ export const useBranches: any = () => {
     // methods
     createBranch,
     getBranches,
-    getRole,
+    getBranch,
     updateBranch,
     deleteBranch,
   };
