@@ -53,7 +53,8 @@ export default function InventoryContent({
           {currentSession.roles.role === "Administrator" ||
           currentSession.roles.role === "Manager" ||
           currentSession.roles.role === "Staff" ||
-          currentSession.roles.role === "Cashier" ? (
+          currentSession.roles.role === "Cashier" ||
+          currentSession.roles.role === "Supervisor" ? (
             <TabsTrigger
               value="order_service"
               className="data-[state=active]:bg-applicationPrimary data-[state=inactive]:hover:bg-applicationPrimary/80
