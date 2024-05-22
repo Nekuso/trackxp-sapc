@@ -74,7 +74,8 @@ export function DataTableToolbar<TData>({
       </div>
       <div className="flex gap-4">
         <DatePickerWithRange />
-        {currentSession.roles?.role !== "Cashier" && <AddOrderButton />}
+        {currentSession.roles?.role !== "Cashier" ||
+          (currentSession.roles?.role !== "Supervisor" && <AddOrderButton />)}
       </div>
     </div>
   );
