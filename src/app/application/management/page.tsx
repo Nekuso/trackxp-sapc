@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Loading from "./skeleton";
 import ManagementContent from "./management-content";
 import { useEmployees } from "@/hooks/useEmployees";
+import { useMobileUsers } from "@/hooks/useMobileUsers";
 import createSupabaseBrowserClient from "@/lib/supabase/client";
 import { toast as sonner } from "sonner";
 import { toast } from "@/components/ui/use-toast";
@@ -31,6 +32,7 @@ export default function Management() {
 
   const dispatch = useDispatch();
   const { getEmployees, allEmployeesData } = useEmployees();
+  const { getMobileUsers, allMobileUserData } = useMobileUsers();
   const { getBranches, allBranchesData } = useBranches();
   const { getRoles, allRolesData } = useRoles();
 
@@ -60,12 +62,13 @@ export default function Management() {
     }
 
     getBranches();
+    getMobileUsers();
     getRoles();
   }, []);
 
   useEffect(() => {
     const supabase = createSupabaseBrowserClient();
-    const subscribedChannel = supabase
+    const subscribedChannel1 = supabase
       .channel("employees-follow-up")
       .on(
         "postgres_changes",
@@ -75,9 +78,31 @@ export default function Management() {
         }
       )
       .subscribe();
+    const subscribedChannel2 = supabase
+      .channel("mobile-users-follow-up")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "moble_users" },
+        (payload: any) => {
+          getMobileUsers();
+        }
+      )
+      .subscribe();
+    const subscribedChannel3 = supabase
+      .channel("branches-follow-up")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "branches" },
+        (payload: any) => {
+          getBranches();
+        }
+      )
+      .subscribe();
 
     return () => {
-      supabase.removeChannel(subscribedChannel);
+      supabase.removeChannel(subscribedChannel1);
+      supabase.removeChannel(subscribedChannel2);
+      supabase.removeChannel(subscribedChannel3);
     };
   }, []);
 
@@ -94,7 +119,11 @@ export default function Management() {
           {allEmployeesData.length === 0 ? (
             <Loading />
           ) : (
-            <ManagementContent dataEmployees={allEmployeesData} />
+            <ManagementContent
+              dataEmployees={allEmployeesData}
+              dataMobileUsers={allMobileUserData}
+              dataBranches={allBranchesData}
+            />
           )}
         </div>
       )}

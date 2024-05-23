@@ -8,7 +8,7 @@ import OrderServiceContent from "./order-service-content";
 import createSupabaseBrowserClient from "@/lib/supabase/client";
 import { useOrderServices } from "@/hooks/useOrderServices";
 import OrderNotFound from "./not-found";
-  import { toast as sonner } from "sonner";
+import { toast as sonner } from "sonner";
 import { useEmployees } from "@/hooks/useEmployees";
 import { useBranches } from "@/hooks/useBranches";
 import { useProducts } from "@/hooks/useProducts";
@@ -106,6 +106,21 @@ export default function OrderService({ params }: { params: any }) {
             event: "*",
             schema: "public",
             table: "progress_entries",
+            filter: `order_service_id=eq.${params.id}`,
+          },
+          (payload: any) => {
+            getOrderService(params.id, 0);
+            sonner("📣 Notification", {
+              description: `Order has been updated!`,
+            });
+          }
+        )
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "image_entries",
             filter: `order_service_id=eq.${params.id}`,
           },
           (payload: any) => {

@@ -345,6 +345,7 @@ export const useOrderServices: any = () => {
             )
           )
         ),
+        image_entries("*"),
         vehicle_entries("*"),
         progress_entries("*"),
         subtotal,
@@ -360,6 +361,7 @@ export const useOrderServices: any = () => {
       )
       .eq("id", id)
       .order("created_at", { ascending: false });
+    console.log(data);
 
     await new Promise((resolve) => setTimeout(resolve, duration));
     if (data?.length === 0) return true;

@@ -43,7 +43,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import Barcode from "react-barcode";
 
 import { DataTable as ProductOrders } from "./order-service-tables/product-orders/data-table";
 import { DataTable as PartOrders } from "./order-service-tables/part-orders/data-table";
@@ -72,6 +71,8 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Rating as ReactRating, Star } from "@smastrom/react-rating";
 import { QRCodeSVG } from "qrcode.react";
+import AddImagesButton from "./add-order-images/add-images-dialog";
+import ViewImagesDialog from "./view-order-images/view-images-dialog";
 
 export default function OrderContent({ orderService, nextProgress }: any) {
   const dispatch = useDispatch();
@@ -487,6 +488,12 @@ export default function OrderContent({ orderService, nextProgress }: any) {
                 </span>
               </div>
               <div className="w-fit flex gap-5">
+                <ViewImagesDialog data={data} />
+
+                {data.image_entries.length !== 7 ? (
+                  <AddImagesButton data={data} />
+                ) : null}
+
                 {data.status === "Pending" &&
                 data.progress_entries.length >= 4 ? (
                   <UpdatePayment data={data} />

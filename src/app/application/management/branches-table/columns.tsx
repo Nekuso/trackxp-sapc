@@ -8,37 +8,28 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import UpdateForm from "./update-branches/update-branches-dialog";
+import DeleteForm from "./delete-branches/delete-branch-dialog";
+
 import { ColumnDef } from "@tanstack/react-table";
 import {
-  CheckCircledIcon,
-  CircleIcon,
-  QuestionMarkCircledIcon,
-  StopwatchIcon,
   ArrowDownIcon,
   ArrowUpIcon,
   CaretSortIcon,
-  PersonIcon,
-  HomeIcon,
 } from "@radix-ui/react-icons";
-export type MobileUser = {
+export type Branches = {
   id: number;
-  email: string;
-  password: string;
-  first_name: string;
-  last_name: string;
-  contact_number: string;
-  dob: string;
-  points: string;
-  gender: string;
+  branch_name: string;
+  branch_location: string;
+  branch_manager: string;
   created_at: string;
-  address: string;
-  image_url: string;
+  contact_number: string;
 };
 
-export const columns: ColumnDef<MobileUser>[] = [
+export const columns: ColumnDef<Branches>[] = [
   {
-    id: "first_name",
-    accessorKey: "first_name",
+    id: "branch_name",
+    accessorKey: "branch_name",
     header: ({ column }) => {
       return (
         <DropdownMenu>
@@ -46,9 +37,9 @@ export const columns: ColumnDef<MobileUser>[] = [
             <Button
               variant="ghost"
               size="sm"
-              className="h-8 data-[state=open]:bg-applicationPrimary data-[state=open]:text-white hover:bg-slate-50/40 hover:text-white"
+              className="h-8 data-[state=open]:bg-applicationPrimary data-[state=open]:text-white hover:bg-slate-50/40 hover:text-white text-center"
             >
-              <span>Name</span>
+              <span>Branch Name</span>
               {column.getIsSorted() === "desc" ? (
                 <ArrowDownIcon className="ml-2 h-4 w-4" />
               ) : column.getIsSorted() === "asc" ? (
@@ -84,23 +75,15 @@ export const columns: ColumnDef<MobileUser>[] = [
       const item = row.original;
       return (
         <div className="flex place-items-center gap-4 z-0">
-          <Avatar className="w-10 h-10 cursor-pointer z-0">
-            <AvatarImage src={item.image_url} alt={item.first_name} />
-            <AvatarFallback className="bg-darkBg">
-              {item.first_name[0]} {item.last_name[0]}
-            </AvatarFallback>
-          </Avatar>
           <div className="flex flex-col">
-            <span className="text-sm font-semibold">
-              {item.first_name} {item.last_name}
-            </span>
+            <span className="text-xl font-semibold">{item.branch_name}</span>
           </div>
         </div>
       );
     },
   },
   {
-    accessorKey: "email",
+    accessorKey: "branch_location",
     header: ({ column }) => {
       return (
         <DropdownMenu>
@@ -110,7 +93,7 @@ export const columns: ColumnDef<MobileUser>[] = [
               size="sm"
               className="h-8 data-[state=open]:bg-applicationPrimary data-[state=open]:text-white hover:bg-slate-50/40 hover:text-white"
             >
-              <span>Email</span>
+              <span>Branch Location</span>
               {column.getIsSorted() === "desc" ? (
                 <ArrowDownIcon className="ml-2 h-4 w-4" />
               ) : column.getIsSorted() === "asc" ? (
@@ -148,12 +131,7 @@ export const columns: ColumnDef<MobileUser>[] = [
     header: "Contact Number",
   },
   {
-    id: "address",
-    accessorKey: "address",
-    header: "Address",
-  },
-  {
-    accessorKey: "points",
+    accessorKey: "created_at",
     header: ({ column }) => {
       return (
         <DropdownMenu>
@@ -163,7 +141,7 @@ export const columns: ColumnDef<MobileUser>[] = [
               size="sm"
               className="h-8 data-[state=open]:bg-applicationPrimary data-[state=open]:text-white hover:bg-slate-50/40 hover:text-white"
             >
-              <span>Points</span>
+              <span>Created at</span>
               {column.getIsSorted() === "desc" ? (
                 <ArrowDownIcon className="ml-2 h-4 w-4" />
               ) : column.getIsSorted() === "asc" ? (
@@ -193,6 +171,30 @@ export const columns: ColumnDef<MobileUser>[] = [
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+      );
+    },
+    cell: ({ row }) => {
+      const item = row.original;
+      return (
+        <div className="flex place-items-center gap-4 z-0">
+          <div className="flex flex-col">
+            <span className="text-sm font-semibold">
+              {new Date(item.created_at).toLocaleDateString()}
+            </span>
+          </div>
+        </div>
+      );
+    },
+  },
+  {
+    header: "Actons",
+    cell: ({ row }) => {
+      const item = row.original;
+      return (
+        <div className="flex place-items-center gap-4 z-0">
+          <UpdateForm dataProps={item} />
+          <DeleteForm dataProps={item} />
+        </div>
       );
     },
   },
