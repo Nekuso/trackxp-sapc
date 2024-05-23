@@ -178,6 +178,7 @@ export type allPurchaseOrdersDisplay = {
   };
   purchase_products: {}[];
   purchase_parts: {}[];
+  image_entries: {}[];
   total_price: number;
   payment_method: string;
   status: string;
@@ -348,4 +349,12 @@ export type allPurchaseOrderServicesDisplay = {
         tracking_id: string | any;
       }[]
     | any;
+  image_entries:
+    | {
+        id: number | any;
+        image_url: string | any;
+        file_name: string | any;
+        created_at: string | any;
+        order_service_id: string | any;
+      }[];
 };

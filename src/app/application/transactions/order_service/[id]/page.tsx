@@ -117,6 +117,21 @@ export default function OrderService({ params }: { params: any }) {
         )
         .on(
           "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "image_entries",
+            filter: `order_service_id=eq.${params.id}`,
+          },
+          (payload: any) => {
+            getOrderService(params.id, 0);
+            sonner("📣 Notification", {
+              description: `Order has been updated!`,
+            });
+          }
+        )
+        .on(
+          "postgres_changes",
           { event: "*", schema: "public", table: "products" },
           (payload: any) => {
             getProducts(currentSession);
