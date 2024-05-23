@@ -284,6 +284,164 @@ export const useOrderServices: any = () => {
     }
     return setOrderServicesData(data);
   };
+  const getOrderServicesByDate = async (props?: any) => {
+    const result =
+      props?.roles?.role === "Administrator"
+        ? await supabase
+            .from("order_services")
+            .select(
+              `
+        id,
+        customer_first_name,
+        customer_last_name,
+        customer_contact_number,
+        customer_email,
+        employee:employees!public_order_services_employee_id_fkey(
+          id,
+          first_name,
+          last_name,
+          image_url,
+          contact_number,
+          email,
+          roles(
+            role
+          )
+        ),
+        supervisor:employees!order_services_supervisor_id_fkey(
+          id,
+          first_name,
+          last_name,
+          image_url,
+          contact_number,
+          email,
+          roles(
+            role
+          ),
+          created_at
+        ),
+        inventory(
+          id,
+          branches("*"
+          )
+        ),
+        purchase_products("*"
+        ),
+        purchase_parts("*"
+        ),
+        purchase_services("*"
+        ),
+        mobile_users("*"),
+        mechanic_entries("*",
+          mechanic:employees!mechanic_entries_employee_id_fkey(
+            id,
+            first_name,
+            last_name,
+            image_url,
+            contact_number,
+            email,
+            roles(
+              role
+            )
+          )
+        ),
+        vehicle_entries("*"),
+        progress_entries("*"),
+        subtotal,
+        total_price,
+        amount_paid,
+        status,
+        discount,
+        tracking_id,
+        rating,
+        payment_method,
+        created_at
+    `
+            )
+            .lt("created_at", props.convertedDate.to)
+            .gt("created_at", props.convertedDate.from)
+            .order("created_at", { ascending: false })
+        : await supabase
+            .from("order_services")
+            .select(
+              `
+        id,
+        customer_first_name,
+        customer_last_name,
+        customer_contact_number,
+        customer_email,
+        employee:employees!public_order_services_employee_id_fkey(
+          id,
+          first_name,
+          last_name,
+          image_url,
+          contact_number,
+          email,
+          roles(
+            role
+          )
+        ),
+        supervisor:employees!order_services_supervisor_id_fkey(
+          id,
+          first_name,
+          last_name,
+          image_url,
+          contact_number,
+          email,
+          roles(
+            role
+          ),
+          created_at
+        ),
+        inventory(
+          id,
+          branches("*"
+          )
+        ),
+        purchase_products("*"
+        ),
+        purchase_parts("*"
+        ),
+        purchase_services("*"
+        ),
+        mobile_users("*"),
+        mechanic_entries("*",
+          mechanic:employees!mechanic_entries_employee_id_fkey(
+            id,
+            first_name,
+            last_name,
+            image_url,
+            contact_number,
+            email,
+            roles(
+              role
+            )
+          )
+        ),
+        vehicle_entries("*"),
+        progress_entries("*"),
+        subtotal,
+        total_price,
+        amount_paid,
+        status,
+        discount,
+        tracking_id,
+        rating,
+        payment_method,
+        created_at
+    `
+            )
+            .eq("inventory_id", props?.branches?.id)
+            .lt("created_at", props.convertedDate.to)
+            .gt("created_at", props.convertedDate.from)
+            .order("created_at", { ascending: false });
+
+    const { data, error } = result;
+    if (error) {
+      return error;
+    }
+    setOrderServicesData(data);
+    return data;
+  };
   const getOrderService = async (id: string, duration?: number) => {
     const { data, error } = await supabase
       .from("order_services")
@@ -588,6 +746,7 @@ export const useOrderServices: any = () => {
     getOrderService,
     getOrderServiceTracking,
     getOrderServices,
+    getOrderServicesByDate,
     updateOrderService,
     updateOrderServicePrice,
     updateOrderServicePayment,

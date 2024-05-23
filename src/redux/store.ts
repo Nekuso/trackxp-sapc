@@ -16,6 +16,7 @@ import viewOrderServiceCartSlice from "./slices/viewOrderServiceCartSlice";
 import viewUpdateOrderServiceCartSlice from "./slices/viewUpdateOrderServiceCart";
 import progressEntriesSlice from "./slices/progressEntriesSlice";
 import currentOrderServiceSlice from "./slices/currentOrderServiceSlice";
+import allFilteredOrderServicesSlice from "./slices/filteredOrderServices";
 
 export const store = configureStore({
   reducer: {
@@ -36,6 +37,8 @@ export const store = configureStore({
     viewOrderServiceCart: viewOrderServiceCartSlice,
     viewUpdateOrderServiceCart: viewUpdateOrderServiceCartSlice,
     progressEntries: progressEntriesSlice,
+
+    allFilteredOrderServices: allFilteredOrderServicesSlice,
 
     currentSession: currentSessionSlice,
     allMobileUser: allMobileUsersSlice,
