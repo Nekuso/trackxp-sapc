@@ -27,7 +27,6 @@ import { cn } from "@/lib/utils";
 import { toast } from "@/components/ui/use-toast";
 import { toast as sonner } from "sonner";
 import { useImages } from "@/hooks/useImages";
-import AddImagesButton from "../add-order-images/add-images-dialog";
 
 export default function UpdateOrderDialog({ data }: any) {
   const [dialogIsOpen, setDialogIsOpen] = useState(false);

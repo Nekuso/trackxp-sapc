@@ -63,7 +63,7 @@ import largeVehicle from "@/images/vehicle-large-hd.png";
 import UpdateOrderButton from "./updated-order-service/update-order-dialog";
 import UpdatePayment from "./update-payment/payment-dialog";
 import RemarksButton from "./update-remarks/remarks-dialog";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setServiceCart } from "@/redux/slices/viewOrderServiceCartSlice";
 import { setProgressEntries } from "@/redux/slices/progressEntriesSlice";
 import { setCurrentOrderService } from "@/redux/slices/currentOrderServiceSlice";
@@ -75,6 +75,7 @@ import AddImagesButton from "./add-order-images/add-images-dialog";
 import ViewImagesDialog from "./view-order-images/view-images-dialog";
 
 export default function OrderContent({ orderService, nextProgress }: any) {
+  const currentUser = useSelector((state: any) => state.currentSession);
   const dispatch = useDispatch();
   const contentToPrint = useRef(null);
   const handlePrint = useReactToPrint({
@@ -241,20 +242,22 @@ export default function OrderContent({ orderService, nextProgress }: any) {
                 <h3 className="w-full text-sm font-semibold text-slate-200 ">
                   Order Timeline
                 </h3>
-                <div className="w-fit flex place-items-center gap-3">
-                  {progress_entries_data.length !== 1 &&
-                  progress_entries_data.length !== 5 ? (
-                    <UndoProgressButton
-                      progress_entries={progress_entries_data}
-                    />
-                  ) : null}
-                  {progress_entries_data.length < 5 ? (
-                    <UpdateProgressButton
-                      progress_entries={progress_entries_data}
-                      nextProgress={nextProgress}
-                    />
-                  ) : null}
-                </div>
+                {currentUser.roles.role !== "Cashier" && (
+                  <div className="w-fit flex place-items-center gap-3">
+                    {progress_entries_data.length !== 1 &&
+                    progress_entries_data.length !== 5 ? (
+                      <UndoProgressButton
+                        progress_entries={progress_entries_data}
+                      />
+                    ) : null}
+                    {progress_entries_data.length < 5 ? (
+                      <UpdateProgressButton
+                        progress_entries={progress_entries_data}
+                        nextProgress={nextProgress}
+                      />
+                    ) : null}
+                  </div>
+                )}
               </div>
               <div
                 className={cn(
@@ -490,8 +493,11 @@ export default function OrderContent({ orderService, nextProgress }: any) {
               <div className="w-fit flex gap-5">
                 <ViewImagesDialog data={data} />
 
-                {data.image_entries.length !== 7 ? (
-                  <AddImagesButton data={data} />
+                {data.image_entries.length !== 7 ||
+                data.progress_entries.length === 3 ? (
+                  currentUser.roles.role !== "Cashier" ? (
+                    <AddImagesButton data={data} />
+                  ) : null
                 ) : null}
 
                 {data.status === "Pending" &&
