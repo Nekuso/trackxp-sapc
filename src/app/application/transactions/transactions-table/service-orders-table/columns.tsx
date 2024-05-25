@@ -94,6 +94,7 @@ export const status = [
 
 export const initialState = (branches: any) => {
   const columns: ColumnDef<allPurchaseOrderServicesDisplay>[] = [
+
     {
       id: "id",
       accessorKey: "tracking_id",
@@ -165,6 +166,8 @@ export const initialState = (branches: any) => {
         );
       },
     },
+
+
     {
       accessorKey: "employees",
       header: "Supervised by",
@@ -194,6 +197,7 @@ export const initialState = (branches: any) => {
         );
       },
     },
+
     {
       id: "branch",
       accessorKey: "branches",
@@ -214,6 +218,7 @@ export const initialState = (branches: any) => {
         return value.includes(row.getValue(id));
       },
     },
+
     {
       id: "purchased",
       accessorKey: "branches",
@@ -296,6 +301,7 @@ export const initialState = (branches: any) => {
         }
       },
     },
+    
     {
       id: "progress_entries",
       accessorKey: "progress_entries",
@@ -423,6 +429,7 @@ export const initialState = (branches: any) => {
         return value.includes(row.getValue(id));
       },
     },
+
     {
       id: "actions",
       header: "Actions",
@@ -439,6 +446,7 @@ export const initialState = (branches: any) => {
         );
       },
     },
+
     {
       id: "status",
       accessorKey: "status",
@@ -447,6 +455,7 @@ export const initialState = (branches: any) => {
         return value.includes(row.getValue(id));
       },
     },
+
     {
       id: "created_at",
       accessorKey: "created_at",

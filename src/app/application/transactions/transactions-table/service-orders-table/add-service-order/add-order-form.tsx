@@ -317,6 +317,7 @@ export default function OrderForm({ setDialogOpen }: any) {
   async function onSubmit(data: any) {
     startTransition(async () => {
       const result = await createOrderService(data, 500);
+      console.log(result);
 
       const { error } = result;
       if (error?.message) {

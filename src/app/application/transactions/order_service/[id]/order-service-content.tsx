@@ -493,8 +493,16 @@ export default function OrderContent({ orderService, nextProgress }: any) {
               <div className="w-fit flex gap-5">
                 <ViewImagesDialog data={data} />
 
-                {data.image_entries.length !== 7 ||
-                data.progress_entries.length === 3 ? (
+                {data.progress_entries.length === 3 ||
+                data.progress_entries.length === 4 ? (
+                  data.image_entries.length !== 7 ? (
+                    currentUser.roles.role !== "Cashier" ? (
+                      <AddImagesButton data={data} />
+                    ) : null
+                  ) : null
+                ) : null}
+
+                {data.progress_entries.length === 3 ? (
                   currentUser.roles.role !== "Cashier" ? (
                     <AddImagesButton data={data} />
                   ) : null
