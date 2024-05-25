@@ -32,6 +32,7 @@ import { TbProgressBolt } from "react-icons/tb";
 import { PiMagnifyingGlassFill } from "react-icons/pi";
 import { RiUserReceived2Fill } from "react-icons/ri";
 import { MdVerified } from "react-icons/md";
+import { useRouter } from "next/navigation";
 
 export const progress = [
   {
@@ -92,9 +93,9 @@ export const status = [
   },
 ];
 
-export const initialState = (branches: any) => {
+export const InitialState = (branches: any) => {
+  const router = useRouter();
   const columns: ColumnDef<allPurchaseOrderServicesDisplay>[] = [
-
     {
       id: "id",
       accessorKey: "tracking_id",
@@ -166,7 +167,6 @@ export const initialState = (branches: any) => {
         );
       },
     },
-
 
     {
       accessorKey: "employees",
@@ -301,12 +301,19 @@ export const initialState = (branches: any) => {
         }
       },
     },
-    
+
     {
       id: "progress_entries",
       accessorKey: "progress_entries",
       accessorFn: (row) =>
-        row?.progress_entries[row.progress_entries.length - 1]?.progress_name,
+        row.progress_entries
+          .sort(
+            (a: any, b: any) =>
+              new Date(a.created_at).getTime() -
+              new Date(b.created_at).getTime()
+          )
+          .reverse()[0]?.progress_name,
+
       header: ({ column }) => {
         return (
           <DropdownMenu>
@@ -436,13 +443,15 @@ export const initialState = (branches: any) => {
       cell: ({ row }) => {
         const id = row.original.id;
         return (
-          <Link
-            className="w-fit py-2 flex place-items-center justify-center text-slate-400 rounded-full px-4 hover:bg-applicationPrimary hover:text-white hover:border-applicationPrimary transition-all duration-300 primary-glow"
-            href={`/application/transactions/order_service/${id}`}
+          <div
+            className="w-fit active:scale-90 cursor-pointer py-2 flex place-items-center justify-center text-slate-400 rounded-full px-4 hover:bg-applicationPrimary hover:text-white hover:border-applicationPrimary transition-all duration-300 primary-glow"
+            onClick={() =>
+              router.push(`/application/transactions/order_service/${id}`)
+            }
           >
             <FaEye className="mr-2 " />
             View
-          </Link>
+          </div>
         );
       },
     },
