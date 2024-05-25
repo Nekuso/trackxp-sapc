@@ -2,7 +2,7 @@ import { DataTable as OrderServicesDataTable } from "./transactions-table/servic
 import { DataTable as OrdersDataTable } from "./transactions-table/orders-table/data-table";
 
 import { initialState as initiateOrdersState } from "./transactions-table/orders-table/columns";
-import { initialState as initiatePartsState } from "./transactions-table/service-orders-table/columns";
+import { InitialState as initiatePartsState } from "./transactions-table/service-orders-table/columns";
 
 import {
   allPurchaseOrderServicesDisplay,
