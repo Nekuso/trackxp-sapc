@@ -91,7 +91,7 @@ export const useOrderServices: any = () => {
         }))
       )
       .select();
-      
+
     const vehicleResult = await supabase
       .from("vehicle_entries")
       .insert({
@@ -280,6 +280,7 @@ export const useOrderServices: any = () => {
             .eq("inventory_id", props?.branches?.id)
             .order("created_at", { ascending: false });
     const { data, error } = result;
+    console.log(result);
     if (error) {
       return error;
     }

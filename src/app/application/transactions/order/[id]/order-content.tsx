@@ -509,6 +509,9 @@ export default function OrderContent({ order }: any) {
                 https://trackxp-sapsc.vercel.app/
               </span>
             </p>
+            <p className="w-full text-center text-[13px] font-semibold text-black space-mono-regular tracking-tighter">
+              NOT OFFICIAL RECEIPT
+            </p>
           </div>
         </div>
       </div>
